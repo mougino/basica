@@ -2,7 +2,7 @@
 # <a name="basica"></a>basica
 basica is an editor + interpreter + compiler of the Basic language for Android devices.
 
-**Dogmata**
+**Dogmata:**
 * the syntax should be as close to other Basic dialects as possible, especially Visual Basic which has a large coders base
 * the command names should indicate as much as possible the order of the parameters:
   * e.g. `GR.TEXT.DRAW grObjId, text$, drawX, drawY ' GR->grObjId ; TEXT->text$ ; DRAW->draw coordinates`
@@ -40,7 +40,7 @@ The following is a list of the commands built into basica and separated into 16 
 * [Time Commands](#time)
 * [Misc Operations](#misc)
 
-**See also**
+**See also:**
 * [Format and typefaces](#format)
 * [Keyword Reference](#keyword)
 
@@ -65,7 +65,7 @@ Indicates a choice of two or more options, one of which MUST be used. For exampl
 * Ellipses ...
 Indicates that part of the command can be repeated as many times as required. For example: `DIM array[ n1 {,n2} ... ]`
 
-**See also**
+**See also:**
 * [Command summary](#summary)
 * [Keyword Reference](#keyword)
 
@@ -102,26 +102,26 @@ Count = 100
 
 TODO: list all keywords alphabetically
 
-**See also**
+**See also:**
 * [Command summary](#summary)
 * [Format and typefaces](#format)
 
 <!------------------------------------------------------------------------------->
 # <a name="permission"></a>PERMISSION statement
-**Purpose**
+**Purpose:**
 Give certain permissions to the program.
 
-**Syntax**
+**Syntax:**
 > PERMISSION perm$
 
-**Remarks**
+**Remarks:**
 *perm$* is a string describing the permission, as returned by the [PERMISSION$](#permission_) function.
 
 Android apps need to request permissions to do sensitive operations, like send and receive SMS, make phone call, access GPS, etc.
 In basica the user must request each permission his program needs to exercise.
 This is done thanks to the `PERMISSION` command. You can use as many `PERMISSION` commands as needed. Usually they are placed at the top of your program.
 
-**Examples**
+**Examples:**
 ```vb
 ' No permission at all needed:
 FOR i=1 TO 10
@@ -137,8 +137,8 @@ WRITE fileNum, "Hello, world!"
 CLOSE fileNum
 ```
 
-**See also**
-[PERMISSION$](#permission_)
+**See also:**
+* [PERMISSION$](#permission_)
 
 <!------------------------------------------------------------------------------->
 # <a name="permission_"></a>PERMISSION$ function
