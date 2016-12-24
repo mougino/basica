@@ -142,13 +142,13 @@ CLOSE fileNum
 
 <!------------------------------------------------------------------------------->
 # <a name="permission_"></a>PERMISSION$ function
-**Purpose**
+**Purpose:**
 Return a permission string as to be used with the [PERMISSION](#permission) statement.
 
-**Syntax**
+**Syntax:**
 > perm$ = PERMISSION$(*n*)
 
-**Remarks**
+**Remarks:**
 *n* starts at 1. If *n* is greater than the number of permissions basica has to offer, `PERMISSION$(n)` will return an empty string.
 
 Here is the table of each permission and their meaning:
@@ -157,8 +157,8 @@ index | value | permission meaning
 ------|-------|-------------------
 PERMISSION$(1) | "write external storage" | write to the Android device SD-Card
 
-**See also**
-[PERMISSION](#permission)
+**See also:**
+* [PERMISSION](#permission)
 
 <!------------------------------------------------------------------------------->
 # <a name="credits"></a>Credits
