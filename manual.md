@@ -57,10 +57,9 @@ Indicates part of the command that must be entered exactly as shown. For example
 
 * Braces { }
 Indicates the information they enclose is optional. For example: `array[ {start} {,length} ]`
-If the braces enclose multiple items, any number of them may be omitted. When one is omitted, all following items in that group must also be omitted. For example: `DIM array[ n1 {,n2} {,n3} ]`
 
-* Braces with vertical bar { | }
-Indicates a choice of two or more options, one of which MUST be used. For example: `OPEN file$ FOR { BINARY | TEXT }`
+* Vertical bar |
+Indicates a choice of two or more options, one of which MUST be used. For example: `OPEN file$ FOR BINARY|TEXT`
 
 * Ellipses ...
 Indicates that part of the command can be repeated as many times as required. For example: `DIM array[ n1 {,n2} ... ]`
