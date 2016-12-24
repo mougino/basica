@@ -49,22 +49,21 @@ Every basica command is listed alphabetically, as a separate topic. Each entry c
 
 The syntax section of each entry describes the available options and format each command may use, as follows:
  
-* *Italic*
-Indicates areas within commands that you need to fill in with application-specific information, such as variable names, numeric or string values, etc. For example: > y = VAL(*string$*)
+* *Italic*:
+Indicates areas within commands that you need to fill in with application-specific information, such as variable names, numeric or string values, etc. For example: y = VAL(*string$*)
 
-* UPPERCASE
-Indicates part of the command that must be entered exactly as shown. For example: > FOR BINARY WRITE
+* UPPERCASE:
+Indicates part of the command that must be entered exactly as shown. For example: `FOR BINARY WRITE`
 
 * Braces { }
-Indicates the information they enclose is optional. For example: > array[ {start} {,length} ]
-If the braces enclose multiple items, any number of them may be omitted. When one is omitted, all following items in that group must also be omitted. For example: > DIM array[ n1 {,n2} {,n3} ]
+Indicates the information they enclose is optional. For example: `array[ {start} {,length} ]`
+If the braces enclose multiple items, any number of them may be omitted. When one is omitted, all following items in that group must also be omitted. For example: `DIM array[ n1 {,n2} {,n3} ]`
 
 * Braces with vertical bar { | }
-Indicates a choice of two or more options, one of which MUST be used. For example:
-OPEN file$ FOR { BINARY | TEXT }
+Indicates a choice of two or more options, one of which MUST be used. For example: `OPEN file$ FOR { BINARY | TEXT }`
 
 * Ellipses ...
-Indicates that part of the command can be repeated as many times as required. For example: > DIM array[ n1 {,n2} ... ]
+Indicates that part of the command can be repeated as many times as required. For example: `DIM array[ n1 {,n2} ... ]`
 
 **See also**
 * [Command summary](#summary)
@@ -164,7 +163,5 @@ PERMISSION$(1) | "write external storage" | write to the Android device SD-Card
 <!------------------------------------------------------------------------------->
 # <a name="credits"></a>Credits
 The author would like to thank Paul Laughton who created RFO BASIC! that paved the way to basica.
-
 The author would also like to thank jecelyin who created the 920 Editor V2 used in basica.
-
 Finally, thanks to jMarc and the many contributors at the RFO BASIC! forum.
