@@ -16,6 +16,7 @@ basica is an editor + interpreter + compiler of the Basic language for Android d
  * syntax highlighting
  * built-in manual / keyword reference with quick access to contextual help
  * bottom panel for tips and Run/Compile log
+* basica should be maintained: there should be not more than 3 months between each official release
 * basica should be free and open source (GPL V3)
 
 <!------------------------------------------------------------------------------->
