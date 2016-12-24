@@ -96,7 +96,7 @@ Each statement must appear on a line by itself, or be separated from other progr
 For example:
 ```vb
 A = A + 10 : B$ = "basica"
-OPEN "A Long Filename.txt" FOR BINARY READ AS fid
+OPEN "A Long Filename.txt" FOR BINARY READ AS fileNum
 Count = 100
 ```
 
