@@ -89,7 +89,7 @@ a$ = CHR$(123, 65, 66, 67)
 
 ## Statements
 Statements are building blocks that make up programs.
-They instruct the compiler to perform specific actions, such as opening a file, setting the date, sending data to an http server, etc.
+They instruct basica to perform specific actions, such as opening a file, setting the date, sending data to an http server, etc.
 Statements do not return a value, but often take one or more arguments.
 Each statement must appear on a line by itself, or be separated from other program elements with a delimiting colon (:) character.
 For example:
@@ -131,9 +131,9 @@ NEXT
 ```vb
 ' Write to SD permission needed:
 PERMISSION "write external storage"
-OPEN "readme.txt" FOR TEXT WRITE AS fid
-WRITE fid, "Hello, world!"
-CLOSE fid
+OPEN "readme.txt" FOR TEXT WRITE AS fileNum
+WRITE fileNum, "Hello, world!"
+CLOSE fileNum
 ```
 
 **See also**
@@ -145,7 +145,7 @@ CLOSE fid
 Return a permission string as to be used with the [PERMISSION](#permission) statement.
 
 **Syntax**
-> perm$ = PERMISSION$(n)
+> perm$ = PERMISSION$(*n*)
 
 **Remarks**
 *n* starts at 1. If *n* is greater than the number of permissions basica has to offer, `PERMISSION$(n)` will return an empty string.
