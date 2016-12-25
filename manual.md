@@ -8,6 +8,9 @@ basica is an editor + interpreter + compiler of the Basic language for Android d
   * e.g. `GR.TEXT.DRAW grObjId, text$, drawX, drawY ' GR->grObjId ; TEXT->text$ ; DRAW->draw coordinates`
   * e.g. `IS_IN(sub, main) ' "IS sub IN main ?"` (IS_IN is a refactor of INSTR, which also remains available)
   * e.g. `ARRAY.LEN arr[], len` or `LIST.LEN listId, len`
+* indices and failure codes should always be consistent
+ * i.e. indices start at 1 (array dim, lists, etc.)
+ * and failure code is 0 (e.g. cannot open a file)
 * the power (and the responsibility) of basica should be given to the user at all time (when pressing Run or Compile):
   * for a sensitive command to work, permissions should be declared with the `PERMISSION` statement
   * resources should be called while respecting their exact filename case
@@ -119,7 +122,7 @@ Give certain permissions to the program.
 
 Android apps need to request permissions to do sensitive operations, like send and receive SMS, make phone call, access GPS, etc.
 In basica the user must request each permission his program needs to exercise.
-This is done thanks to the `PERMISSION` command. You can use as many `PERMISSION` commands as needed. Usually they are placed at the top of your program.
+This is done thanks to the `PERMISSION` command. You can use as many `PERMISSION` commands as needed. Usually they are placed at the top of your program. See the list of permissions in the [PERMISSION$](#permission_) function.
 
 **Examples:**
 ```vb
