@@ -749,8 +749,8 @@ RFO BASIC! | basica
 &#38; | AND
 &#124; | OR
 PAUSE | SLEEP
-FN.DEF | FUNCTION funcName{$} ( {param1{$}} {,param2{$}} ... ) or SUB subName ( {param1{$}} {,param2{$}} ... )
-FN.END | END FUNCTION or END SUB
+FN.DEF | SUB&#124;FUNCTION funcName{$} ( {param1{$}} {,param2{$}} ... )
+FN.END | END SUB&#124;FUNCTION
 FN.RTN num&#124;string$ | RETURN {num&#124;string$}
 GR_COLISION | GR.COLISION grObjId1, grObjId2, collision
 LOWER$ | LCASE$
