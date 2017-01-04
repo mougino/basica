@@ -1,2 +1,2 @@
 # basica
-An Android editor, interpreter and compiler for the Basic language
+An Android editor, UI composer, interpreter and compiler for the Basic language
