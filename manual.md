@@ -798,7 +798,7 @@ The following functions can be used to manipulate and manage arrays:
 * [REDIM](#redim)
 * [UNDIM](#undim)
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="communication"></a>Communication Control
@@ -819,7 +819,7 @@ The following functions can be used for external communications:
 * [WIFI.INFO](#wifiinfo)
 * [WIFILOCK](#wifilock)
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 # <a name="bluetooth"></a>Bluetooth Commands
 The following commands can be used to communicate with a device by bluetooth:
@@ -886,42 +886,42 @@ Back to [Communication Control](#communication)
 # <a name="compiler"></a>Compiler Operations
 The following functions manipulate the compiler's operation:
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="console"></a>Console Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="debugging"></a>Debugging and Error Control
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="file"></a>File Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="flow"></a>Flow Control
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="graphic"></a>Graphic Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="html"></a>Html Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="input"></a>Input Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="memory"></a>Memory Management
@@ -950,42 +950,42 @@ Back to [Command summary](#command)
 * [STACK.CREATE](#stackcreate)
 * [UNDIM](#undim)
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="numeric"></a>Numeric Operations
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="operating"></a>Operating System
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="sound"></a>Sound Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="sql"></a>SQL Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="string"></a>String Operations
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="time"></a>Time Commands
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="misc"></a>Misc Operations
 
-Back to [Command summary](#command)
+Back to [Command summary](#summary)
 
 <!------------------------------------------------------------------------------->
 # <a name="permission"></a>PERMISSION statement
