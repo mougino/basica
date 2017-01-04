@@ -1,29 +1,33 @@
 <!------------------------------------------------------------------------------->
 # <a name="basica"></a>basica
-basica is an editor + interpreter + compiler of the Basic language for Android devices.
+basica is an editor + GUI composer + interpreter + compiler of the Basic language for Android devices.
 It is based on RFO BASIC! with many improvements.
+
+**KeyWord Quick Finder:**
+[&#9398;](#a) [&#9399;](#b) [&#9400;](#c) [&#9401;](#d) [&#9402;](#e) [&#9403;](#f) [&#9404;](#g) [&#9405;](#h) [&#9406;](#i) [&#9407;](#j) [&#9408;](#k) [&#9409;](#l) [&#9410;](#m)
+[&#9411;](#n) [&#9412;](#o) [&#9413;](#p) [&#9414;](#q) [&#9415;](#r) [&#9416;](#s) [&#9417;](#t) [&#9418;](#u) [&#9419;](#v) [&#9420;](#w) [&#9421;](#x) [&#9422;](#y) [&#9423;](#z)
 
 **Dogmata:**
 
 1. the syntax should be as close to other Basic dialects as possible
-  * especially Visual Basic and PowerBasic that both have a large coders base
+  * especially Visual Basic (VB6) and PowerBasic that both have a large coders base
 2. the command names should indicate as much as possible the order of the parameters:
   * e.g. `GR.TEXT.DRAW grObjId, text$, drawX, drawY ' GR->grObjId ; TEXT->text$ ; DRAW->draw coordinates`
   * e.g. `FILE.SIZE file$, size` or `FILE.EXISTS file$, exists`
   * e.g. `ARRAY.LEN arr[], len` or `LIST.LEN listId, len`
-  * e.g. `IS_IN(sub, main) ' "IS sub IN main ?"` (IS_IN is a refactor of INSTR, which also remains available)
+  * e.g. `IS_IN(sub$, main$) ' "IS sub$ IN main$?"` (IS_IN is a refactor of INSTR, which also remains available)
 3. indices and failure codes should always be consistent
- * i.e. indices start at 1 (array dim, lists, etc.)
- * and failure code is 0 (e.g. cannot open a file)
+ * i.e. indices always start at 1 (array dim, lists, etc.)
+ * and failure code is always 0 (e.g. cannot open a file, load a resource, etc.)
 4. the power (and the responsibility) of basica should be given to the user at all time (when pressing Run or Compile):
-  * for a sensitive command to work, permissions should be declared with the `PERMISSION` statement
-  * resources should be called while respecting their exact filename case
+  * sensitive commands need a `PERMISSION` statement in order to work
+  * resources must be called with their exact filename case ("myPic.JPG" <> "Mypic.jpg")
 5. the editor should be as intuitive and powerful as a source code editor can be:
  * multi tab
  * syntax highlighting
  * built-in manual / keyword reference with quick access to contextual help
  * bottom panel for tips and Run/Compile log
-6. basica should be *maintained*: there should be no more than 3 months between each official release
+6. basica should be *maintained*: there should be no more than 3 months between official releases
 
 **See also:**
 * [Differences with RFO BASIC!](#differences)
@@ -32,7 +36,7 @@ It is based on RFO BASIC! with many improvements.
 # <a name="summary"></a>Command summary
 The following is a list of the commands built into basica and separated into 18 groups of related commands, which can assist with identifying the best command for the task at hand.  Some commands may appear in more than one group.
 
-* [Array Operations](#array)
+* [Array, List, Stack and Bundle](#array)
 * [Communication Control](#communication)
 * [Compiler Operations](#compiler)
 * [Console Commands](#console)
@@ -46,7 +50,7 @@ The following is a list of the commands built into basica and separated into 18 
 * [Numeric Operations](#numeric)
 * [Operating System](#operating)
 * [Sound Commands](#sound)
-* [SQL Commands] (#sql)
+* [SQL Commands](#sql)
 * [String Operations](#string)
 * [Time Commands](#time)
 * [Misc Operations](#misc)
@@ -484,6 +488,8 @@ Count = 100
 ## P
 * [PARSE$](#parse_)
 * [PARSECOUNT](#parsecount)
+* [PERMISSION](#permission)
+* [PERMISSION$](#permission_)
 * [PHONE.CALL](#phonecall)
 * [PHONE.DIAL](#phonedial)
 * [PHONE.INFO](#phoneinfo)
@@ -650,7 +656,7 @@ Count = 100
 * [VOLKEYS.OFF](#volkeysoff)
 * [VOLKEYS.ON](#volkeyson)
 
-* [# W](## w)
+## W
 * [W_R.BREAK](#w_rbreak)
 * [W_R.CONTINUE](#w_rcontinue)
 * [WAKELOCK](#wakelock)
@@ -662,12 +668,10 @@ Count = 100
 * [WRITE$](#write_)
 
 ## Z
-* [ZIP.CLOSE](#zipclose)
-* [ZIP.COUNT](#zipcount)
-* [ZIP.DIR](#zipdir)
-* [ZIP.OPEN](#zipopen)
-* [ZIP.READ](#zipread)
-* [ZIP.WRITE](#zipwrite)
+* [ZCOUNT](#zcount)
+* [ZDIR](#dir)
+* [ZREAD](#zread)
+* [ZWRITE](#zwrite)
 
 **See also:**
 * [Command summary](#summary)
@@ -675,7 +679,7 @@ Count = 100
 
 <!------------------------------------------------------------------------------->
 # <a name="differences"></a>Differences with RFO BASIC!
-basica is based on the excellent RFO BASIC! for Android, with the goal to remove much inconsistencies of the latter, and also rename some commands to follow basica's [dogmata](#basica) (especially items 1. and 2.)
+basica is based on the excellent RFO BASIC! for Android, with the goal to remove much of its inconsistencies, and also rename or refactor some commands to follow basica's [dogmata](#basica) (especially dogma 1 and dogma 2).
 
 ## Changes in BYTE.* commands
 RFO BASIC! | basica
@@ -687,13 +691,13 @@ BYTE.OPEN r&#124;w&#124;a, *fileNum*, *file$* | OPEN *file$* FOR BINARY READ&#12
 BYTE.POSITION.GET *fileNum*, *position* | position = SEEK ( {#}*fileNum* )
 BYTE.POSITION.MARK *fileNum*, *position* | SETBOF&#124;SETSOF {#}*fileNum*, *position*
 BYTE.POSITION.SET *fileNum*, *position* | SEEK {#}*fileNum*, *position*
-BYTE.READ.BUFFER *fileNum*, *count*, *buffer$* | READ$ {#}*fileNum*, *count*, *buffer$*
-BYTE.READ.BYTE *fileNum*, *byte1* {,*byte2*} ... | **removed**, use READ$ {#}*fileNum*, *count*, *buffer$* and read each byte of *buffer$* instead
-BYTE.READ.NUMBER *fileNum*, *num1* {,*num2*} ... | READ {#}*fileNum*, *num1* {,*num2*} ...
+BYTE.READ.BUFFER *fileNum*, *count*, *buffer$* | GET$ {#}*fileNum*, *count*, *buffer$*
+BYTE.READ.BYTE *fileNum*, *byte1* {,*byte2*} ... | **removed**, use GET$ {#}*fileNum*, *count*, *buffer$* and read each byte of *buffer$* instead
+BYTE.READ.NUMBER *fileNum*, *num1* {,*num2*} ... | GET {#}*fileNum*, *num1* {,*num2*} ...
 BYTE.TRUNCATE *fileNum*, *length* | See SETEOF {#}*fileNum* that truncates to the current file pointer
-BYTE.WRITE.BUFFER *fileNum*, *buffer$* | WRITE$ {#}*fileNum*, *buffer$*
-BYTE.WRITE.BYTE *fileNum*, *byte1* {,*byte2*} ... | **removed**, use WRITE$ {#}*fileNum*, CHR$(*byte1*) {+CHR$(*byte2*)} ... instead
-BYTE.WRITE.NUMBER *fileNum*, *num1* {,*num2*} ... | WRITE {#}*fileNum*, *num1* {,*num2*} ...
+BYTE.WRITE.BUFFER *fileNum*, *buffer$* | PUT$ {#}*fileNum*, *buffer$*
+BYTE.WRITE.BYTE *fileNum*, *byte1* {,*byte2*} ... | **removed**, use PUT$ {#}*fileNum*, CHR$(*byte1*) {+CHR$(*byte2*)} ... instead
+BYTE.WRITE.NUMBER *fileNum*, *num1* {,*num2*} ... | PUT {#}*fileNum*, *num1* {,*num2*} ...
 
 ## Changes in TEXT.* commands
 RFO BASIC! | basica
@@ -702,15 +706,31 @@ TEXT.CLOSE *fileNum* | CLOSE {#}*fileNum*
 TEXT.EOF *fileNum*, *isEof* | isEof = EOF ( {#}*fileNum* )
 TEXT.OPEN r&#124;w&#124;a, *fileNum*, *file$* | OPEN *file$* FOR TEXT READ&#124;WRITE&#124;APPEND AS {#}*fileNum*
 TEXT.POSITION.GET *fileNum*, *position* | position = SEEK ( {#}*fileNum* )
-TEXT.POSITION.MARK *fileNum*, *position* | SETBOF&#124;SETSOF {#}*fileNum*, *position*
+TEXT.POSITION.MARK *fileNum*, *position* | SETBOF &#124; SETSOF {#}*fileNum*, *position*
 TEXT.POSITION.SET *fileNum*, *position* | SEEK {#}*fileNum*, *position*
-TEXT.READLN *fileNum*, *line$* | LINE INPUT**#** *fileNum*, *line$*
-TEXT.WRITELN *fileNum*, *num1*&#124;*string1$* {*num2*&#124;*string2$*} ... | PRINT**#** *fileNum*, *num1*&#124;*string1$* {*num2*&#124;*string2$*} ...
+TEXT.READLN *fileNum*, *line$* | LINE INPUT **#***fileNum*, *line$*
+TEXT.WRITELN *fileNum*, *num1*&#124;*string1$* {*num2*&#124;*string2$*} ... | PRINT **#***fileNum*, *num1*&#124;*string1$* {*num2*&#124;*string2$*} ...
+
+## Changes in ZIP.* commands
+RFO BASIC! | basica
+-----------|-------
+ZIP.CLOSE *fileNum* | CLOSE {#}*fileNum*
+ZIP.COUNT *zip$*, *n_entries* | ZCOUNT *zip$*, *n_entries*
+ZIP.DIR *zip$*, *entries[]* | ZDIR *zip$*, *entries[]*
+ZIP.OPEN r&#124;w, *fileNum*, *file$* | OPEN *file$* FOR ZIP READ&#124;WRITE AS {#}*fileNum*
+ZIP.READ *fileNum*, *buffer$*, *entry$* | ZREAD {#}*fileNum*, *entry$* TO *buffer$*
+ZIP.WRITE *fileNum*, *buffer$*, *entry$* | ZWRITE *buffer$* TO {#}*fileNum*, *entry$*
 
 ## Changes in order of parameters
 RFO BASIC! | basica
 -----------|-------
+ARRAY.AVERAGE | ARRAY.AVERAGE *array[]*, *average*
 ARRAY.LENGTH | ARRAY.LEN *array[]*, *length*
+ARRAY.MAX | ARRAY.MAX *array[]*, *max*
+ARRAY.MIN | ARRAY.MIN *array[]*, *min*
+ARRAY.STD_DEV | ARRAY.STD_DEV *array[]*, *std_dev*
+ARRAY.SUM | ARRAY.SUM *array[]*, *sum*
+ARRAY.VARIANCE | ARRAY.MAX *array[]*, *variance*
 LIST.SIZE | LIST.LEN *listId*, *length*
 FILE.DELETE | FILE.DELETE *file$*, *delOK*
 FILE.EXISTS | FILE.EXISTS *file$*, *exists*
@@ -723,14 +743,16 @@ RFO BASIC! | basica
 -----------|-------
 &#126; (line continuation) | underscore &#95;
 &#33; (comment) | single quote &#39;
+&#37; (inline comment) | single quote &#39;
 &#33;&#33; (block comment) | **removed**, use &#39; in front of each line instead
 &#33; (operator) | NOT
 &#38; | AND
 &#124; | OR
 PAUSE | SLEEP
-FN.DEF | FUNCTION funcName{$} ( {param1} {,param2} ... ) or SUB subName ( {param1} {,param2} ... )
+FN.DEF | FUNCTION funcName{$} ( {param1{$}} {,param2{$}} ... ) or SUB subName ( {param1{$}} {,param2{$}} ... )
 FN.END | END FUNCTION or END SUB
 FN.RTN num&#124;string$ | RETURN {num&#124;string$}
+GR_COLISION | GR.COLISION grObjId1, grObjId2, collision
 LOWER$ | LCASE$
 UPPER$ | UCASE$
 TGET | INPUT
@@ -743,9 +765,12 @@ INPUT.TEXT | INPUT.TEXT
 * LOF, SETBOF/SETSOF and SETEOF
 * PERMISSION and PERMISSION$
 * PARSECOUNT, PARSE$ and TALLY
+* REDIM and REDIM PRESERVE
+
+Back to [basica](#basica)
 
 <!------------------------------------------------------------------------------->
-# <a name="#array"></a>Array Operations
+# <a name="array"></a>Array, List, Stack and Bundle
 The following functions can be used to manipulate and manage arrays:
 * [ARRAY.AVERAGE](#arrayaverage)
 * [ARRAY.COPY](#arraycopy)
@@ -770,11 +795,13 @@ The following functions can be used to manipulate and manage arrays:
 * [JOIN.ALL](#joinall)
 * [LIST.ADD.ARRAY](#listaddarray)
 * [LIST.TOARRAY](#listtoarray)
+* [REDIM](#redim)
 * [UNDIM](#undim)
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#communication"></a>Communication Control
+# <a name="communication"></a>Communication Control
 The following functions can be used for external communications:
 * [Bluetooth Commands](#bluetooth)
 * [EMAIL.SEND](#emailsend)
@@ -791,6 +818,7 @@ The following functions can be used for external communications:
 * [Socket (TCP/IP) Commands](#socket)
 * [WIFI.INFO](#wifiinfo)
 * [WIFILOCK](#wifilock)
+
 Back to [Command summary](#command)
 
 # <a name="bluetooth"></a>Bluetooth Commands
@@ -808,6 +836,7 @@ The following commands can be used to communicate with a device by bluetooth:
 * [BT.STATUS](#btstatus)
 * [BT.WRITE](#btwrite)
 * [ONBTREADREADY](#onbtreadready)
+
 Back to [Communication Control](#communication)
 
 # <a name="ftp"></a>FTP Commands
@@ -822,6 +851,7 @@ The following commands can be used to operate the File Transfer Protocol (FTP):
 * [FTP.PUT](#ftpput)
 * [FTP.RENAME](#ftprename)
 * [FTP.RMDIR](#ftprmdir)
+
 Back to [Communication Control](#communication)
 
 # <a name="socket"></a>Socket (TCP/IP) Commands
@@ -849,79 +879,118 @@ The following commands can be used to handle TCP/IP sockets:
 * [SOCKET.SERVER.WRITE.BYTES](#socketserverwritebytes)
 * [SOCKET.SERVER.WRITE.FILE](#socketserverwritefile)
 * [SOCKET.SERVER.WRITE.LINE](#socketserverwriteline)
+
 Back to [Communication Control](#communication)
 
 <!------------------------------------------------------------------------------->
-# <a name="#compiler"></a>Compiler Operations
+# <a name="compiler"></a>Compiler Operations
 The following functions manipulate the compiler's operation:
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#console"></a>Console Commands
+# <a name="console"></a>Console Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#debugging"></a>Debugging and Error Control
+# <a name="debugging"></a>Debugging and Error Control
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#file"></a>File Commands
+# <a name="file"></a>File Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#flow"></a>Flow Control
+# <a name="flow"></a>Flow Control
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#graphic"></a>Graphic Commands
+# <a name="graphic"></a>Graphic Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#html"></a>Html Commands
+# <a name="html"></a>Html Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#input"></a>Input Commands
+# <a name="input"></a>Input Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#memory"></a>Memory Management
+# <a name="memory"></a>Memory Management
+* [AUDIO.LOAD](#audioload)
+* [AUDIO.RELEASE](#audiorelease)
+* [BUNDLE.CLEAR](#bundleclear)
+* [BUNDLE.CREATE](#bundlecreate)
 * [DIM](#dim)
+* [FONT.CLEAR](#fontclear)
+* [FONT.DELETE](#fontdelete)
+* [FONT.LOAD](#fontload)
+* [GR.BITMAP.CREATE](#grbitmapcreate)
+* [GR.BITMAP.CROP](#grbitmapcrop)
+* [GR.BITMAP.DELETE](#grbitmapdelete)
+* [GR.BITMAP.LOAD](#grbitmapload)
+* [GR.BITMAP.SCALE](#grbitmapscale)
+* [LIST.CLEAR](#listclear)
+* [LIST.CREATE](#listcreate)
+* [LOWMEMORY.RESUME](#lowmemoryresume)
+* [ONLOWMEMORY](#onlowmemory)
+* [REDIM](#redim)
+* [SOUNDPOOL.LOAD](#soundpoolload)
+* [SOUNDPOOL.RELEASE](#soundpoolrelease)
+* [SOUNDPOOL.UNLOAD](#soundpoolunload)
+* [STACK.CLEAR](#stackclear)
+* [STACK.CREATE](#stackcreate)
 * [UNDIM](#undim)
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#numeric"></a>Numeric Operations
+# <a name="numeric"></a>Numeric Operations
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#operating"></a>Operating System
+# <a name="operating"></a>Operating System
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#sound"></a>Sound Commands
+# <a name="sound"></a>Sound Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#sql"></a>SQL Commands
+# <a name="sql"></a>SQL Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#string"></a>String Operations
+# <a name="string"></a>String Operations
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#time"></a>Time Commands
+# <a name="time"></a>Time Commands
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
-# <a name="#misc"></a>Misc Operations
+# <a name="misc"></a>Misc Operations
+
 Back to [Command summary](#command)
 
 <!------------------------------------------------------------------------------->
 # <a name="permission"></a>PERMISSION statement
 **Purpose:**
-Give certain permissions to the program.
+Give a certain permission to the program.
 
 **Syntax:**
 > PERMISSION *perm$*
