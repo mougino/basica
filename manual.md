@@ -7,7 +7,7 @@ It is based on RFO BASIC! with many improvements.
 [&#9398;](#a) [&#9399;](#b) [&#9400;](#c) [&#9401;](#d) [&#9402;](#e) [&#9403;](#f) [&#9404;](#g) [&#9405;](#h) [&#9406;](#i) [&#9407;](#j) [&#9408;](#k) [&#9409;](#l) [&#9410;](#m)
 [&#9411;](#n) [&#9412;](#o) [&#9413;](#p) [&#9414;](#q) [&#9415;](#r) [&#9416;](#s) [&#9417;](#t) [&#9418;](#u) [&#9419;](#v) [&#9420;](#w) [&#9421;](#x) [&#9422;](#y) [&#9423;](#z)
 
-**Dogmata:**
+## Dogmata
 
 1. the syntax should be as close to other Basic dialects as possible
   * especially Visual Basic (VB6) PowerBasic and FreeBasic, that have a large coders base
@@ -986,6 +986,12 @@ Back to [Command summary](#command-summary)
 # Misc Operations
 
 Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# BIN
+
+<!------------------------------------------------------------------------------->
+# BIN$
 
 <!------------------------------------------------------------------------------->
 # PERMISSION statement
