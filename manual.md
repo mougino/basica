@@ -4,8 +4,7 @@ basica is an editor + GUI composer + interpreter + compiler of the Basic languag
 It is based on RFO BASIC! with many improvements.
 
 **KeyWord Quick Finder:**
-[&#9398;](#a) [&#9399;](#b) [&#9400;](#c) [&#9401;](#d) [&#9402;](#e) [&#9403;](#f) [&#9404;](#g) [&#9405;](#h) [&#9406;](#i) [&#9407;](#j) [&#9408;](#k) [&#9409;](#l) [&#9410;](#m)
-[&#9411;](#n) [&#9412;](#o) [&#9413;](#p) [&#9414;](#q) [&#9415;](#r) [&#9416;](#s) [&#9417;](#t) [&#9418;](#u) [&#9419;](#v) [&#9420;](#w) [&#9421;](#x) [&#9422;](#y) [&#9423;](#z)
+[&#9398;](#a) [&#9399;](#b) [&#9400;](#c) [&#9401;](#d) [&#9402;](#e) [&#9403;](#f) [&#9404;](#g) [&#9405;](#h) [&#9406;](#i) [&#9407;](#j) [&#9408;](#k) [&#9409;](#l) [&#9410;](#m) [&#9411;](#n) [&#9412;](#o) [&#9413;](#p) [&#9415;](#r) [&#9416;](#s) [&#9417;](#t) [&#9418;](#u) [&#9419;](#v) [&#9420;](#w) [&#9423;](#z)
 
 ## Dogmata
 
@@ -161,8 +160,8 @@ Count = 100
 * [BACKGROUND](#background)
 * [BACKGROUND.RESUME](#background-resume)
 * [BAND](#band)
-* [BIN](#bin)
-* [BIN$](#bin_)
+* [BIN](#bin-function)
+* [BIN$](#bin-function-1)
 * [BINARY](#binary)
 * [BNOT](#bnot)
 * [BOR](#bor)
@@ -193,7 +192,7 @@ Count = 100
 * [CALL](#call)
 * [CBRT](#cbrt)
 * [CEIL](#ceil)
-* [CHR$](#chr_)
+* [CHR$](#chr)
 * [CLIPBOARD.GET](#clipboard-get)
 * [CLIPBOARD.PUT](#clipboard-put)
 * [CLOCK](#clock)
@@ -231,7 +230,7 @@ Count = 100
 * [DEBUG.SHOW.STACK](#debug-show-stack)
 * [DEBUG.SHOW.WATCH](#debug-show-watch)
 * [DEBUG.WATCH](#debug-watch)
-* [DECODE$](#decode_)
+* [DECODE$](#decode)
 * [DECRYPT](#decrypt)
 * [DEVICE](#device)
 * [DEVICE.LANGUAGE](#device-language)
@@ -246,7 +245,7 @@ Count = 100
 * [ECHO.ON](#echo-on)
 * [ELSE](#else)
 * [EMAIL.SEND](#email-send)
-* [ENCODE$](#encode_)
+* [ENCODE$](#encode)
 * [ENCRYPT](#encrypt)
 * [END](#end)
 * [ENDS_WITH](#ends-with)
@@ -271,8 +270,8 @@ Count = 100
 * [FONT.DELETE](#font-delete)
 * [FONT.LOAD](#font-load)
 * [FOR](#for)
-* [FORMAT$](#format_)
-* [FORMAT_USING$](#format-using_)
+* [FORMAT$](#format)
+* [FORMAT_USING$](#format-using)
 * [FRAC](#frac)
 * [FTP.CD](#ftp-cd)
 * [FTP.CLOSE](#ftp-close)
@@ -287,7 +286,9 @@ Count = 100
 * [FUNCTION](#function)
 
 ## G
-* [GETERROR$](#geterror_)
+* [GET](#get)
+* [GET$](#get-1)
+* [GETERROR$](#geterror)
 * [GOSUB](#gosub)
 * [GOTO](#goto)
 * [GPS.ACCURACY](#gps-accuracy)
@@ -389,7 +390,7 @@ Count = 100
 ## H
 * [HEADSET](#headset)
 * [HEX](#hex)
-* [HEX$](#hex_)
+* [HEX$](#hex-1)
 * [HOME](#home)
 * [HTML.CLEAR.CACHE](#html-clear-cache)
 * [HTML.CLEAR.HISTORY](#html-clear-history)
@@ -408,13 +409,13 @@ Count = 100
 ## I
 * [IF](#if)
 * [INCLUDE](#include)
-* [INKEY$](#inkey_)
+* [INKEY$](#inkey)
 * [INPUT](#input)
 * [INPUT.LINE](#input-line)
 * [INPUT.TEXT](#input-text)
 * [INSTR](#instr)
 * [INT](#int)
-* [INT$](#int_)
+* [INT$](#int-1)
 * [IS_IN](#is-in)
 * [IS_NUMBER](#is-number)
 
@@ -431,8 +432,8 @@ Count = 100
 * [KEY.RESUME](#key-resume)
 
 ## L
-* [LCASE$](#lcase_)
-* [LEFT$](#left_)
+* [LCASE$](#lcase)
+* [LEFT$](#left)
 * [LEN](#len)
 * [LET](#let)
 * [LINE INPUT](#line-input)
@@ -452,12 +453,12 @@ Count = 100
 * [LOG](#log)
 * [LOG10](#log10)
 * [LOWMEMORY.RESUME](#lowmemory-resume)
-* [LTRIM$](#ltrim_)
+* [LTRIM$](#ltrim)
 
 ## M
 * [MAX](#max)
 * [MENUKEY.RESUME](#menukey-resume)
-* [MID$](#mid_)
+* [MID$](#mid)
 * [MIN](#min)
 * [MKDIR](#mkdir)
 * [MOD](#mod)
@@ -470,7 +471,7 @@ Count = 100
 
 ## O
 * [OCT](#oct)
-* [OCT$](#oct_)
+* [OCT$](#oct-1)
 * [ONBACKGROUND](#onbackground)
 * [ONBACKKEY](#onbackkey)
 * [ONBTREADREADY](#onbtreadready)
@@ -486,10 +487,10 @@ Count = 100
 * [OR](#or)
 
 ## P
-* [PARSE$](#parse_)
+* [PARSE$](#parse)
 * [PARSECOUNT](#parsecount)
-* [PERMISSION](#permission)
-* [PERMISSION$](#permission_)
+* [PERMISSION](#permission-statement)
+* [PERMISSION$](#permission-function)
 * [PHONE.CALL](#phone-call)
 * [PHONE.DIAL](#phone-dial)
 * [PHONE.INFO](#phone-info)
@@ -500,26 +501,27 @@ Count = 100
 * [POW](#pow)
 * [PRINT](#print)
 * [PROGRAM.INFO](#program-info)
+* [PUT](#put)
+* [PUT$](#put-1)
 
 ## R
 * [RANDOMIZE](#randomize)
-* [READ](#read)
-* [READ$](#read_)
 * [READ.DATA](#read-data)
 * [READ.FROM](#read-from)
 * [READ.NEXT](#read-next)
+* [REDIM](#redim)
 * [REM](#rem)
-* [REPEAT$](#repeat_)
-* [REPLACE$](#replace_)
+* [REPEAT$](#repeat)
+* [REPLACE$](#replace)
 * [RETURN](#return)
-* [RIGHT$](#right_)
+* [RIGHT$](#right)
 * [RINGER.GET.MODE](#ringer-get-mode)
 * [RINGER.GET.VOLUME](#ringer-get-volume)
 * [RINGER.SET.MODE](#ringer-set-mode)
 * [RINGER.SET.VOLUME](#ringer-set-volume)
 * [RND](#rnd)
 * [ROUND](#round)
-* [RTRIM$](#rtrim_)
+* [RTRIM$](#rtrim)
 * [RUN](#run)
 
 ## S
@@ -600,7 +602,7 @@ Count = 100
 * [STACK.PUSH](#stack-push)
 * [STACK.TYPE](#stack-type)
 * [STARTS_WITH](#starts-with)
-* [STR$](#str_)
+* [STR$](#str)
 * [STT.LISTEN](#stt-listen)
 * [STT.RESULTS](#stt-results)
 * [SU.CLOSE](#su-close)
@@ -636,22 +638,22 @@ Count = 100
 * [TODEGREES](#todegrees)
 * [TONE](#tone)
 * [TORADIANS](#toradians)
-* [TRIM$](#trim_)
+* [TRIM$](#trim)
 * [TTS.INIT](#tts-init)
 * [TTS.SPEAK](#tts-speak)
 * [TTS.SPEAK.TOFILE](#tts-speak-tofile)
 * [TTS.STOP](#tts-stop)
 
 ## U
-* [UCASE$](#ucase_)
+* [UCASE$](#ucase)
 * [UCODE](#ucode)
 * [UNDIM](#undim)
 * [UNTIL](#until)
-* [USING$](#using_)
+* [USING$](#using)
 
 ## V
 * [VAL](#val)
-* [VERSION$](#version_)
+* [VERSION$](#version)
 * [VIBRATE](#vibrate)
 * [VOLKEYS.OFF](#volkeys-off)
 * [VOLKEYS.ON](#volkeys-on)
@@ -663,9 +665,7 @@ Count = 100
 * [WHILE](#while)
 * [WIFI.INFO](#wifi-info)
 * [WIFILOCK](#wifilock)
-* [WORD$](#word_)
-* [WRITE](#write)
-* [WRITE$](#write_)
+* [WORD$](#word)
 
 ## Z
 * [ZCOUNT](#zcount)
@@ -988,10 +988,48 @@ Back to [Command summary](#command-summary)
 Back to [Command summary](#command-summary)
 
 <!------------------------------------------------------------------------------->
-# BIN
+# BIN function
+**Purpose:**
+Convert a binary string to a numeric value.
+
+**Syntax:**
+> number = BIN(*base2$*)
+
+**Remarks:**
+The characters of *base2$* can be only binary digits (0 or 1), with an optional leading sign ("+" or "-"), or the function generates a runtime error.
+
+**Examples:**
+```vb
+PRINT "Value of binary string '10101010':"
+PRINT BIN("10101010") ' will print 170.0
+```
+
+**See also:**
+* [BIN$](#bin-function-1)
+* [HEX](#hex) and [HEX$](#hex-1)
+* [OCT](#oct) and [OCT$](#oct-1)
 
 <!------------------------------------------------------------------------------->
-# BIN$
+# BIN$ function
+**Purpose:**
+Convert a numeric value to a binary string.
+
+**Syntax:**
+> s$ = BIN$(*number*)
+
+**Remarks:**
+*number* is a numeric expression in the range of a 64-bit integer (-9223372036854775808 to +9223372036854775807). Any fractional part of the value is rounded. The result string is always formatted as an integral number using all the significant digits in *number*. It is never expressed in scientific notation.
+
+**Examples:**
+```vb
+PRINT "Binary string for number 170:"
+PRINT BIN$(170) ' will print "10101010"
+```
+
+**See also:**
+* [BIN](#bin-function)
+* [HEX](#hex) and [HEX$](#hex-1)
+* [OCT](#oct) and [OCT$](#oct-1)
 
 <!------------------------------------------------------------------------------->
 # PERMISSION statement
@@ -1002,11 +1040,11 @@ Give a certain permission to the program.
 > PERMISSION *perm$*
 
 **Remarks:**
-*perm$* is a string describing the permission, as returned by the [PERMISSION$](#permission_) function.
+*perm$* is a string describing the permission, as returned by the [PERMISSION$](#permission-function) function.
 
 Android apps need to request permissions to do sensitive operations, like send and receive SMS, make phone call, access GPS, etc.
 In basica the user must request each permission his program needs to exercise.
-This is done thanks to the `PERMISSION` command. You can use as many `PERMISSION` commands as needed. Usually they are placed at the top of your program. See the list of permissions in the [PERMISSION$](#permission_) function.
+This is done thanks to the `PERMISSION` command. You can use as many `PERMISSION` commands as needed. Usually they are placed at the top of your program. See the list of permissions in the [PERMISSION$](#permission-function) function.
 
 **Examples:**
 ```vb
@@ -1025,12 +1063,12 @@ CLOSE #fileNum
 ```
 
 **See also:**
-* [PERMISSION$](#permission_)
+* [PERMISSION$](#permission-function)
 
 <!------------------------------------------------------------------------------->
 # PERMISSION$ function
 **Purpose:**
-Return a permission string as to be used with the [PERMISSION](#permission) statement.
+Return a permission string as to be used with the [PERMISSION](#permission-statement) statement.
 
 **Syntax:**
 > perm$ = PERMISSION$(*n*)
@@ -1045,11 +1083,10 @@ index | value | permission meaning
 PERMISSION$(1) | "write external storage" | write to the Android device SD-Card
 
 **See also:**
-* [PERMISSION](#permission)
+* [PERMISSION](#permission-statement)
 
 <!------------------------------------------------------------------------------->
 # Credits
 The author would like to thank Paul Laughton who created RFO BASIC! that paved the way to basica.
 The author would also like to thank jecelyin who created the 920 Editor V2 used in basica.
 Finally, thanks to jMarc and the many contributors at the RFO BASIC! forum.
-
