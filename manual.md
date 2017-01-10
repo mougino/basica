@@ -23,7 +23,7 @@ It is based on RFO BASIC! with many improvements.
  * and failure code is always 0 (e.g. cannot open a file, load a resource, etc.)
 4. the power (and the responsibility) of basica should be given to the user at all time (when pressing Run or Compile):
   * sensitive commands need a `PERMISSION` statement in order to work
-  * resources must be placed in a specific folder, see [Working with resources]()
+  * resources must be placed in a specific folder, see [Working with resources](#working-with-resources)
   * resources must be called with their exact filename case ("myPic.JPG" <> "Mypic.jpg")
 5. graphical components (GUI) should be easily accessible via a dedicated API:
  * basica natively supports the [GW library](http://mougino.free.fr/gw.html) (an enhanced version in material design)
@@ -127,7 +127,7 @@ Count = 100
 * [AND](#and)
 * [APP.BROADCAST](#app-broadcast)
 * [APP.START](#app-start)
-* [APPEND](#open)
+* [APPEND](#open-statement)
 * [ARRAY.AVERAGE](#array-average)
 * [ARRAY.COPY](#array-copy)
 * [ARRAY.DELETE](#array-delete)
@@ -169,7 +169,7 @@ Count = 100
 * [BAND](#band)
 * [BIN](#bin-function)
 * [BIN$](#bin-function-1)
-* [BINARY](#open)
+* [BINARY](#open-statement)
 * [BNOT](#bnot)
 * [BOR](#bor)
 * [BROWSE](#browse)
@@ -433,7 +433,7 @@ Count = 100
 * [KB.SHOWING](#kb-showing)
 * [KB.TOGGLE](#kb-toggle)
 * [KEY.RESUME](#key-resume)
-* [KILL]()
+* [KILL](#kill)
 
 ## L
 * [LCASE$](#lcase)
@@ -487,7 +487,7 @@ Count = 100
 * [ONLOWMEMORY](#onlowmemory)
 * [ONMENUKEY](#onmenukey)
 * [ONTIMER](#ontimer)
-* [OPEN](#open)
+* [OPEN](#open-statement)
 * [OR](#or)
 
 ## P
@@ -510,7 +510,7 @@ Count = 100
 
 ## R
 * [RANDOMIZE](#randomize)
-* [READ](#open)
+* [READ](#open-statement)
 * [READ.DATA](#read-data)
 * [READ.FROM](#read-from)
 * [READ.NEXT](#read-next)
@@ -626,7 +626,7 @@ Count = 100
 ## T
 * [TALLY](#tally)
 * [TAN](#tan)
-* [TEXT](#open)
+* [TEXT](#open-statement)
 * [THEN](#if)
 * [TIME](#time)
 * [TIMER.CLEAR](#timer-clear)
@@ -645,7 +645,7 @@ Count = 100
 * [TTS.STOP](#tts-stop)
 
 ## U
-* [UBOUND]()
+* [UBOUND](#ubound)
 * [UCASE$](#ucase)
 * [UCODE](#ucode)
 * [UNDIM](#undim)
@@ -666,12 +666,12 @@ Count = 100
 * [WIFI.INFO](#wifi-info)
 * [WIFILOCK](#wifilock)
 * [WORD$](#word)
-* [WRITE](#open)
+* [WRITE](#open-statement)
 
 ## Z
 * [ZCOUNT](#zcount)
 * [ZDIR](#zdir)
-* [ZIP](#open)
+* [ZIP](#open-statement)
 * [ZREAD](#zread)
 * [ZWRITE](#zwrite)
 
@@ -771,7 +771,7 @@ SELECT | CON.SELECT
 PAUSE | SLEEP
 FN.DEF | SUB&#124;FUNCTION funcName{$} ( {param1{$}} {,param2{$}} ... )
 FN.END | END SUB&#124;FUNCTION
-FN.RTN num&#124;string$ | RETURN {value{$}}
+FN.RTN value{$} | RETURN value{$}, EXIT SUB&#124;FUNCTION
 GR_COLISION | GR.COLISION grObjId1, grObjId2, collision
 LOWER$ | LCASE$
 UPPER$ | UCASE$
@@ -784,12 +784,12 @@ TEXT.INPUT | INPUT.TEXT
 * [INSTR](#instr)
 * [CHDIR](#chdir)
 * [FILE.COPY](#file-copy)
-* [KILL]()
-* [LOF](), [SETBOF](#setbof)/[SETSOF](#setbof) and [SETEOF](#seteof)
+* [KILL](#kill)
+* [LOF](#lof), [SETBOF](#setbof)/[SETSOF](#setbof) and [SETEOF](#seteof)
 * [PERMISSION](#permission-statement) and [PERMISSION$](#permission-function)
 * [PARSECOUNT](#parsecount), [PARSE$](#parse) and [TALLY](#tally)
 * [REDIM](#redim) and [REDIM PRESERVE](#redim)
-* [UBOUND]()
+* [UBOUND](#ubound)
 
 Back to [basica](#basica)
 
@@ -941,10 +941,10 @@ The following functions can be used to manipulate files:
 * [GET](#get)
 * [GET$](#get-1)
 * [GRABFILE](#grabfile)
-* [KILL]()
+* [KILL](#kill)
 * [LINE INPUT](#line-input)
 * [MKDIR](#mkdir)
-* [OPEN](#open)
+* [OPEN](#open-statement)
 * [PRINT#](print-1)
 * [PUT](#put)
 * [PUT$](#put-1)
@@ -1108,10 +1108,10 @@ basica has only two types of variables: variables that hold numbers and variable
 
 *First_Name$*, *Street$* and *A$* are all string variable names.
 
-basica variables do not need to be declared (except if you want them [GLOBAL]()). This is a big difference with Visual Basic, PowerBasic and FreeBasic: in basica, any new variable name is considered a valid variable.
+basica variables do not need to be declared (except if you want them [GLOBAL](#global)). This is a big difference with Visual Basic, PowerBasic and FreeBasic: in basica, any new variable name is considered a valid variable.
 If you use a numeric variable without assigning it a value, it has the value 0.0. If you use a string variable without assigning it a value, its value is the empty string "".
 
-In detail, basica numbers are double-precision 64-bit IEEE 754 floating point numbers. Their range of values is 4.94065645841246544e-324d to 1.79769313486231570e+308d (positive or negative). basica strings are a series of 0 or more bytes (ASCII value 0-255) and can be encoded with different charsets, for different uses. by default basica strings are UTF-16 text strings, but you can convert ... (TODO)
+In detail, basica numbers are double-precision 64-bit IEEE 754 floating point numbers. Their range of values is 4.94065645841246544e-324d to 1.79769313486231570e+308d (positive or negative). basica strings are a series of 0 or more bytes (ASCII value 0-255) and can be encoded with different charsets, for different uses. By default basica strings can either be UTF-16 `TEXT` strings or ISO-8859-1 byte buffers.
 
 <!------------------------------------------------------------------------------->
 # Text Files
@@ -1123,7 +1123,7 @@ The idea behind text files is simplicity itself: write to them as though they we
 
 Create a text file using the following steps:
 
-1. Create the file in `TEXT` mode. To create a file in basica, you must use the [OPEN](#open) statement.
+1. Create the file in `TEXT` mode. To create a file in basica, you must use the [OPEN](#open-statement) statement.
 `TEXT` mode has two access options to prepare a file for output:
   * `TEXT WRITE`: If a file does not exist, a new file is created. If a file already exists, its contents are erased, and the file is then treated as a new file.
   * `TEXT APPEND`: If a file does not exist, a new file is created. If a file already exists, basica appends (adds) data at the end of that file.
@@ -1132,7 +1132,7 @@ Create a text file using the following steps:
 
 To read a text file:
 
-1. First, [OPEN](#open) the file in `TEXT READ` mode/access. This prepares the file for reading.
+1. First, [OPEN](#open-statement) the file in `TEXT READ` mode/access. This prepares the file for reading.
 2. Read data in from the file. Use basica's [LINE INPUT](#line-input) statement.
 3. Close the file. The [CLOSE](#close) statement closes a file after the program has completed all I/O operations.
 
@@ -1142,14 +1142,14 @@ Text files, therefore, are best suited to applications that perform sequential p
 
 The [SEEK](#seek) statement can be used to change the position of the next line to be read. A position value of 1 will read the first line in the text file. You can use this trick to read an entire file, then use SEEK to reposition the file pointer to the start of the file, in order to process the data a second time. This is certainly quicker than closing and re-opening the file.
 
-Reading or writing very large text files can cause Out of Memory errors. The reason is that basica allocates a buffer the size of the whole file to `OPEN` by default. If you want to operate on very large files you need to use the option `LEN = bufferSize` of the [OPEN](#open) statement. To navigate in the file, you will then move the **BOF** (or **SOF**, they are synonymous: one meaning **B**eginning **O**f **F**ile the other **S**tart **O**f **F**ile) carret thanks to [SETBOF](#setbof)/[SETSOF](#setbof).
+Reading or writing very large text files can cause Out of Memory errors. The reason is that basica allocates a buffer the size of the whole file to `OPEN` by default. If you want to operate on very large files you need to use the option `LEN = bufferSize` of the [OPEN](#open-statement) statement. To navigate in the file, you will then move the **BOF** (or **SOF**, they are synonymous: one meaning **B**eginning **O**f **F**ile the other **S**tart **O**f **F**ile) carret thanks to [SETBOF](#setbof)/[SETSOF](#setbof).
 
 Text files lend themselves to database situations in which the length of individual records is variable. For example, suppose an alumni list had a comments field. Some people may have 100 bytes or more of comments. Others, perhaps most, will have none. Text files handle this problem without wasting disk space.
 
 The `OPEN` statement also provides an optional charset parameter `CHR = charSet$`. This specifies the encoding charset for this file: "UTF-8", "UTF-16" (basica's default), "UTF-16BE", "UTF-16LE", "US-ASCII" or "ISO-8859-1". Since text files consist of text alone, the selected charset is enforced by basica. All data read or written to the file is automatically forced to the selected charset, regardless of the type of variables or expressions used. With binary or random files, this specification has no effect.
 
 **See also:**
-* [OPEN](#open)
+* [OPEN](#open-statement)
 * [Binary Files](#binary-files)
 * [Zip Files](#zip-files)
 
@@ -1167,7 +1167,7 @@ Data read from or written to binary files can either be [numerals](#variables) (
 
 Binary files can be created in the following way:
 
-1. Create the file in `BINARY` mode. To create a file in basica, you must use the [OPEN](#open) statement.
+1. Create the file in `BINARY` mode. To create a file in basica, you must use the [OPEN](#open-statement) statement.
 `BINARY` mode has two access options to prepare a file for output:
   * `BINARY WRITE`: If a file does not exist, a new file is created. If a file already exists, its contents are erased, and the file is then treated as a new file.
   * `BINARY APPEND`: If a file does not exist, a new file is created. If a file already exists, basica appends (adds) data at the end of that file.
@@ -1176,12 +1176,12 @@ Binary files can be created in the following way:
 
 To read a binary file:
 
-1. First, [OPEN](#open) the file in `BINARY READ` mode/access. This prepares the file for reading.
+1. First, [OPEN](#open-statement) the file in `BINARY READ` mode/access. This prepares the file for reading.
 2. Read data in from the file. Use basica's [GET](#get) or [GET$](#get-1) statements to respectively read a number or a string.
 3. Close the file. The [CLOSE](#close) statement closes a file after the program has completed all I/O operations.
 
 **See also:**
-* [OPEN](#open)
+* [OPEN](#open-statement)
 * [Text Files](#text-files)
 * [Zip Files](#zip-files)
 
@@ -1199,13 +1199,13 @@ basica has two groups of commands to manipulate zip files:
 
 Zip files are created in the following way:
 
-1. Create the file in `ZIP WRITE` mode thanks to the [OPEN](#open) statement.
+1. Create the file in `ZIP WRITE` mode thanks to the [OPEN](#open-statement) statement.
 2. Output entries to the zip file. Use [ZWRITE](#zwrite) to store a [string](#variables) buffer to an entry.
 3. Close the file. The [CLOSE](#close) statement closes a file after the program has completed all I/O operations.
 
 To read a zip file:
 
-1. First, [OPEN](#open) the file in `ZIP READ` mode/access. This prepares the file for reading.
+1. First, [OPEN](#open-statement) the file in `ZIP READ` mode/access. This prepares the file for reading.
 2. Read entries in from the file. Use basica's [ZREAD](#zread) to read an entry into a [string](#variables) buffer.
 3. Close the file with [CLOSE](#close).
 
@@ -1219,7 +1219,7 @@ These commands are useful if you want to access a zip file that you did not crea
 With the result of these commands, you can then open the zip file for `ZIP READ` and get each entry's content as desired.
 
 **See also:**
-* [OPEN](#open)
+* [OPEN](#open-statement)
 * [Text Files](#text-files)
 * [Binary Files](#binary-files)
 
@@ -1241,9 +1241,10 @@ Unlike VB PowerBasic and FreeBasic, there is no `FREEFILE` function to use befor
 An `OPEN` statement is usually balanced by a matching [CLOSE](#close) statement.
 
 The `OPEN` statement comprises the following elements:
-* *file$* is a [string expression](#string-expressions) specifying the name of the file to be opened, and may optionally include a path specification. *file$* must respect the exact case of the path + filename. E.g. trying to open "/sdcard/MyFile.PNG" with `OPEN "/SdCard/myfile.png" ...` will **NOT** work. If *file$* is a URL starting with "http://" then an Internet file is opened, else a local file is opened. If no path is specified, the default path ("/sdcard") is used (see [Paths explained]()).
+* *file$* is a [string expression](#variables) specifying the name of the file to be opened, and may optionally include a path specification. *file$* must respect the exact case of the path + filename. E.g. trying to open "/sdcard/MyFile.PNG" with `OPEN "/SdCard/myfile.png" ...` will **NOT** work. If *file$* is a URL starting with "http://" then an Internet file is opened, else a local file is opened. If no path is specified, the default path ("/sdcard") is used (see [Paths explained](#paths-explained)).
 
 * **Mode** specifies the file organization and style of access (text, binary, or zip) for reading, writing, or appending. **Mode** needs to be specified as one of the following:
+
 Mode | File type | Action
 -----|-----------|-------
 BINARY | Binary | can be used to read and write any type of file (.txt, .jpg, .pdf, .mp3, etc.). Each command reads or writes one byte or a sequence of bytes as binary data.
@@ -1251,6 +1252,7 @@ TEXT | Text | exclusively used for text (.txt) files. Text files are made up of 
 ZIP | Archive | used to read and write archives: .zip, .gzip, .zip64 (pkware zip), .jar and .apk. Each command counts/lists/reads or writes entire files (known as "entries") in the archive.
 
 * **Access** specifies the type of access this process will have to the file, among the following:
+
 Access | Description | Modes concerned
 -------|-------------|----------------
 READ | Open the file for read operations only | BINARY, TEXT, ZIP
@@ -1385,8 +1387,8 @@ See:
 <!------------------------------------------------------------------------------->
 # PRINT (disambiguation)
 See:
-* [PRINT](#print) to print a number or string on console
-* [PRINT#](#print-1) to write bytes in a file
+* [PRINT](#print) to print a number or string to console
+* [PRINT#](#print-1) to write in a TEXT file
 
 <!------------------------------------------------------------------------------->
 # PERMISSION statement
