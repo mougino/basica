@@ -17,7 +17,7 @@ It is based on RFO BASIC! with many improvements.
   * e.g. `GR.TEXT.DRAW grObjId, text$, drawX, drawY ' GR->grObjId ; TEXT->text$ ; DRAW->draw coordinates`
   * e.g. `FILE.SIZE file$, size` or `FILE.EXISTS file$, exists`
   * e.g. `ARRAY.LEN arr[], len` or `LIST.LEN listId, len`
-  * e.g. `IS_IN(sub$, main$) ' "IS sub$ IN main$?"` ([IS_IN](#is-in) is a refactor of [INSTR](#instr), which also remains available)
+  * e.g. `IS_IN(sub$, main$) ' "IS sub$ IN main$?"` ([IS_IN](#is-in-function) is a refactor of [INSTR](#instr-function), which also remains available)
 3. indices and failure codes should always be consistent
  * i.e. indices always start at 1 (array dim, list id, obj id, etc.)
  * and failure code is always 0 (e.g. cannot open a file, load a resource, etc.)
@@ -37,6 +37,13 @@ It is based on RFO BASIC! with many improvements.
 
 **See also:**
 * [Differences with RFO BASIC!](#differences-with-rfo-basic)
+* [Credits](#credits)
+
+<!------------------------------------------------------------------------------->
+# Credits
+The author would like to thank Paul Laughton who created RFO BASIC! that paved the way to basica.
+The author would also like to thank jecelyin who created the 920 Editor V2 used in basica.
+Finally, thanks to jMarc and the many contributors at the RFO BASIC! forum.
 
 <!------------------------------------------------------------------------------->
 # Command summary
@@ -416,10 +423,10 @@ Count = 100
 * [INPUT](#input)
 * [INPUT.LINE](#input-line)
 * [INPUT.TEXT](#input-text)
-* [INSTR](#instr)
+* [INSTR](#instr-function)
 * [INT](#int)
 * [INT$](#int-1)
-* [IS_IN](#is-in)
+* [IS_IN](#is-in-function)
 * [IS_NUMBER](#is-number)
 
 ## J
@@ -782,7 +789,7 @@ TEXT.INPUT | INPUT.TEXT
 
 # Additions
 * [Arithmetic operator](#arithmetic-operators) `\` for integral division
-* [INSTR](#instr)
+* [INSTR](#instr-function)
 * [CHDIR](#chdir)
 * [FILE.COPY](#file-copy)
 * [KILL](#kill)
@@ -817,17 +824,26 @@ A new, empty bundle is created by using the [BUNDLE.CREATE](#bundle-create) comm
 
 After a bundle is created, keys and values can be added to the bundle using the [BUNDLE.PUT](#bundle-put) command. Those values can be retrieved using the keys in the [BUNDLE.GET](#bundle-get) command. There are other bundle commands to facilitate the use of bundles.
 
+**Examples:**
+```vb
+BUNDLE.CREATE bundleId
+BUNDLE.PUT bundleId, "first_name", "Nicolas" ' key$="first_name" ; value$="Nicolas"
+BUNDLE.PUT bundleId, "last_name", "Mougin"   ' key$="last_name" ; value$="Mougin"
+BUNDLE.PUT bundleId, "age", 36               ' key$="age" ; value=36
+```
+
 ## Bundle Auto-Create
 
 Every bundle command has a parameter, *bundleId*, which is a [pointer](#pointers) to a bundle. If *bundleId* points to an actual bundle, this existing bundle is used. If it does not, then a new, empty bundle is created, and its pointer is stored in the [numeric variable](#variables) *bundleId*.
 
+**Examples:** (see below for explanations)
 ```vb
 BUNDLE.PUT b, "key1", 1.2     ' try to put a value in the bundle pointed to by b
 BUNDLE.PUT 10, key2$, value2  ' try to put a value in the 10th bundle created
 BUNDLE.REMOVE c+d, key$[3]    ' try to remove a key/value pair from a bundle pointed to by c+d
 ```
 
-In the first example, if the value of `b` points to an existing bundle, the [BUNDLE.PUT](#bundle-put) command puts `"key1"` and the value `1.2` into that bundle. If there is no bundle pointer of the value of `b`, `BUNDLE.PUT` creates a new bundle, puts `"key1"` and the value `1.2` into the new bundle, and sets `b` to point to the new bundle.
+In the first example, if the value of `b` points to an existing bundle, the [BUNDLE.PUT](#bundle-put) command puts `"key1"` and the value `1.2` into that bundle. If there is no bundle pointer of the value of `b`, `BUNDLE.PUT` creates a new bundle, puts `"key1"` and the value `1.2` into the new bundle, and stores the bundle pointer inside the variable `b`.
 
 In the second example, if there are at least ten bundles, then the `BUNDLE.PUT` command tries to put the key of the value of `key2$` with the value of `value2` into bundle #10. If there is no bundle #10, then the command does nothing. It cannot create a new variable because you did not provide a variable to store the bundle pointer.
 
@@ -1004,7 +1020,7 @@ Traits$[5, 3] = "Has Tail"
 
 searched$ = "Cat"
 FOR index=1 TO 10 ' search all Animals$[]
-  IF Animals$[index] = "Cat" THEN ' we found "Cat"
+  IF Animals$[index] = searched$ THEN ' we found "Cat"
     PRINT "Cat found at index "; INT$(index); " of Animals$[]"
     PRINT "These are the three traits of a cat:"
     FOR trait=1 TO 3 ' print all 3 traits for the cat
@@ -1059,6 +1075,13 @@ For example, you can write `Animals$[2,3]`. Usually that means "the animal at ro
 
 Both of the expressions in the `[start, length]` pair are optional. If the `start` value is omitted: `Animals$[,3]` the default starting index is `1`. If the `length` value is omitted: `Animals$[2,]` the default is the whole length of the array (or "upper bound"). If both are omitted: `Animals$[,]` (although this is not recommended for clarity) the default is to use the entire array.
 
+**See also:**
+* [Array structure](#array-structure)
+* [Array dimensions](#array-dimensions)
+* [String arrays](#string-arrays)
+* [Internal representation of arrays](#internal-representation-of-arrays)
+* [Array operations](#array-operations)
+
 **Examples:**
 ```vb
 DIM Numbers[10]
@@ -1076,13 +1099,6 @@ ARRAY.FILL Numbers[2,5], 9 ' fill Numbers[2]..Numbers[6] (5 elements) with the v
 ARRAY.AVERAGE Numbers[2,5], avg
 PRINT avg ' will display 9.0
 ```
-
-**See also:**
-* [Array structure](#array-structure)
-* [Array dimensions](#array-dimensions)
-* [String arrays](#string-arrays)
-* [Internal representation of arrays](#internal-representation-of-arrays)
-* [Array operations](#array-operations)
 
 Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
 
@@ -1401,14 +1417,24 @@ A basica variable is a container for some number or string value. The value of a
 ## Variable Names
 Like a label or a user-defined `SUB` or `FUNCTION`, a variable name must start with the characters "a" through "z". The remaining characters may also include the digits "0" through "9" and the special characters "#", "@", and "_". A variable name may be as long as needed.
 
-There is no case in basica variable names: the variable "gLoP" is the same as the variable "glop" to basica.
+There is no case in basica variable names: to basica, the variable `gLoP` is the same as the variable `glop` or as the variable `GLOP`.
 
 ## Variable Types
 basica has only two types of variables: variables that hold numbers and variables that hold strings. Variables that hold strings end with the character "$". Variables that hold numbers do not end in "$".
 
-*Age*, *amount* and *HEIGHT* are all numeric variable names.
+These are all numeric variable names:
+```vb
+Age = 20
+amount = agE * 2      ' 40
+HEIGHT = AMouNT + aGe ' 60
+```
 
-*First_Name$*, *Street$* and *A$* are all string variable names.
+And these are all string variable names:
+```vb
+First_Name$ = "Nicolas"
+Street$ = FIRST_name$ + " St."    ' "Nicolas St."
+A$ = "Welcome to " + sTReeT$      ' "Welcome to Nicolas St."
+```
 
 In technical detail, basica numbers are double-precision 64-bit IEEE 754 floating point numbers. Their range of values is 4.94065645841246544e-324d to 1.79769313486231570e+308d (positive or negative). basica strings are a series of 0 or more bytes (ASCII value 0-255) and can be encoded with different [charsets](#string-encoding), for different uses. By default basica strings can either be UTF-16 `TEXT` strings or ISO-8859-1 `BINARY` buffers.
 
@@ -1756,7 +1782,126 @@ PERMISSION$(1) | "write external storage" | write to the Android device SD-Card
 * [PERMISSION](#permission-statement)
 
 <!------------------------------------------------------------------------------->
-# Credits
-The author would like to thank Paul Laughton who created RFO BASIC! that paved the way to basica.
-The author would also like to thank jecelyin who created the 920 Editor V2 used in basica.
-Finally, thanks to jMarc and the many contributors at the RFO BASIC! forum.
+# INSTR function
+**Purpose:**
+Search a [string](#variable-types) for the existence of a second string.
+
+**Syntax:**
+> y = INSTR( {*Position*,} *main$*, *sub$* )
+
+**Remarks:**
+`INSTR` returns the position of *sub$* within *main$*. The return value is indexed to `1`, while `0` means "not found". [IS_IN](#is-in-function) is a (clearer) refactor of `INSTR`.
+
+* *Position* specifies the character position to begin the search. If *Position* is `1` or greater, *main$* is searched left to right. The value `1` starts at the first character, `2` the second, etc. If *Position* is `-1` or less, *main$* is searched from right to left. The value `-1` starts at the last character, `-2` the second to last, etc. If *Position* is not given, the default value of `+1` is assumed.
+
+```vb
+x = INSTR("xyz", "y")  ' returns 2.0
+x = INSTR("xyz", "a")  ' returns 0.0
+a$ = "My Dog" : b$ = " "
+x = INSTR(a$, b$)      ' returns 3.0
+```
+
+**It is important to note that in all cases, even when *Position* is negative, the return value of `INSTR` is the absolute position of the match, from left to right, starting with the first character.**
+
+`INSTR` is case-sensitive, meaning that upper-case and lower-case letters must match exactly in *sub$* and *main$*. If you want to do a case-**in**sensitive search, use `INSTR(LCASE$(main$), LCASE$(sub$))`.
+
+**Restrictions:**
+Special search terms are evaluated in this sequence:
+
+1. If *Position* is zero, or beyond the length of *main$*, the value `0` is returned.
+2. If *main$* is an empty string `""`, the value `0` is returned.
+3. If *sub$* is an empty string `""`, the absolute *Position* value (default of `1`) is returned.
+
+
+**See also:**
+* [IS_IN](#is-in-function)
+* [JOIN](#join) and [JOIN.ALL](#join-all)
+* [LCASE$](#lcase) and [UCASE$](#ucase)
+* [LEFT$](#left), [RIGHT$](#right) and [MID$](#mid)
+* [SPLIT](#split) and [SPLIT.ALL](#split-all)
+* [TALLY](#tally)
+* [TRIM$](#trim), [LTRIM$](#ltrim) and [RTRIM$](#rtrim)
+* [WORD$](#word)
+
+**Examples:**
+```vb
+e$ = "abc123def456def456abc123"
+PRINT "e$ = " + e$
+p$ = "1  4  7  0  3  6  9  2"
+PRINT "     " + p$
+
+i = INSTR(e$, "def")
+PRINT "INSTR(e$, \"def\") = " + INT$(i)
+
+i = INSTR(-1, e$, "def")
+PRINT "INSTR(-1, e$, \"def\") = " + INT$(i)
+
+i = INSTR(6, e$, "3")
+PRINT "INSTR(6, e$, \"3\") = " + INT$(i)
+
+i = INSTR(7, e$, "3")
+PRINT "INSTR(7, e$, \"3\") = " + INT$(i)
+
+i = INSTR(-1, e$, "3")
+PRINT "INSTR(-1, e$, \"3\") = " + INT$(i)
+
+i = INSTR(-2, e$, "3")
+PRINT "INSTR(-2, e$, \"3\") = " + INT$(i)
+```
+
+<!------------------------------------------------------------------------------->
+# IS_IN function
+**Purpose:**
+Search a [string](#variable-types) for the existence of a second string.
+
+**Syntax:**
+> y = IS_IN( sub$, main$ {,*Position*} )
+
+**Remarks:**
+`IS_IN` returns the position of *sub$* in *main$*. `IS_IN` is a more easy-to-read refactor of [INSTR](#instr-function) because it complies with basica's second [dogma](#dogmata):
+
+> the command names should indicate as much as possible the order of the parameters
+
+`IS_IN(sub$, main$)` must be read "IS `sub$` IN `main$` ?".
+The answer is either "no" (`IS_IN` returns `0`) or "yes" (`IS_IN` returns the index of the match.)
+
+`IS_IN(sub$, main$, *Position*)` must be read "IS `sub$` IN `main$`, STARTING AT `Position` ?".
+
+Appart from the different name and order of parameters, the `IS_IN` function is strictly the same as the [INSTR](#instr-function) function, please refer to [INSTR](#instr-function) for details of use.
+
+**See also:**
+* [INSTR](#instr-function)
+* [JOIN](#join) and [JOIN.ALL](#join-all)
+* [LCASE$](#lcase) and [UCASE$](#ucase)
+* [LEFT$](#left), [RIGHT$](#right) and [MID$](#mid)
+* [SPLIT](#split) and [SPLIT.ALL](#split-all)
+* [TALLY](#tally)
+* [TRIM$](#trim), [LTRIM$](#ltrim) and [RTRIM$](#rtrim)
+* [WORD$](#word)
+
+**Examples:**
+```vb
+e$ = "abc123def456def456abc123"
+PRINT "e$ = " + e$
+p$ = "1  4  7  0  3  6  9  2"
+PRINT "     " + p$
+
+i = IS_IN("def", e$)
+PRINT "IS_IN(\"def\", e$) = " + INT$(i)
+
+i = IS_IN("def", e$, -1)
+PRINT "IS_IN(\"def\", e$, -1) = " + INT$(i)
+
+i = IS_IN("3", e$, 6)
+PRINT "IS_IN(\"3\", e$, 6) = " + INT$(i)
+
+i = IS_IN("3", e$, 7)
+PRINT "IS_IN(\"3\", e$, 7) = " + INT$(i)
+
+i = IS_IN("3", e$, -1)
+PRINT "IS_IN(\"3\", e$, -1) = " + INT$(i)
+
+i = IS_IN("3", e$, -2)
+PRINT "IS_IN(\"3\", e$, -2) = " + INT$(i)
+```
+
