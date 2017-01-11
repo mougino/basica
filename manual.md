@@ -583,6 +583,7 @@ Count = 100
 * [SOUNDPOOL.SETVOLUME](#soundpool-setvolume)
 * [SOUNDPOOL.STOP](#soundpool-stop)
 * [SOUNDPOOL.UNLOAD](#soundpool-unload)
+* [SPACE$](#space)
 * [SPLIT](#split)
 * [SPLIT.ALL](#split-all)
 * [SQL.CLOSE](#sql-close)
@@ -789,12 +790,374 @@ TEXT.INPUT | INPUT.TEXT
 * [PERMISSION](#permission-statement) and [PERMISSION$](#permission-function)
 * [PARSECOUNT](#parsecount), [PARSE$](#parse) and [TALLY](#tally)
 * [REDIM](#redim) and [REDIM PRESERVE](#redim)
+* [SPACE$]
 * [UBOUND](#ubound)
 
 Back to [basica](#basica)
 
 <!------------------------------------------------------------------------------->
 # Array, List, Stack and Bundle
+It is often useful to treat a set of [variables](#variables) as a group. This lets you perform repetitive operations more easily. basica offers four types of structure to manage sets of variables: Array, List, Stack and Bundle.
+
+See:
+* [Array structure](#array-structure) (definition) and [Array operations](#array-operations)
+* [List structure](#list-structure) (definition) and [List operations](#list-operations)
+* [Stack structure](#stack-structure) (definition) and [Stack operations](#stack-operations)
+* [Bundle structure](#bundle-structure) (definition) and [Bundle operations](#bundle-operations)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# Bundle Structure
+A Bundle is a group of values collected together into a single object. A bundle object may contain any number of [string](#variable-types) and [numeric](#variable-types) values. There is no fixed limit on the size or number of bundles. You are limited only by the memory of your device.
+
+The values are set and accessed by **keys**. A key is string that identifies the value. For example, a bundle might contain a person’s first name and last name. The keys for accessing those name strings could be `"first_name"` and `"last_name"`. An age numeric value could also be placed in the bundle using an `"age"` key.
+
+A new, empty bundle is created by using the [BUNDLE.CREATE](#bundle-create) command. The command returns a [pointer](#pointers) to the empty bundle. Because the bundle is represented by a pointer, bundles can be placed in [lists](#list-structure) and [arrays](#array-structure). Bundles can also be contained in other bundles. This means that the combination of lists and bundles can be used to create arbitrarily complex data structures.
+
+After a bundle is created, keys and values can be added to the bundle using the [BUNDLE.PUT](#bundle-put) command. Those values can be retrieved using the keys in the [BUNDLE.GET](#bundle-get) command. There are other bundle commands to facilitate the use of bundles.
+
+## Bundle Auto-Create
+
+Every bundle command has a parameter, *bundleId*, which is a [pointer](#pointers) to a bundle. If *bundleId* points to an actual bundle, this existing bundle is used. If it does not, then a new, empty bundle is created, and its pointer is stored in the [numeric variable](#variables) *bundleId*.
+
+```vb
+BUNDLE.PUT b, "key1", 1.2     ' try to put a value in the bundle pointed to by b
+BUNDLE.PUT 10, key2$, value2  ' try to put a value in the 10th bundle created
+BUNDLE.REMOVE c+d, key$[3]    ' try to remove a key/value pair from a bundle pointed to by c+d
+```
+
+In the first example, if the value of `b` points to an existing bundle, the [BUNDLE.PUT](#bundle-put) command puts `"key1"` and the value `1.2` into that bundle. If there is no bundle pointer of the value of `b`, `BUNDLE.PUT` creates a new bundle, puts `"key1"` and the value `1.2` into the new bundle, and sets `b` to point to the new bundle.
+
+In the second example, if there are at least ten bundles, then the `BUNDLE.PUT` command tries to put the key of the value of `key2$` with the value of `value2` into bundle #10. If there is no bundle #10, then the command does nothing. It cannot create a new variable because you did not provide a variable to store the bundle pointer.
+
+In the third example, the bundle pointer is the value of the expression `c+d`. If there is no such bundle, the command does nothing. To create a new bundle, the bundle pointer expression must be a single [numeric variable](#variables).
+
+**See also:**
+* [Bundle Operations]
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Bundle Operations
+The following functions can be used to manipulate and manage bundles:
+* [BUNDLE.CLEAR](#bundle-clear)
+* [BUNDLE.CONTAIN](#bundle-contain)
+* [BUNDLE.CREATE](#bundle-create)
+* [BUNDLE.GET](#bundle-get)
+* [BUNDLE.KEYS](#bundle-keys)
+* [BUNDLE.PUT](#bundle-put)
+* [BUNDLE.REMOVE](#bundle-remove)
+* [BUNDLE.TYPE](#bundle-type)
+
+**See also:**
+* [Bundle Structure](#bundle-structure)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Queue structure
+"Queues" are like the line that forms at your bank. When you arrive, you get in the back of the line or queue. When a teller becomes available the person at the head of the line or queue is removed from the queue to be serviced by the teller. The whole line moves forward by one person. Eventually, you get to the head of the line and will be serviced by the next available teller.
+
+A queue is something like a [stack](#stack-structure) except the processing order is First In First Out (FIFO) rather than LIFO.
+
+Using our customer order processing analogy, you could create a queue of order [bundles](#bundle-structure) for the order processing department. New order bundles would be placed at the end of the queue. The top-of-the-queue bundle would be removed by the order processing department when it was ready to service a new order.
+
+There are no special commands in basica for queue operations. If you want to make a queue, create a [list](#list-structure).
+
+Use [LIST.ADD](#list-add) to add new elements to the end of the queue.
+
+Use [LIST.GET](#list-get) to get the element at the top of the queue and use [LIST.REMOVE](#list-remove) to remove that top of queue element. You should, of course, use [LIST.LEN](#list-len) before using [LIST.GET](#list-get) to ensure that there is a queued element remaining.
+
+See:
+* [List structure](#list-structure)
+* [Stack structure](#stack-structure)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Stack Structure
+A stack is a collection of [string](#variable-types) or [numeric](#variable-types) values stacked on top of each other, which makes it easy to take an item off the top of the stack, while getting to an item deeper in the stack may require taking off multiple other items first.
+
+The order in which elements come off a stack gives rise to its alternative name, LIFO (for last in, first out).
+[Queues](#queue-structure) are something like a stack except the processing order is First In First Out (FIFO) rather than LIFO.
+
+An example of the use of a stack is basica's [GOSUB](#gosub) command. When a `GOSUB` command is executed the line number to return to is "pushed" on the top of a stack. When a `RETURN` command is executed the return line number is "popped" off of the stack. This methodology allows `GOSUB` to be nested to any level. Any `RETURN` statement will always return to the line after the last `GOSUB` executed.
+
+There is no fixed limit on the size or number of stacks. You are limited only by the memory of your device.
+
+There are two types of stacks like there are two types of lists or arrays: [string](#variable-types) stacks and [numeric](#variable-types) stacks.
+
+**See also:**
+* [Stack Operations]
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Stack Operations
+The following functions can be used to manipulate and manage stacks:
+* [STACK.CLEAR](#stack-clear)
+* [STACK.CREATE](#stack-create)
+* [STACK.ISEMPTY](#stack-isempty)
+* [STACK.PEEK](#stack-peek)
+* [STACK.POP](#stack-pop)
+* [STACK.PUSH](#stack-push)
+* [STACK.TYPE](#stack-type)
+
+**See also:**
+* [Stack Structure](#stack-structure)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# List Structure
+A list is similar to a single-dimension [array](#array-structure). The difference is in the way a list is built and used. An array must be [dimensioned](#array-dimensions) before being used. The number of elements to be placed in the array must be predetermined. You can redimension an array but not easily remove one of its elements, or insert an element somewhere. Lists are much more flexible: a list starts out empty and grows as needed. Elements can be removed, replaced and inserted anywhere within the list.
+
+There is no fixed limit on the size or number of lists. You are limited only by the memory of your device.
+
+Another important difference is that a list is not a [variable type](#variable-types). A numeric [pointer](#pointers) is returned when a list is created. All further access to the list is by means of that numeric pointer. One implication of this is that it is easy to make a list of lists. A list of lists is nothing more than a [numeric](#variable-types) list containing numeric pointers to other lists.
+
+Lists may be copied into new arrays. Arrays may be added to lists.
+
+There are two types of lists like there are two types of arrays: [string](#variable-types) lists and [numeric](#variable-types) lists.
+
+[Queues](#queue-structure), which are a special kind of structure, can be treated by the mean of lists.
+
+**See also:**
+* [List Operations]
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# List Operations
+The following functions can be used to manipulate and manage lists:
+* [LIST.ADD](#list-add)
+* [LIST.ADD.ARRAY](#list-add-array)
+* [LIST.ADD.LIST](#list-add-list)
+* [LIST.CLEAR](#list-clear)
+* [LIST.CREATE](#list-create)
+* [LIST.GET](#list-get)
+* [LIST.INSERT](#list-insert)
+* [LIST.REMOVE](#list-remove)
+* [LIST.REPLACE](#list-replace)
+* [LIST.SEARCH](#list-search)
+* [LIST.LEN](#list-len)
+* [LIST.TOARRAY](#list-toarray)
+* [LIST.TYPE](#list-type)
+
+**See also:**
+* [List Structure](#list-structure)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Array Structure
+An array is a group of [string](#variable-types) or [numeric](#variable-types) data sharing the same variable name. In basica, array variable names always finish with brackets, e.g. `item[]` or `string$[]`. The individual values that make up an array are called elements. An element of an array can be used in a statement or expression wherever you would use a regular string or numeric variable. In other words, each element of an array is itself a [variable](#variables).
+
+You can think of an array as a row of boxes, numbered from one to a predetermined number (set with the [DIM](#dim) or [REDIM](#redim) statements). Each box holds a distinct value, which may or may not differ from the values in the other boxes. If you wanted to keep a list of ten animals, you could use a [string array](#string-arrays) called `Animals$[]`. The boxes and their numbers are represented by brackets surrounding a number; for example, `Animals$[5]` represents box number five of the array `Animals$[]`. Thus, if the value held within box number 5 is `"Cat"`, the statement `pet$=Animals$[5]` would place the value `"Cat"` into the variable `pet$`.
+
+Dimensioning a dynamic array with [DIM](#dim) or [REDIM](#redim) also clears each element, unless the [PRESERVE](#redim) option is present. Each element of each numeric array is set to zero; [string arrays](#string-arrays) are set to the null string ("", length zero). Declaring the name and type of an array, as well as the number of its elements, is performed by the DIM statement. For example:
+
+```vb
+DIM Animals$[10]
+Animals$[5] = "Cat"
+```
+
+...creates an array variable `Animals$[]`, consisting of 10 string elements, numbered 1 through 10, and fills its fifth element with the value "Cat". Array `Animals$[]` and a string variable also named `Animals$` are of course separate variables, that is why array variables are always written with their ending brackets `[]` in basica.
+
+**See also:**
+* [Array dimensions](#array-dimensions)
+* [Subscripts and Segments](#subscripts-and-segments)
+* [String arrays](#string-arrays)
+* [Internal representation of arrays](#internal-representation-of-arrays)
+* [Array operations](#array-operations)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Array Dimensions
+[Arrays](#array-structure) can have more than one index or dimension. An array with two dimensions can be thought of as an array of array. Let’s assume that we wanted to assign a list of three traits to every animal in the list of animals. Such a list for a "Cat" might be "Purrs", "Has four legs" and "Has Tail". We could set up the `Traits$[]` [string array](#string-arrays) to have two dimensions like so:
+
+```vb
+DIM Traits$[10, 3]
+```
+
+Then we could fill this two-dimension array as such:
+
+```vb
+Traits$[5, 1] = "Purrs" ' first index 5 corresponds to "Cat"
+Traits$[5, 2] = "Has four legs"
+Traits$[5, 3] = "Has Tail"
+```
+
+If someone asked what are the traits of cat, we could search `Animals$[index]` until `"Cat"` is found at `index=5`. `index=5` can then be used to access `Traits$[index, 1|2|3]`.
+This full working example illustrates what we have been talking so far:
+
+```vb
+DIM Animals$[10]
+Animals$[5] = "Cat"
+
+DIM Traits$[10, 3] ' 10 animals, 3 traits for each
+Traits$[5, 1] = "Purrs"
+Traits$[5, 2] = "Has four legs"
+Traits$[5, 3] = "Has Tail"
+
+searched$ = "Cat"
+FOR index=1 TO 10 ' search all Animals$[]
+  IF Animals$[index] = "Cat" THEN ' we found "Cat"
+    PRINT "Cat found at index "; INT$(index); " of Animals$[]"
+    PRINT "These are the three traits of a cat:"
+    FOR trait=1 TO 3 ' print all 3 traits for the cat
+      PRINT "Traits$["; INT$(index); ", "; INT$(trait); "] = "; Traits$[index, trait)
+    NEXT trait
+    EXIT FOR ' no need to search for "Cat" anymore -> exit the search loop
+  END IF
+NEXT index
+```
+
+basica arrays can have any number of dimensions of any size: `DIM ComplexArray[10, 20, 5, 3, 9]` is supported (although we really do not recommend using such a complex array).
+
+**See also:**
+* [Array structure](#array-structure)
+* [Subscripts and Segments](#subscripts-and-segments)
+* [String arrays](#string-arrays)
+* [Internal representation of arrays](#internal-representation-of-arrays)
+* [Array operations](#array-operations)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Subscripts and Segments
+Individual [array](#array-structure) elements are selected with subscripts or index numbers, which are [numeric expressions](#numeric-expressions) within brackets to the right of an array variable's name. For example, `Animals$[3]` and `Animals$[7]` are two of `Animals$[]` 10 elements. The first element of an array always has a subscript value of one, this cannot be changed and it is a fundamental difference with Visual Basic, PowerBasic and FreeBasic. Some examples follow:
+
+```vb
+' This DIM statement declares a 10-element array
+' with subscript bounds of 1 TO 10.
+' You can know the upper bound of the array by
+' calling the UBOUND() function.
+DIM Animals$[10]
+PRINT UBOUND(Animals$[]) ' will print 10.0
+```
+
+```vb
+' This DIM statement redimensions the array to contain
+' 30 elements with subscript bounds of 1 TO 30.
+' Another way to know the upper bound of the array is
+' to use the ARRAY.LEN statement.
+REDIM Animals$[30]
+ARRAY.LEN Animals$[], upper
+PRINT upper ' will print 30.0
+```
+
+You must [DIM](#dim) all arrays before you can use them. This is the same behaviour as other BASIC dialects such as Visual Basic, PowerBasic or FreeBasic. But unlike these dialects, basica only allow you to set the upper limit ([UBOUND](#ubound)) of an array rather than define a range of subscript values.
+
+Some basica commands take an array as an input parameter. If the array is specified with nothing in the brackets (for example `Animals$[]`), then the command reads the entire array.
+
+Most of these commands allow you to limit their operation to a segment of the array by using the notation `Array[start, length]`, where both `start` and `length` are [numeric expressions](#numeric-expressions).
+
+For example, you can write `Animals$[2,3]`. Usually that means "the animal at row 2 and column 3 of a two-dimensional array called Animals$[]". When used to specify an array segment, it has a different meaning: "read only the segment of the Animals$[] array that starts at index 2 and includes 3 elements". Notice that this notation applies only to one-dimensional arrays. See [Internal representation of arrays](#internal-representation-of-arrays) to know why.
+
+Both of the expressions in the `[start, length]` pair are optional. If the `start` value is omitted: `Animals$[,3]` the default starting index is `1`. If the `length` value is omitted: `Animals$[2,]` the default is the whole length of the array (or "upper bound"). If both are omitted: `Animals$[,]` (although this is not recommended for clarity) the default is to use the entire array.
+
+**Examples:**
+```vb
+DIM Numbers[10]
+FOR i=1 TO 10
+  Numbers[i] = i
+NEXT
+
+ARRAY.AVERAGE Numbers[], avg
+PRINT avg ' will display 5.5 (1+2+..+9+10)/10
+
+ARRAY.AVERAGE Numbers[5,3], avg ' restrict to Numbers[5]..Numbers[7] (3 elements)
+PRINT avg ' will display 6.0 (5+6+7)/3
+
+ARRAY.FILL Numbers[2,5], 9 ' fill Numbers[2]..Numbers[6] (5 elements) with the value 9.0
+ARRAY.AVERAGE Numbers[2,5], avg
+PRINT avg ' will display 9.0
+```
+
+**See also:**
+* [Array structure](#array-structure)
+* [Array dimensions](#array-dimensions)
+* [String arrays](#string-arrays)
+* [Internal representation of arrays](#internal-representation-of-arrays)
+* [Array operations](#array-operations)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# String arrays
+The elements of [string](#variable-types) arrays hold strings instead of [numbers](#variable-types). Each string can be a different length. For example `DIM words$[50]` creates a sequence of 50 independent string variables:
+
+```vb
+DIM words$[50]
+words$[1] = "Daniel likes cats."      ' 18-character string
+words$[2] = ""                        ' a null string
+words$[3] = "Nicki is a sweet child." ' 23-character string
+' assign more array values here
+words$[50] = SPACE$(200)              ' 200-character string
+```
+
+**See also:**
+* [Array structure](#array-structure)
+* [Array dimensions](#array-dimensions)
+* [Subscripts and Segments](#subscripts-and-segments)
+* [Internal representation of arrays](#internal-representation-of-arrays)
+* [Array operations](#array-operations)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Internal representation of arrays
+basica stores arrays in row-major order: `A[1,1]` is first (lowest) in memory, then `A[1,2]`, then `A[1,3]`, and so on through all the columns of the array.  After the columns are taken care of, the next row is stored.
+Another way to view it is that the first subscript (the row) has the more weight, the following subscripts have smaller weight: `A[ROW_HEAVY, column_light]`.
+
+Consider this snippet:
+```vb
+ROWS = 2
+COLUMNS = 4
+DIM A[ROWS, COLUMNS] ' 2D array of dimensions 2 X 4
+FOR row = 1 TO ROWS ' 1 to 2
+  FOR column = 1 TO COLUMNS ' 1 to 4
+    A[row, column] = (row - 1) * 10 + column
+  NEXT column
+NEXT row
+```
+
+Mathematically this 2-dimension array `A[]` is represented as follows:
+
+      |  column=1   |  column=2   |  column=3   |  column=4
+------|-------------|-------------|-------------|------------
+row=1 | A[1,1] = 1  | A[1,2] = 2  | A[1,3] = 3  | A[1,4] = 4
+row=2 | A[2,1] = 11 | A[2,2] = 12 | A[2,3] = 13 | A[2,4] = 14
+
+In basica internal memory however, `A[]` is similar to a 1-dimension array composed of the following values: `1, 2, 3, 4, 11, 12, 13, 14`.
+
+This can be checked by using `DEBUG` commands to dump the array:
+
+```vb
+DEBUG.ON
+DEBUG.DUMP.ARRAY A[]
+```
+
+...will display `1.0  2.0  3.0  4.0  11.0  12.0  13.0  14.0`.
+
+As [previously seen](#array-dimensions), basica lower boundary value is always `1`.
+
+Upper boundary value can be obtained at run-time via the [UBOUND](#ubound) function or the [ARRAY.LEN](#array-len) statement. Dimensions of an array can be retrieved with the [ARRAY.DIMS](#array-dims) function.
+
+**See also:**
+* [Array structure](#array-structure)
+* [Array dimensions](#array-dimensions)
+* [Subscripts and Segments](#subscripts-and-segments)
+* [String arrays](#string-arrays)
+* [Array operations](#array-operations)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
+
+<!------------------------------------------------------------------------------->
+# Array Operations
 The following functions can be used to manipulate and manage arrays:
 * [ARRAY.AVERAGE](#array-average)
 * [ARRAY.COPY](#array-copy)
@@ -822,14 +1185,21 @@ The following functions can be used to manipulate and manage arrays:
 * [REDIM](#redim)
 * [UNDIM](#undim)
 
-Back to [Command summary](#command-summary)
+**See also:**
+* [Array structure](#array-structure)
+* [Array dimensions](#array-dimensions)
+* [Subscripts and Segments](#subscripts-and-segments)
+* [String arrays](#string-arrays)
+* [Internal representation of arrays](#internal-representation-of-arrays)
+
+Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
 
 <!------------------------------------------------------------------------------->
 # Communication Control
 The following functions can be used for external communications:
-* [Bluetooth Commands](#bluetooth-commands)
+* [Bluetooth Commands](#bluetooth-commands) (sub-group)
 * [EMAIL.SEND](#email-send)
-* [FTP Commands](#ftp-commands)
+* [FTP Commands](#ftp-commands) (sub-group)
 * [GRABURL](#graburl)
 * [HTTP.POST](#http-post)
 * [PHONE.CALL](#phone-call)
@@ -839,12 +1209,13 @@ The following functions can be used for external communications:
 * [SMS.RCV.INIT](#sms-rcv-init)
 * [SMS.RCV.NEXT](#sms-rcv-next)
 * [SMS.SEND](#sms-send)
-* [Socket (TCP/IP) Commands](#socket-tcp-ip-commands)
+* [Socket (TCP/IP) Commands](#socket-tcp-ip-commands) (sub-group)
 * [WIFI.INFO](#wifi-info)
 * [WIFILOCK](#wifilock)
 
 Back to [Command summary](#command-summary)
 
+<!------------------------------------------------------------------------------->
 # Bluetooth Commands
 The following commands can be used to communicate with a device by bluetooth:
 * [BT.CLOSE](#bt-close)
@@ -863,6 +1234,7 @@ The following commands can be used to communicate with a device by bluetooth:
 
 Back to [Communication Control](#communication-control)
 
+<!------------------------------------------------------------------------------->
 # FTP Commands
 The following commands can be used to operate the File Transfer Protocol (FTP):
 * [FTP.CD](#ftp-cd)
@@ -878,6 +1250,7 @@ The following commands can be used to operate the File Transfer Protocol (FTP):
 
 Back to [Communication Control](#communication-control)
 
+<!------------------------------------------------------------------------------->
 # Socket (TCP/IP) Commands
 The following commands can be used to handle TCP/IP sockets:
 * [SOCKET.CLIENT.CLOSE](#socket-client-close)
@@ -905,22 +1278,6 @@ The following commands can be used to handle TCP/IP sockets:
 * [SOCKET.SERVER.WRITE.LINE](#socket-server-write-line)
 
 Back to [Communication Control](#communication-control)
-
-<!------------------------------------------------------------------------------->
-# Compiler Operations
-The following functions manipulate the compiler's operation:
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Console Commands
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Debugging and Error Control
-
-Back to [Command summary](#command-summary)
 
 <!------------------------------------------------------------------------------->
 # File Commands
@@ -956,26 +1313,6 @@ The following functions can be used to manipulate files:
 Back to [Command summary](#command-summary)
 
 <!------------------------------------------------------------------------------->
-# Flow Control
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Graphic Commands
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Html Commands
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Input Commands
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
 # Memory Management
 * [AUDIO.LOAD](#audio-load)
 * [AUDIO.RELEASE](#audio-release)
@@ -1001,41 +1338,6 @@ Back to [Command summary](#command-summary)
 * [STACK.CLEAR](#stack-clear)
 * [STACK.CREATE](#stack-create)
 * [UNDIM](#undim)
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Numeric Operations
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Operating System
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Sound Commands
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# SQL Commands
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# String Operations
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Time Commands
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Misc Operations
 
 Back to [Command summary](#command-summary)
 
@@ -1108,10 +1410,19 @@ basica has only two types of variables: variables that hold numbers and variable
 
 *First_Name$*, *Street$* and *A$* are all string variable names.
 
-basica variables do not need to be declared (except if you want them [GLOBAL](#global)). This is a big difference with Visual Basic, PowerBasic and FreeBasic: in basica, any new variable name is considered a valid variable.
-If you use a numeric variable without assigning it a value, it has the value 0.0. If you use a string variable without assigning it a value, its value is the empty string "".
+In technical detail, basica numbers are double-precision 64-bit IEEE 754 floating point numbers. Their range of values is 4.94065645841246544e-324d to 1.79769313486231570e+308d (positive or negative). basica strings are a series of 0 or more bytes (ASCII value 0-255) and can be encoded with different [charsets](#string-encoding), for different uses. By default basica strings can either be UTF-16 `TEXT` strings or ISO-8859-1 `BINARY` buffers.
 
-In detail, basica numbers are double-precision 64-bit IEEE 754 floating point numbers. Their range of values is 4.94065645841246544e-324d to 1.79769313486231570e+308d (positive or negative). basica strings are a series of 0 or more bytes (ASCII value 0-255) and can be encoded with different charsets, for different uses. By default basica strings can either be UTF-16 `TEXT` strings or ISO-8859-1 byte buffers.
+There are two classes of variables: [Scalars](#scalars) and [Arrays](#arrays).
+
+## Scalars
+
+A scalar is a variable that can hold only one value.
+basica variables do not need to be declared (except if you want them [GLOBAL](#global)). This is a big difference with Visual Basic, PowerBasic and FreeBasic: in basica, any new variable name is considered a valid variable.
+If you use a numeric scalar without assigning it a value, it has the value 0.0. If you use a string scalar without assigning it a value, its value is the empty string "".
+
+## Arrays
+
+See [Array structure](#array-structure).
 
 <!------------------------------------------------------------------------------->
 # Text Files
@@ -1258,18 +1569,18 @@ Access | Description | Modes concerned
 READ | Open the file for read operations only | BINARY, TEXT, ZIP
 WRITE | Erase the content of the file (file is 0 byte) and opens it for write operations | BINARY, TEXT, ZIP
 APPEND | Add data in write mode to an existing file | BINARY, TEXT
-** Note that APPEND access is not supported in ZIP mode. This is an Android OS limitation. **
+**Note that APPEND access is not supported in ZIP mode. This is an Android OS limitation.**
 
-* *fileNum* is a numeric variable destined to store the unique integer value identifying the file.
+* *fileNum* is a [numeric variable](#variables) destined to store the unique integer value identifying the file.
 
-* *bufferSize* (optional) specifies the size of the buffer to be used by basica. The default buffer size, if not specified, is the whole size of the file to `OPEN`. Changing *bufferSize* is an advanced technique that you will rarely need to use. You should only do it when the file is very large, to avoid Out Of Memory errors. In this case you should use a smaller buffer size (minimum size available is 8096 bytes) and move the **BOF**/**SOF** carret (**B**eginning/**S**tart **O**f **F**ile) accordingly. See [SETBOF](#setbof) or [SETSOF](#setbof) statements.
+* *bufferSize* (optional, `BINARY` or `TEXT` modes only) specifies the size of the buffer to be used by basica. The default buffer size, if not specified, is the whole size of the file to `OPEN`. Changing *bufferSize* is an advanced technique that you will rarely need to use. You should only do it when the file is very large, to avoid Out Of Memory errors. In this case you should use a smaller buffer size (minimum size available is 8096 bytes) and move the **BOF**/**SOF** carret (**B**eginning/**S**tart **O**f **F**ile) accordingly. See [SETBOF](#setbof)/[SETSOF](#setbof) statements.
 
-* *charSet$* (optional) is a string specifying the charset encoding to be used in TEXT mode only. Default is "UTF-16". You can choose among: "UTF-8", "UTF-16", "UTF-16BE", "UTF-16LE", "US-ASCII" and "ISO-8859-1".
+* *charSet$* (optional, `TEXT` mode only) is a string expression specifying the charset encoding to be used. Default is "UTF-16". You can choose among: "UTF-8", "UTF-16", "UTF-16BE", "UTF-16LE", "US-ASCII" and "ISO-8859-1". See [String encoding](#string-encoding).
 
 **Restrictions:**
-Attempting to OPEN a file for READ that does not exist returns a *fileNum* of `0`. It is always a good idea to test that *fileNum* is true (not zero) before proceeding to do read or write operations.
+Attempting to `OPEN` a file for `READ` that does not exist returns a *fileNum* of `0`. It is always a good idea to test that *fileNum* is true (not zero) before proceeding to do read or write operations.
 
-If you try to OPEN a nonexistent file for WRITE or APPEND, a new file is automatically created. For this reason, Internet files may only be opened in READ mode.
+If you try to `OPEN` a nonexistent file for `WRITE` or `APPEND`, a new file is automatically created. For this reason, Internet files may only be opened in `READ` mode.
 
 **See also:**
 * [File Commands](#file-commands)
@@ -1355,7 +1666,7 @@ SUB ZipIO()
   ZREAD #fileNum, "basica.data" TO basicaData$
   PRINT basicaData$
   CLOSE #fileNum
-  PRINT "Binary I/O ok"
+  PRINT "Zip I/O ok"
 END SUB  ' end procedure Zip IO
 
 CALL TextWrite()
