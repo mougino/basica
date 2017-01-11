@@ -17,7 +17,7 @@ It is based on RFO BASIC! with many improvements.
   * e.g. `GR.TEXT.DRAW grObjId, text$, drawX, drawY ' GR->grObjId ; TEXT->text$ ; DRAW->draw coordinates`
   * e.g. `FILE.SIZE file$, size` or `FILE.EXISTS file$, exists`
   * e.g. `ARRAY.LEN arr[], len` or `LIST.LEN listId, len`
-  * e.g. `IS_IN(sub$, main$) ' "IS sub$ IN main$?"` ([IS_IN](#is-in-function) is a refactor of [INSTR](#instr-function), which also remains available)
+  * e.g. `IS_IN(sub$, main$) ' "IS sub$ IN main$?"` ([IS_IN](#is_in-function) is a refactor of [INSTR](#instr-function), which also remains available)
 3. indices and failure codes should always be consistent
  * i.e. indices always start at 1 (array dim, list id, obj id, etc.)
  * and failure code is always 0 (e.g. cannot open a file, load a resource, etc.)
@@ -426,7 +426,7 @@ Count = 100
 * [INSTR](#instr-function)
 * [INT](#int)
 * [INT$](#int-1)
-* [IS_IN](#is-in-function)
+* [IS_IN](#is_in-function)
 * [IS_NUMBER](#is-number)
 
 ## J
@@ -1790,31 +1790,12 @@ Search a [string](#variable-types) for the existence of a second string.
 > y = INSTR( {*Position*,} *main$*, *sub$* )
 
 **Remarks:**
-`INSTR` returns the position of *sub$* within *main$*. The return value is indexed to `1`, while `0` means "not found". [IS_IN](#is-in-function) is a (clearer) refactor of `INSTR`.
+`INSTR` returns the position of *sub$* within *main$* starting at *Position*. `INSTR` has a (clearer) refactor: the [IS_IN](#is_in-function) function.
 
-* *Position* specifies the character position to begin the search. If *Position* is `1` or greater, *main$* is searched left to right. The value `1` starts at the first character, `2` the second, etc. If *Position* is `-1` or less, *main$* is searched from right to left. The value `-1` starts at the last character, `-2` the second to last, etc. If *Position* is not given, the default value of `+1` is assumed.
-
-```vb
-x = INSTR("xyz", "y")  ' returns 2.0
-x = INSTR("xyz", "a")  ' returns 0.0
-a$ = "My Dog" : b$ = " "
-x = INSTR(a$, b$)      ' returns 3.0
-```
-
-**It is important to note that in all cases, even when *Position* is negative, the return value of `INSTR` is the absolute position of the match, from left to right, starting with the first character.**
-
-`INSTR` is case-sensitive, meaning that upper-case and lower-case letters must match exactly in *sub$* and *main$*. If you want to do a case-**in**sensitive search, use `INSTR(LCASE$(main$), LCASE$(sub$))`.
-
-**Restrictions:**
-Special search terms are evaluated in this sequence:
-
-1. If *Position* is zero, or beyond the length of *main$*, the value `0` is returned.
-2. If *main$* is an empty string `""`, the value `0` is returned.
-3. If *sub$* is an empty string `""`, the absolute *Position* value (default of `1`) is returned.
-
+Appart from the different name and order of parameters, `INSTR` behaves exactly the same as `IS_IN`, so please refer to the [IS_IN](#is_in-function) function for details of use.
 
 **See also:**
-* [IS_IN](#is-in-function)
+* [IS_IN](#is_in-function) (refactor)
 * [JOIN](#join) and [JOIN.ALL](#join-all)
 * [LCASE$](#lcase) and [UCASE$](#ucase)
 * [LEFT$](#left), [RIGHT$](#right) and [MID$](#mid)
@@ -1858,19 +1839,37 @@ Search a [string](#variable-types) for the existence of a second string.
 > y = IS_IN( sub$, main$ {,*Position*} )
 
 **Remarks:**
-`IS_IN` returns the position of *sub$* in *main$*. `IS_IN` is a more easy-to-read refactor of [INSTR](#instr-function) because it complies with basica's second [dogma](#dogmata):
+`IS_IN` returns the position of *sub$* within *main$*. The return value is indexed to `1`, while `0` means "not found". `IS_IN` is a more easy-to-read refactor of [INSTR](#instr-function) because it complies with basica's second [dogma](#dogmata):
 
 > the command names should indicate as much as possible the order of the parameters
 
 `IS_IN(sub$, main$)` must be read "IS `sub$` IN `main$` ?".
 The answer is either "no" (`IS_IN` returns `0`) or "yes" (`IS_IN` returns the index of the match.)
 
-`IS_IN(sub$, main$, *Position*)` must be read "IS `sub$` IN `main$`, STARTING AT `Position` ?".
+`IS_IN(sub$, main$, Position)` must be read "IS `sub$` IN `main$`, STARTING AT `Position` ?".
 
-Appart from the different name and order of parameters, the `IS_IN` function is strictly the same as the [INSTR](#instr-function) function, please refer to [INSTR](#instr-function) for details of use.
+* *Position* specifies the character position to begin the search. If *Position* is `1` or greater, *main$* is searched left to right. The value `1` starts at the first character, `2` the second, etc. If *Position* is `-1` or less, *main$* is searched from right to left. The value `-1` starts at the last character, `-2` the second to last, etc. If *Position* is not given, the default value of `+1` is assumed.
+
+```vb
+x = IS_IN("y", "xyz")  ' returns 2.0
+x = IS_IN("a", "xyz")  ' returns 0.0
+a$ = "My Dog" : b$ = " "
+x = INSTR(b$, a$)      ' returns 3.0
+```
+
+**It is important to note that in all cases, even when *Position* is negative, the return value of `IS_IN` is the absolute position of the match, from left to right, starting with the first character.**
+
+`IS_IN` is case-sensitive, meaning that upper-case and lower-case letters must match exactly in *sub$* and *main$*. If you want to do a case-**in**sensitive search, use `IS_IN(LCASE$(sub$), LCASE$(main$))`.
+
+**Restrictions:**
+Special search terms are evaluated in this sequence:
+
+1. If *Position* is zero, or beyond the length of *main$*, the value `0` is returned.
+2. If *main$* is an empty string `""`, the value `0` is returned.
+3. If *sub$* is an empty string `""`, the absolute *Position* value (default of `1`) is returned.
 
 **See also:**
-* [INSTR](#instr-function)
+* [INSTR](#instr-function) (legacy)
 * [JOIN](#join) and [JOIN.ALL](#join-all)
 * [LCASE$](#lcase) and [UCASE$](#ucase)
 * [LEFT$](#left), [RIGHT$](#right) and [MID$](#mid)
