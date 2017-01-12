@@ -104,7 +104,6 @@ The following functions can be used to manage program execution/flow:
 * [SUB/END SUB](#sub)
 * [WHILE/WEND](#while)
 
-TODO
 Back to [Command summary](#command-summary)
 
 <!------------------------------------------------------------------------------->
@@ -911,21 +910,13 @@ WIFILOCK | WIFI.LOCK
 
 # Additions
 * [Arithmetic operator](#arithmetic-operators) `\` for integral division
-* [CON.COLORS](#con-colors)
-* [CON.FONT.SIZE](#con-font-size)
-* [CON.FONT.TYPE](#con-font-type)
-* [CON.ORIENTATION](#con-orientation)
-* [CON.SHOW.EMPTY](#con-show-empty)
-* [CON.SHOW.LINES](#con-show-lines)
+* [CHDIR](#chdir), [FILE.COPY](#file-copy), [FILE.TOSD](#file-tosd), [KILL](#kill)
+* [CON.COLORS](#con-colors), [CON.FONT.SIZE](#con-font-size), [CON.FONT.TYPE](#con-font-type), [CON.ORIENTATION](#con-orientation), [CON.SHOW.EMPTY](#con-show-empty), [CON.SHOW.LINES](#con-show-lines)
 * [GLOBAL](#global)
 * [INSTR](#instr-function)
-* [CHDIR](#chdir)
-* [FILE.COPY](#file-copy)
-* [FILE.TOSD](#file-tosd)
-* [KILL](#kill)
 * [LOF](#lof), [SETBOF](#setbof)/[SETSOF](#setbof) and [SETEOF](#seteof)
-* [PERMISSION](#permission-statement) and [PERMISSION$](#permission-function)
 * [PARSECOUNT](#parsecount), [PARSE$](#parse) and [TALLY](#tally)
+* [PERMISSION](#permission-statement) and [PERMISSION$](#permission-function)
 * [REDIM](#redim) and [REDIM PRESERVE](#redim)
 * [SPACE$](#space)
 * [UBOUND](#ubound)
@@ -948,7 +939,7 @@ Back to [Command summary](#command-summary)
 # Bundle Structure
 A Bundle is a group of values collected together into a single object. A bundle object may contain any number of [string](#variable-types) and [numeric](#variable-types) values. There is no fixed limit on the size or number of bundles. You are limited only by the memory of your device.
 
-The values are set and accessed by **keys**. A key is string that identifies the value. For example, a bundle might contain a person’s first name and last name. The keys for accessing those name strings could be `"first_name"` and `"last_name"`. An age numeric value could also be placed in the bundle using an `"age"` key.
+The values are set and accessed by **keys**. A key is a string that identifies the value. For example, a bundle might contain a person’s first name and last name. The keys for accessing those name strings could be `"first_name"` and `"last_name"`. An age numeric value could also be placed in the bundle using an `"age"` key (see the example below).
 
 A new, empty bundle is created by using the [BUNDLE.CREATE](#bundle-create) command. The command returns a [pointer](#pointers) to the empty bundle. Because the bundle is represented by a pointer, bundles can be placed in [lists](#list-structure) and [arrays](#array-structure). Bundles can also be contained in other bundles. This means that the combination of lists and bundles can be used to create arbitrarily complex data structures.
 
@@ -959,7 +950,7 @@ After a bundle is created, keys and values can be added to the bundle using the 
 BUNDLE.CREATE bundleId
 BUNDLE.PUT bundleId, "first_name", "Nicolas" ' key$="first_name" ; value$="Nicolas"
 BUNDLE.PUT bundleId, "last_name", "Mougin"   ' key$="last_name" ; value$="Mougin"
-BUNDLE.PUT bundleId, "age", 36               ' key$="age" ; value=36
+BUNDLE.PUT bundleId, "age", 36               ' key$="age" ; value=36.0
 ```
 
 ## Bundle Auto-Create
@@ -980,7 +971,7 @@ In the second example, if there are at least ten bundles, then the `BUNDLE.PUT` 
 In the third example, the bundle pointer is the value of the expression `c+d`. If there is no such bundle, the command does nothing. To create a new bundle, the bundle pointer expression must be a single [numeric variable](#variables).
 
 **See also:**
-* [Bundle Operations]
+* [Bundle Operations](#bundle-operations)
 
 Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
 
@@ -1035,7 +1026,7 @@ There is no fixed limit on the size or number of stacks. You are limited only by
 There are two types of stacks like there are two types of lists or arrays: [string](#variable-types) stacks and [numeric](#variable-types) stacks.
 
 **See also:**
-* [Stack Operations]
+* [Stack Operations](#stack-operations)
 
 Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
 
@@ -1070,7 +1061,7 @@ There are two types of lists like there are two types of arrays: [string](#varia
 [Queues](#queue-structure), which are a special kind of structure, can be treated by the mean of lists.
 
 **See also:**
-* [List Operations]
+* [List Operations](#list-operations)
 
 Back to [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
 
@@ -1154,7 +1145,7 @@ FOR index=1 TO 10 ' search all Animals$[]
     PRINT "Cat found at index "; INT$(index); " of Animals$[]"
     PRINT "These are the three traits of a cat:"
     FOR trait=1 TO 3 ' print all 3 traits for the cat
-      PRINT "Traits$["; INT$(index); ", "; INT$(trait); "] = "; Traits$[index, trait)
+      PRINT "Traits$["; INT$(index); ", "; INT$(trait); "] = "; Traits$[index, trait]
     NEXT trait
     EXIT FOR ' no need to search for "Cat" anymore -> exit the search loop
   END IF
@@ -1846,9 +1837,9 @@ See:
 <!------------------------------------------------------------------------------->
 # ITERATE (disambiguation)
 See:
-* [ITERATE DO](#do)
-* [ITERATE FOR](#for)
-* [ITERATE WHILE](#while)
+* [ITERATE DO](#do) to iterate a DO/UNTIL loop
+* [ITERATE FOR](#for) to iterate a FOR/NEXT loop
+* [ITERATE WHILE](#while) to iterate a WHILE/WEND loop
 
 <!------------------------------------------------------------------------------->
 # INPUT (disambiguation)
@@ -1863,7 +1854,7 @@ See:
 See:
 * [END](#end) to end the current program and display the console
 * [END FUNCTION](#function) to end a FUNCTION declaration
-* [END IF](#if) to end an IF block
+* [END IF](#if-end-if-block) to end an IF block
 * [END SELECT](#select-case) to end a SELECT CASE block
 * [END SUB](#sub) to end a SUB declaration
 
@@ -1933,6 +1924,7 @@ Here is the table of each permission and their meaning:
 index | value | permission meaning
 ------|-------|-------------------
 PERMISSION$(1) | "write external storage" | write to the Android device SD-Card
+TODO
 
 **See also:**
 * [PERMISSION](#permission-statement)
