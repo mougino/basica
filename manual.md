@@ -8,32 +8,33 @@ It is based on RFO BASIC! with many improvements.
 
 ## Dogmata
 
-1. the syntax should be as close to other Basic dialects as possible
-  * especially Visual Basic (VB6) PowerBasic and FreeBasic, that have a large coders base
+1. the syntax should be as close to other BASIC dialects as possible
+  * especially Visual Basic (VB6) PowerBasic and FreeBasic, which have a large coders base
   * e.g. usual comment character `'`, usual line continuation character `_`
   * e.g. usual binary operators `AND`, `OR`, `NOT`
   * e.g. usual typical commands like `OPEN file$ FOR Mode Access AS #fileNum`
-2. the command names should indicate as much as possible the order of the parameters:
+2. the command names should always indicate the order of the parameters
   * e.g. `GR.TEXT.DRAW grObjId, text$, drawX, drawY ' GR->grObjId ; TEXT->text$ ; DRAW->draw coordinates`
   * e.g. `FILE.SIZE file$, size` or `FILE.EXISTS file$, exists`
   * e.g. `ARRAY.LEN arr[], len` or `LIST.LEN listId, len`
-  * e.g. `IS_IN(sub$, main$) ' "IS sub$ IN main$?"` ([IS_IN](#is_in-function) is a refactor of [INSTR](#instr-function), which also remains available)
-3. indices and failure codes should always be consistent
+  * e.g. `IS_IN(sub$, main$) ' "IS sub$ IN main$ ?"` ([IS_IN](#is_in-function) is a refactor of [INSTR](#instr-function), which also remains available)
+3. all interrupt labels and their corresponding resume commands should be consistant
+ * e.g. `ON.BACKKEY`/`BACKKEY.RESUME`, `ON.BTREADREADY`/`BTREADREADY.RESUME`
+ * e.g. `ON.GRTOUCH`/`GRTOUCH.RESUME`, `ON.KEYPRESS`/`KEYPRESS.RESUME`
+4. indices and failure codes should always be consistent
  * i.e. indices always start at 1 (array dim, list id, obj id, etc.)
  * and failure code is always 0 (e.g. cannot open a file, load a resource, etc.)
-4. the power (and the responsibility) of basica should be given to the user at all time (when pressing Run or Compile):
+5. the power (and the responsibility) of basica should be given to the user at all time (when pressing Run or Compile):
   * sensitive commands need a `PERMISSION` statement in order to work
   * resources must be placed in a specific folder, see [Working with resources](#working-with-resources)
   * resources must be called with their exact filename case ("myPic.JPG" <> "Mypic.jpg")
-5. graphical components (GUI) should be easily accessible via a dedicated API:
- * basica natively supports the [GW library](http://mougino.free.fr/gw.html) (an enhanced version in material design)
- * the GUI composer allows to build application screens (aka GW pages) in a WYSIWYG manner
-6. the editor should be as intuitive and powerful as a source code editor can be:
- * multi tab
- * syntax highlighting
- * built-in manual / keyword reference with quick access to contextual help
- * bottom panel for tips and Run/Compile log
-7. basica should be *maintained*: there should be no more than 3 months between official releases
+6. graphical components (GUI) should be easily accessible via a dedicated API:
+ * basica should natively support the [GW library](http://mougino.free.fr/gw.html) (an enhanced version)
+ * the GUI composer should allow to build application screens in a WYSIWYG manner
+ * all basica GUI components (dialogs, controls) should respect material design
+7. basica APKs (compiled by users) should be as self-contained as possible
+ * i.e. basica APKs should not make a mess by creating a lot of "sdcard/myAPKs/..." folders
+ * i.e. HTML and SQL resources should be transparently accessed (R/W) without the need to be on SD
 
 **See also:**
 * [Differences with RFO BASIC!](#differences-with-rfo-basic)
@@ -51,13 +52,13 @@ The following is a list of the commands built into basica and separated into 18 
 
 * [Array, List, Stack and Bundle](#array-list-stack-and-bundle)
 * [Communication Control](#communication-control)
-* [Compiler Operations](#compiler-operations)
 * [Console Commands](#console-commands)
 * [Debugging and Error Control](#debugging-and-error-control)
 * [File Commands](#file-commands)
 * [Flow Control](#flow-control)
 * [Graphic Commands](#graphic-commands)
-* [Html Commands](#html-commands)
+* [GW (GUI) Commands](#gw-gui-commands)
+* [HTML Commands](#html-commands)
 * [Input Commands](#input-commands)
 * [Memory Management](#memory-management)
 * [Numeric Operations](#numeric-operations)
@@ -71,6 +72,101 @@ The following is a list of the commands built into basica and separated into 18 
 **See also:**
 * [Format and typefaces](#format-and-typefaces)
 * [Keyword Reference](#keyword-reference)
+
+<!------------------------------------------------------------------------------->
+# Flow Control
+The following functions can be used to manage program execution/flow:
+* [CALL](#call)
+* [DO/UNTIL](#do)
+* [END](#end-disambiguation)
+* [EXIT](#exit-disambiguation)
+* [FOR/NEXT](#for)
+* [FUNCTION/END FUNCTION](#function)
+* [GOSUB](#gosub)
+* [GOTO](#goto)
+* [IF](#if)
+* [IF/END IF](#if-end-if-block)
+* [ITERATE](#iterate-disambiguation)
+* [ON.BACKGROUND](#on-background) and [BACKGROUND.RESUME](#background-resume)
+* [ON.BACKKEY](#on-backkey) and [BACKKEY.RESUME](#backkey-resume)
+* [ON.BTREADREADY](#on-btreadready) and [BTREADREADY.RESUME](#btreadready-resume)
+* [ON.CONSOLETOUCH](#on-consoletouch) and [CONSOLETOUCH.RESUME](#consoletouch-resume)
+* [ON.ERROR](#on-error)
+* [ON.GRTOUCH](#on-grtouch) and [GRTOUCH.RESUME](#grtouch-resume)
+* [ON.KBTOGGLE](#on-kbtoggle) and [KBTOGGLE.RESUME](#kbtoggle-resume)
+* [ON.KEYPRESS](#on-keypress) and [KEYPRESS.RESUME](#keypress-resume)
+* [ON.LOWMEMORY](#on-lowmemory) and [LOWMEMORY.RESUME](#lowmemory-resume)
+* [ON.MENUKEY](#on-menukey) and [MENUKEY.RESUME](#menukey-resume)
+* [ON.TIMER](#on-timer) and [TIMER.RESUME](#timer-resume)
+* [RETURN](#gosub)
+* [SELECT CASE](#select-case)
+* [SLEEP](#sleep)
+* [SUB/END SUB](#sub)
+* [WHILE/WEND](#while)
+
+TODO
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# Debugging and Error Control
+The following functions can be used to trap and manage error conditions:
+* [DEBUG.DUMP.ARRAY](#debug-dump-array)
+* [DEBUG.DUMP.BUNDLE](#debug-dump-bundle)
+* [DEBUG.DUMP.LIST](#debug-dump-list)
+* [DEBUG.DUMP.SCALARS](#debug-dump-scalars)
+* [DEBUG.DUMP.STACK](#debug-dump-stack)
+* [DEBUG.ECHO.OFF](#debug-echo-off)
+* [DEBUG.ECHO.ON](#debug-echo-on)
+* [DEBUG.OFF](#debug-off)
+* [DEBUG.ON](#debug-on)
+* [DEBUG.PRINT](#debug-print)
+* [DEBUG.SHOW](#debug-show)
+* [DEBUG.SHOW.ARRAY](#debug-show-array)
+* [DEBUG.SHOW.BUNDLE](#debug-show-bundle)
+* [DEBUG.SHOW.LIST](#debug-show-list)
+* [DEBUG.SHOW.PROGRAM](#debug-show-program)
+* [DEBUG.SHOW.SCALARS](#debug-show-scalars)
+* [DEBUG.SHOW.STACK](#debug-show-stack)
+* [DEBUG.SHOW.WATCH](#debug-show-watch)
+* [DEBUG.WATCH](#debug-watch)
+* [ERROR$](#error)
+* [ON.ERROR](#on-error)
+* [ON.LOWMEMORY](#on-lowmemory)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# Console Commands
+The console is the simplest display mode among the four modes offered in basica.
+Like Linux or Windows consoles, basica's console allows to print and input simple text.
+basica console is also highly customizable: font, size, colors, lines, orientation...
+
+The following functions can be used to operate on the console:
+* [CLS](#cls)
+* [CON.COLORS](#con-colors)
+* [CON.FONT.SIZE](#con-font-size)
+* [CON.FONT.TYPE](#con-font-type)
+* [CON.FRONT](#con-front)
+* [CON.LINE.COUNT](#con-line-count)
+* [CON.LINE.TEXT](#con-line-text)
+* [CON.LINE.TOUCHED](#con-line-touched)
+* [CON.ORIENTATION](#con-orientation)
+* [CON.SAVE](#con-save)
+* [CON.SELECT](#con-select)
+* [CON.SHOW.EMPTY](#con-show-empty)
+* [CON.SHOW.LINES](#con-show-lines)
+* [CON.TITLE](#con-title)
+* [CONSOLETOUCH.RESUME](#consoletouch-resume)
+* [INPUT](#input)
+* [ON.CONSOLETOUCH](#on-consoletouch)
+* [PRINT](#print)
+
+**See also:**
+* [Graphic Commands](#graphic-commands)
+* [GW (GUI) Commands](#gw-gui-commands)
+* [HTML Commands](#html-commands)
+
+Back to [Command summary](#command-summary)
 
 <!------------------------------------------------------------------------------->
 # Format and typefaces
@@ -170,7 +266,7 @@ Count = 100
 * [AUDIO.VOLUME](#audio-volume)
 
 ## B
-* [BACK.RESUME](#back-resume)
+* [BACKKEY.RESUME](#backkey-resume)
 * [BACKGROUND](#background)
 * [BACKGROUND.RESUME](#background-resume)
 * [BAND](#band)
@@ -184,7 +280,7 @@ Count = 100
 * [BT.CONNECT](#bt-connect)
 * [BT.DEVICE.NAME](#bt-device-name)
 * [BT.DISCONNECT](#bt-disconnect)
-* [BT.ONREADREADY.RESUME](#bt-onreadready-resume)
+* [BTREADREADY.RESUME](#btreadready-resume)
 * [BT.OPEN](#bt-open)
 * [BT.READ.BYTES](#bt-read-bytes)
 * [BT.READ.READY](#bt-read-ready)
@@ -213,12 +309,18 @@ Count = 100
 * [CLOCK](#clock)
 * [CLOSE](#close)
 * [CLS](#cls)
+* [CON.COLORS](#con-colors)
+* [CON.FONT.SIZE](#con-font-size)
+* [CON.FONT.TYPE](#con-font-type)
 * [CON.FRONT](#con-front)
 * [CON.LINE.COUNT](#con-line-count)
 * [CON.LINE.TEXT](#con-line-text)
 * [CON.LINE.TOUCHED](#con-line-touched)
+* [CON.ORIENTATION](#con-orientation)
 * [CON.SAVE](#con-save)
 * [CON.SELECT](#con-select)
+* [CON.SHOW.EMPTY](#con-show-empty)
+* [CON.SHOW.LINES](#con-show-lines)
 * [CON.TITLE](#con-title)
 * [CONSOLETOUCH.RESUME](#consoletouch-resume)
 * [COS](#cos)
@@ -262,6 +364,7 @@ Count = 100
 * [END](#end-disambiguation)
 * [ENDS_WITH](#ends-with)
 * [EOF](#eof)
+* [ERROR$](#error)
 * [EXIT](#exit-disambiguation)
 * [EXP](#exp)
 
@@ -274,6 +377,7 @@ Count = 100
 * [FILE.RENAME](#file-rename)
 * [FILE.ROOT](#file-root)
 * [FILE.SIZE](#file-size)
+* [FILE.TOSD](#file-tosd)
 * [FILE.TYPE](#file-type)
 * [FLOOR](#floor)
 * [FONT.CLEAR](#font-clear)
@@ -298,7 +402,7 @@ Count = 100
 ## G
 * [GET](#get)
 * [GET$](#get-1)
-* [GETERROR$](#geterror)
+* [GLOBAL](#global)
 * [GOSUB](#gosub)
 * [GOTO](#goto)
 * [GPS.ACCURACY](#gps-accuracy)
@@ -356,7 +460,7 @@ Count = 100
 * [GR.MODIFY](#gr-modify)
 * [GR.MOVE](#gr-move)
 * [GR.NEWDL](#gr-newdl)
-* [GR.ONGRTOUCH.RESUME](#gr-ongrtouch-resume)
+* [GRTOUCH.RESUME](#grtouch-resume)
 * [GR.OPEN](#gr-open)
 * [GR.ORIENTATION](#gr-orientation)
 * [GR.OVAL](#gr-oval)
@@ -420,7 +524,7 @@ Count = 100
 * [IF](#if)
 * [INCLUDE](#include)
 * [INKEY$](#inkey)
-* [INPUT](#input)
+* [INPUT](#input-disambiguation)
 * [INPUT.LINE](#input-line)
 * [INPUT.TEXT](#input-text)
 * [INSTR](#instr-function)
@@ -428,6 +532,7 @@ Count = 100
 * [INT$](#int-1)
 * [IS_IN](#is_in-function)
 * [IS_NUMBER](#is-number)
+* [ITERATE](#iterate-disambiguation)
 
 ## J
 * [JOIN](#join)
@@ -435,11 +540,11 @@ Count = 100
 
 ## K
 * [KB.HIDE](#kb-hide)
-* [KB.RESUME](#kb-resume)
+* [KBTOGGLE.RESUME](#kbtoggle-resume)
 * [KB.SHOW](#kb-show)
 * [KB.SHOWING](#kb-showing)
 * [KB.TOGGLE](#kb-toggle)
-* [KEY.RESUME](#key-resume)
+* [KEYPRESS.RESUME](#keypress-resume)
 * [KILL](#kill)
 
 ## L
@@ -483,17 +588,17 @@ Count = 100
 ## O
 * [OCT](#oct)
 * [OCT$](#oct-1)
-* [ONBACKGROUND](#onbackground)
-* [ONBACKKEY](#onbackkey)
-* [ONBTREADREADY](#onbtreadready)
-* [ONCONSOLETOUCH](#onconsoletouch)
-* [ONERROR](#onerror)
-* [ONGRTOUCH](#ongrtouch)
-* [ONKBCHANGE](#onkbchange)
-* [ONKEYPRESS](#onkeypress)
-* [ONLOWMEMORY](#onlowmemory)
-* [ONMENUKEY](#onmenukey)
-* [ONTIMER](#ontimer)
+* [ON.BACKGROUND](#on-background)
+* [ON.BACKKEY](#on-backkey)
+* [ON.BTREADREADY](#on-btreadready)
+* [ON.CONSOLETOUCH](#on-consoletouch)
+* [ON.ERROR](#on-error)
+* [ON.GRTOUCH](#on-grtouch)
+* [ON.KBTOGGLE](#on-kbtoggle)
+* [ON.KEYPRESS](#on-keypress)
+* [ON.LOWMEMORY](#on-lowmemory)
+* [ON.MENUKEY](#on-menukey)
+* [ON.TIMER](#on-timer)
 * [OPEN](#open-statement)
 * [OR](#or)
 
@@ -524,7 +629,7 @@ Count = 100
 * [REDIM](#redim)
 * [REM](#rem)
 * [REPLACE$](#replace)
-* [RETURN](#return)
+* [RETURN](#return-disambiguation)
 * [RIGHT$](#right)
 * [RINGER.GET.MODE](#ringer-get-mode)
 * [RINGER.GET.VOLUME](#ringer-get-volume)
@@ -540,7 +645,7 @@ Count = 100
 * [SCREEN.ROTATION](#screen-rotation)
 * [SCREEN.SIZE](#screen-size)
 * [SEEK](seek-disambiguation)
-* [SELECT CASE](#select)
+* [SELECT CASE](#select-case)
 * [SENSORS.CLOSE](#sensors-close)
 * [SENSORS.LIST](#sensors-list)
 * [SENSORS.OPEN](#sensors-open)
@@ -672,7 +777,7 @@ Count = 100
 * [WEND](#while)
 * [WHILE](#while)
 * [WIFI.INFO](#wifi-info)
-* [WIFILOCK](#wifilock)
+* [WIFI.LOCK](#wifi-lock)
 * [WORD$](#word)
 * [WRITE](#open-statement)
 
@@ -691,6 +796,21 @@ Count = 100
 # Differences with RFO BASIC!
 basica is based on the excellent RFO BASIC! for Android, with the goal to remove much of its inconsistencies, and also rename or refactor some commands to follow basica's [dogmata](#dogmata) (especially dogma 1 and dogma 2).
 
+## Changes in interrupts
+RFO BASIC! | basica
+-----------|-------
+ONBACKGROUND/BACKGROUND.RESUME | ON.BACKGROUND/BACKGROUND.RESUME
+ONBACKKEY/BACK.RESUME | ON.BACKKEY/BACKKEY.RESUME
+ONBTREADREADY/BT.ONREADREADY.RESUME | ON.BTREADREADY/BTREADREADY.RESUME
+ONCONSOLETOUCH/CONSOLETOUCH.RESUME | ON.CONSOLETOUCH/CONSOLETOUCH.RESUME
+ONERROR | ON.ERROR
+ONGRTOUCH/GR.ONGRTOUCH.RESUME | ON.GRTOUCH/GRTOUCH.RESUME
+ONKBCHANGE/KB.RESUME | ON.KBTOGGLE/KBTOGGLE.RESUME
+ONKEYPRESS/KEY.RESUME | ON.KEYPRESS/KEYPRESS.RESUME
+ONLOWMEMORY/LOWMEMORY.RESUME | ON.LOWMEMORY/LOWMEMORY.RESUME
+ONMENUKEY/MENUKEY.RESUME | ON.MENUKEY/MENUKEY.RESUME
+ONTIMER/TIMER.RESUME | ON.TIMER/TIMER.RESUME
+
 ## Changes in flow control
 RFO BASIC! | basica
 -----------|-------
@@ -705,7 +825,7 @@ SW.DEFAULT | CASE ELSE
 SW.END | END SELECT
 W_R.BREAK | EXIT WHILE
 W_R.CONTINUE | ITERATE WHILE
-WHILE-REPEAT | WHILE-WEND
+WHILE/REPEAT | WHILE/WEND
 
 ## Changes in BYTE.* commands
 RFO BASIC! | basica
@@ -779,25 +899,35 @@ SELECT | CON.SELECT
 PAUSE | SLEEP
 FN.DEF | SUB&#124;FUNCTION funcName{$} ( {param1{$}} {,param2{$}} ... )
 FN.END | END SUB&#124;FUNCTION
-FN.RTN value{$} | RETURN value{$}, EXIT SUB&#124;FUNCTION
+FN.RTN result{$} | RETURN result{$}, EXIT SUB&#124;FUNCTION
+GETERROR$ | ERROR$
 GR_COLISION | GR.COLISION grObjId1, grObjId2, collision
 LOWER$ | LCASE$
 UPPER$ | UCASE$
 TGET | INPUT prompt$, result{$}
 INPUT | INPUT.LINE
 TEXT.INPUT | INPUT.TEXT
+WIFILOCK | WIFI.LOCK
 
 # Additions
 * [Arithmetic operator](#arithmetic-operators) `\` for integral division
+* [CON.COLORS](#con-colors)
+* [CON.FONT.SIZE](#con-font-size)
+* [CON.FONT.TYPE](#con-font-type)
+* [CON.ORIENTATION](#con-orientation)
+* [CON.SHOW.EMPTY](#con-show-empty)
+* [CON.SHOW.LINES](#con-show-lines)
+* [GLOBAL](#global)
 * [INSTR](#instr-function)
 * [CHDIR](#chdir)
 * [FILE.COPY](#file-copy)
+* [FILE.TOSD](#file-tosd)
 * [KILL](#kill)
 * [LOF](#lof), [SETBOF](#setbof)/[SETSOF](#setbof) and [SETEOF](#seteof)
 * [PERMISSION](#permission-statement) and [PERMISSION$](#permission-function)
 * [PARSECOUNT](#parsecount), [PARSE$](#parse) and [TALLY](#tally)
 * [REDIM](#redim) and [REDIM PRESERVE](#redim)
-* [SPACE$]
+* [SPACE$](#space)
 * [UBOUND](#ubound)
 
 Back to [basica](#basica)
@@ -1141,12 +1271,12 @@ FOR row = 1 TO ROWS ' 1 to 2
 NEXT row
 ```
 
-Mathematically this 2-dimension array `A[]` is represented as follows:
+Visually this 2-dimension array `A[]` is represented as follows:
 
-      |  column=1   |  column=2   |  column=3   |  column=4
-------|-------------|-------------|-------------|------------
-row=1 | A[1,1] = 1  | A[1,2] = 2  | A[1,3] = 3  | A[1,4] = 4
-row=2 | A[2,1] = 11 | A[2,2] = 12 | A[2,3] = 13 | A[2,4] = 14
+          |  column=1   |  column=2   |  column=3   |  column=4
+----------|-------------|-------------|-------------|------------
+**row=1** | A[1,1] = 1  | A[1,2] = 2  | A[1,3] = 3  | A[1,4] = 4
+**row=2** | A[2,1] = 11 | A[2,2] = 12 | A[2,3] = 13 | A[2,4] = 14
 
 In basica internal memory however, `A[]` is similar to a 1-dimension array composed of the following values: `1, 2, 3, 4, 11, 12, 13, 14`.
 
@@ -1227,7 +1357,7 @@ The following functions can be used for external communications:
 * [SMS.SEND](#sms-send)
 * [Socket (TCP/IP) Commands](#socket-tcp-ip-commands) (sub-group)
 * [WIFI.INFO](#wifi-info)
-* [WIFILOCK](#wifilock)
+* [WIFI.LOCK](#wifi-lock)
 
 Back to [Command summary](#command-summary)
 
@@ -1238,7 +1368,7 @@ The following commands can be used to communicate with a device by bluetooth:
 * [BT.CONNECT](#bt-connect)
 * [BT.DEVICE.NAME](#bt-device-name)
 * [BT.DISCONNECT](#bt-disconnect)
-* [BT.ONREADREADY.RESUME](#bt-onreadready-resume)
+* [BTREADREADY.RESUME](#btreadready-resume)
 * [BT.OPEN](#bt-open)
 * [BT.READ.BYTES](#bt-read-bytes)
 * [BT.READ.READY](#bt-read-ready)
@@ -1246,7 +1376,7 @@ The following commands can be used to communicate with a device by bluetooth:
 * [BT.SET.UUID](#bt-set-uuid)
 * [BT.STATUS](#bt-status)
 * [BT.WRITE](#bt-write)
-* [ONBTREADREADY](#onbtreadready)
+* [ON.BTREADREADY](#on-btreadready)
 
 Back to [Communication Control](#communication-control)
 
@@ -1310,6 +1440,7 @@ The following functions can be used to manipulate files:
 * [FILE.RENAME](#file-rename)
 * [FILE.ROOT](#file-root)
 * [FILE.SIZE](#file-size)
+* [FILE.TOSD](#file-tosd)
 * [FILE.TYPE](#file-type)
 * [GET](#get)
 * [GET$](#get-1)
@@ -1325,6 +1456,10 @@ The following functions can be used to manipulate files:
 * [SETBOF](#setbof)
 * [SETEOF](#seteof)
 * [SETSOF](#setbof)
+
+**See also:**
+* [Working with resources](#working-with-resources)
+* [Paths explained](#paths-explained)
 
 Back to [Command summary](#command-summary)
 
@@ -1346,7 +1481,7 @@ Back to [Command summary](#command-summary)
 * [LIST.CLEAR](#list-clear)
 * [LIST.CREATE](#list-create)
 * [LOWMEMORY.RESUME](#lowmemory-resume)
-* [ONLOWMEMORY](#onlowmemory)
+* [ON.LOWMEMORY](#on-lowmemory)
 * [REDIM](#redim)
 * [SOUNDPOOL.LOAD](#soundpool-load)
 * [SOUNDPOOL.RELEASE](#soundpool-release)
@@ -1703,6 +1838,27 @@ CALL ZipIO()
 ```
 
 <!------------------------------------------------------------------------------->
+# RETURN (disambiguation)
+See:
+* [GOSUB/RETURN](#gosub)
+* [RETURN result{$}](#function) in a FUNCTION
+
+<!------------------------------------------------------------------------------->
+# ITERATE (disambiguation)
+See:
+* [ITERATE DO](#do)
+* [ITERATE FOR](#for)
+* [ITERATE WHILE](#while)
+
+<!------------------------------------------------------------------------------->
+# INPUT (disambiguation)
+See:
+* [INPUT](#input) to input text from the console
+* [INPUT.LINE](#input-line) to show a line-input dialog
+* [INPUT.TEXT](#input-text) to show a text-input (notepad) dialog
+* [LINE INPUT](#line-input) to read a line from a TEXT file
+
+<!------------------------------------------------------------------------------->
 # END (disambiguation)
 See:
 * [END](#end) to end the current program and display the console
@@ -1715,11 +1871,11 @@ See:
 # EXIT (disambiguation)
 See:
 * [EXIT](#exit) to exit the program and go back to the Home screen
-* [EXIT DO](#do) to exit a DO-UNTIL loop
-* [EXIT FOR](#for) to exit a FOR-NEXT loop
+* [EXIT DO](#do) to exit a DO/UNTIL loop
+* [EXIT FOR](#for) to exit a FOR/NEXT loop
 * [EXIT FUNCTION](#function) to exit a FUNCTION
 * [EXIT SUB](#sub) to exit a SUB
-* [EXIT WHILE](#while) to exit a WHILE-WEND loop
+* [EXIT WHILE](#while) to exit a WHILE/WEND loop
 
 <!------------------------------------------------------------------------------->
 # PRINT (disambiguation)
