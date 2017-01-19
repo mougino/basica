@@ -29,7 +29,7 @@ It is based on RFO BASIC! with many improvements.
   * resources must be placed in a specific folder, see [Working with resources](#working-with-resources)
   * resources must be called with their exact filename case ("myPic.JPG" <> "Mypic.jpg")
 6. graphical components (GUI) should be easily accessible via a dedicated API:
- * basica should natively support the [GW library](http://mougino.free.fr/gw.html) (an enhanced version)
+ * basica should natively support the [GW&trade; library](http://mougino.free.fr/gw.html) (an enhanced version)
  * the GUI composer should allow to build application screens in a WYSIWYG manner
  * all basica GUI components (dialogs, controls) should respect material design
 7. basica APKs (compiled by users) should be as self-contained as possible
@@ -38,6 +38,7 @@ It is based on RFO BASIC! with many improvements.
 
 **See also:**
 * [Differences with RFO BASIC!](#differences-with-rfo-basic)
+* [Differences with VB6, PB, FB](#differences-with-vb6-pb-fb)
 * [Credits](#credits)
 
 <!------------------------------------------------------------------------------->
@@ -57,7 +58,7 @@ The following is a list of the commands built into basica and separated into 18 
 * [File Commands](#file-commands)
 * [Flow Control](#flow-control)
 * [Graphic Commands](#graphic-commands)
-* [GW (GUI) Commands](#gw-gui-commands)
+* [GW&trade; (GUI) Commands](#gw-gui-commands)
 * [HTML Commands](#html-commands)
 * [Input Commands](#input-commands)
 * [Memory Management](#memory-management)
@@ -74,6 +75,589 @@ The following is a list of the commands built into basica and separated into 18 
 * [Keyword Reference](#keyword-reference)
 
 <!------------------------------------------------------------------------------->
+# Operating System
+The following functions manipulate specific Android OS features (sensors, vibrate, notification etc.):
+* [APP.BROADCAST](#app-broadcast)
+* [APP.START](#app-start)
+* [BACKGROUND](#background)
+* [BACKGROUND.RESUME](#background-resume)
+* [BROWSE](#browse)
+* [CLIPBOARD.GET](#clipboard-get)
+* [CLIPBOARD.PUT](#clipboard-put)
+* [DEVICE](#device)
+* [DEVICE.LANGUAGE](#device-language)
+* [DEVICE.LOCALE](#device-locale)
+* [GPS.ACCURACY](#gps-accuracy)
+* [GPS.ALTITUDE](#gps-altitude)
+* [GPS.BEARING](#gps-bearing)
+* [GPS.CLOSE](#gps-close)
+* [GPS.LATITUDE](#gps-latitude)
+* [GPS.LOCATION](#gps-location)
+* [GPS.LONGITUDE](#gps-longitude)
+* [GPS.OPEN](#gps-open)
+* [GPS.PROVIDER](#gps-provider)
+* [GPS.SATELLITES](#gps-satellites)
+* [GPS.SPEED](#gps-speed)
+* [GPS.STATUS](#gps-status)
+* [GPS.TIME](#gps-time)
+* [HEADSET](#headset)
+* [HOME](#home)
+* [KB.HIDE](#kb-hide)
+* [KB.SHOW](#kb-show)
+* [KB.SHOWING](#kb-showing)
+* [KB.TOGGLE](#kb-toggle)
+* [KBTOGGLE.RESUME](#kbtoggle-resume)
+* [MYPHONENUMBER](#myphonenumber)
+* [NOTIFY](#notify)
+* [ON.BACKGROUND](#on-background)
+* [ON.KBTOGGLE](#on-kbtoggle)
+* [PERMISSION](#permission-statement)
+* [PERMISSION$](#permission-function)
+* [PHONE.CALL](#phone-call)
+* [PHONE.DIAL](#phone-dial)
+* [PHONE.INFO](#phone-info)
+* [PHONE.RCV.INIT](#phone-rcv-init)
+* [PHONE.RCV.NEXT](#phone-rcv-next)
+* [POPUP](#popup)
+* [PROGRAM.INFO](#program-info)
+* [RINGER.GET.MODE](#ringer-get-mode)
+* [RINGER.GET.VOLUME](#ringer-get-volume)
+* [RINGER.SET.MODE](#ringer-set-mode)
+* [RINGER.SET.VOLUME](#ringer-set-volume)
+* [SCREEN.INFO](#screen-info)
+* [SCREEN.ROTATION](#screen-rotation)
+* [SCREEN.SIZE](#screen-size)
+* [SENSORS.CLOSE](#sensors-close)
+* [SENSORS.LIST](#sensors-list)
+* [SENSORS.OPEN](#sensors-open)
+* [SENSORS.READ](#sensors-read)
+* [SMS.RCV.INIT](#sms-rcv-init)
+* [SMS.RCV.NEXT](#sms-rcv-next)
+* [SMS.SEND](#sms-send)
+* [STT.LISTEN](#stt-listen)
+* [STT.RESULTS](#stt-results)
+* [SU.CLOSE](#su-close)
+* [SU.OPEN](#su-open)
+* [SU.READ.LINE](#su-read-line)
+* [SU.READ.READY](#su-read-ready)
+* [SU.WRITE](#su-write)
+* [SYSTEM.CLOSE](#system-close)
+* [SYSTEM.OPEN](#system-open)
+* [SYSTEM.READ.LINE](#system-read-line)
+* [SYSTEM.READ.READY](#system-read-ready)
+* [SYSTEM.WRITE](#system-write)
+* [TTS.INIT](#tts-init)
+* [TTS.SPEAK](#tts-speak)
+* [TTS.SPEAK.TOFILE](#tts-speak-tofile)
+* [TTS.STOP](#tts-stop)
+* [VIBRATE](#vibrate)
+* [VOLKEYS.OFF](#volkeys-off)
+* [VOLKEYS.ON](#volkeys-on)
+* [WAKELOCK](#wakelock)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# Numeric Operations
+The following functions manipulate and manage [numeric](#variable-types) data:
+* [ABS](#abs)
+* [ACOS](#acos)
+* [AND](#and)
+* [ARRAY.AVERAGE](#array-average)
+* [ARRAY.MAX](#array-max)
+* [ARRAY.MIN](#array-min)
+* [ARRAY.STDDEV](#array-stddev)
+* [ARRAY.SUM](#array-sum)
+* [ARRAY.VARIANCE](#array-variance)
+* [ASIN](#asin)
+* [ATAN](#atan)
+* [ATAN2](#atan2)
+* [BAND](#band)
+* [BIN](#bin-function)
+* [BIN$](#bin-function-1)
+* [BNOT](#bnot)
+* [BOR](#bor)
+* [BXOR](#bxor)
+* [CBRT](#cbrt)
+* [CEIL](#ceil)
+* [COS](#cos)
+* [COSH](#cosh)
+* [EXP](#exp)
+* [FLOOR](#floor)
+* [FRAC](#frac)
+* [HEX](#hex)
+* [HEX$](#hex-1)
+* [HYPOT](#hypot)
+* [INT](#int)
+* [INT$](#int-1)
+* [LOG](#log)
+* [LOG10](#log10)
+* [MAX](#max)
+* [MIN](#min)
+* [MOD](#mod)
+* [NOT](#not)
+* [OCT](#oct)
+* [OCT$](#oct-1)
+* [OR](#or)
+* [PI](#pi)
+* [POW](#pow)
+* [RND](#rnd)
+* [ROUND](#round)
+* [SGN](#sgn)
+* [SHIFT](#shift)
+* [SIN](#sin)
+* [SINH](#sinh)
+* [SQR](#sqr)
+* [TAN](#tan)
+* [TODEGREES](#todegrees)
+* [TORADIANS](#toradians)
+* [VAL](#val)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# Input Commands
+The following functions can be used to gather input data:
+* [COMMAND$](#command)
+* [DIALOG.MESSAGE](#dialog-message)
+* [DIALOG.SELECT](#dialog-select)
+* [GR.BOUNDED.TOUCH](#gr-bounded-touch)
+* [GR.BOUNDED.TOUCH2](#gr-bounded-touch2)
+* [GR.TOUCH](#gr-touch)
+* [GR.TOUCH2](#gr-touch2)
+* [GW.ACTION$](#gw-action)
+* [GW.ADD.DIALOG.INPUT](#gw-add-dialog-input)
+* [GW.ADD.INPUTBOX](#gw-add-inputbox)
+* [GW.ADD.INPUTCOLOR](#gw-add-inputcolor)
+* [GW.ADD.INPUTDATETIME](#gw-add-inputdatetime)
+* [GW.ADD.INPUTDATE](#gw-add-inputdate)
+* [GW.ADD.INPUTEMAIL](#gw-add-inputemail)
+* [GW.ADD.INPUTLINE](#gw-add-inputline)
+* [GW.ADD.INPUTLIST](#gw-add-inputlist)
+* [GW.ADD.INPUTMONTH](#gw-add-inputmonth)
+* [GW.ADD.INPUTNUMBER](#gw-add-inputnumber)
+* [GW.ADD.INPUTPASSWORD](#gw-add-inputpassword)
+* [GW.ADD.INPUTTEL](#gw-add-inputtel)
+* [GW.ADD.INPUTTIME](#gw-add-inputtime)
+* [GW.ADD.INPUTURL](#gw-add-inputurl)
+* [GW.ADD.INPUTWEEK](#gw-add-inputweek)
+* [GW.ADD.LISTENER](#gw-add-listener)
+* [GW.WAIT.ACTION$](#gw-wait-action)
+* [HTML.GET.DATALINK](#html-get-datalink)
+* [INKEY$](#inkey)
+* [INPUT](#input)
+* [INPUT.BOX](#input-box)
+* [INPUT.LINE](#input-line)
+* [ON.BACKKEY](#on-backkey) and [BACKKEY.RESUME](#backkey-resume)
+* [ON.CONTOUCH](#on-contouch) and [CONTOUCH.RESUME](#contouch-resume)
+* [ON.GRTOUCH](#on-grtouch) and [GRTOUCH.RESUME](#grtouch-resume)
+* [ON.KBTOGGLE](#on-kbtoggle) and [KBTOGGLE.RESUME](#kbtoggle-resume)
+* [ON.KEYPRESS](#on-keypress) and [KEYPRESS.RESUME](#keypress-resume)
+* [ON.MENUKEY](#on-menukey) and [MENUKEY.RESUME](#menukey-resume)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# HTML Commands
+The HTML mode is one of basica's four display modes, along with the [console](#console-commands), [graphic](#graphic-commands) and [GW&trade; (GUI)](#gw-gui-commands) modes.
+
+basica's HTML mode provides an Android Webview as a canvas, allowing you to render HTML/JavaScript code and interact with it.
+
+The following functions can be used to access the HTML interface:
+* [HTML.CLEAR.CACHE](#html-clear-cache)
+* [HTML.CLEAR.HISTORY](#html-clear-history)
+* [HTML.CLOSE](#html-close)
+* [HTML.GET.DATALINK](#html-get-datalink)
+* [HTML.GO.BACK](#html-go-back)
+* [HTML.GO.FORWARD](#html-go-forward)
+* [HTML.LOAD.STRING](#html-load-string)
+* [HTML.LOAD.URL](#html-load-url)
+* [HTML.OPEN](#html-open)
+* [HTML.ORIENTATION](#html-orientation)
+* [HTML.POST](#html-post)
+
+**See also:**
+* [Console Commands](#console-commands)
+* [Graphic Commands](#graphic-commands)
+* [HTML Commands](#html-commands)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# GW (GUI) Library
+Welcome to basica's powerful and improved **GW&trade; lib**. The GW&trade; library allows a basica programmer to easily create a Graphical User Interface (GUI) for an Android app using simple BASIC statements. With GW&trade;, there's no need to stress over learning how to effectively use GUI design software that contains icons you don't understand and also hundreds of cryptic "property" (XML) settings. With GW&trade;, your basica application can create user interface dialogs "on the fly".
+
+This chapter describes basica's GW&trade; library and how to easily create full-featured Graphical User Interfaces in your code.
+
+* [Load the lib](#load-the-lib)
+* [Specify Page settings before creation](#specify-page-settings-before-creation)
+* [Create a new Page](#create-a-new-page)
+* [Transform the Page](#transform-the-page)
+* [Prepare Controls Layout](#prepare-controls-layout)
+* [Pre-Customize Controls](#pre-customize-controls)
+* [Add Standard Controls](#add-standard-controls)
+* [Add User Input Controls](#add-user-input-controls)
+* [Add Bars](#add-bars)
+* [Add a Panel](#add-a-panel)
+* [Add a Spinner](#add-a-spinner)
+* [Add Dialogs](#add-dialogs)
+* [Custom Controls, Listeners](#custom-controls-listeners)
+* [Render and Update the Page](#render-and-update-the-page)
+* [Manage User Interaction](#manage-user-interaction)
+* [Special Functions](#special-functions)
+
+**See also:**
+* [GW&trade; (GUI) Commands](#gw-gui-commands)
+* [Console Commands](#console-commands)
+* [Graphic Commands](#graphic-commands)
+* [HTML Commands](#html-commands)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# GW (GUI) Commands
+The [GW&trade; mode](#gw-gui-library) is one of basica's four display modes, along with the [console](#console-commands), [graphic](#graphic-commands) and [HTML](#html-commands) modes. GW&trade; focuses on Graphical User Interface (GUI) creation, to provide the typical "Look and Feel" of Android apps.
+
+The following functions can be used to create [GW](#gw-gui-library) application interfaces:
+* [GW.ACTION$](#gw-action)
+* [GW.ADD.AUDIO](#gw-add-audio)
+* [GW.ADD.BAR.LBUTTON$](#gw-add-bar-lbutton)
+* [GW.ADD.BAR.LMENU$](#gw-add-bar-lmenu)
+* [GW.ADD.BAR.RBUTTON$](#gw-add-bar-rbutton)
+* [GW.ADD.BAR.RMENU$](#gw-add-bar-rmenu)
+* [GW.ADD.BAR.TITLE$](#gw-add-bar-title)
+* [GW.ADD.BUTTON](#gw-add-button)
+* [GW.ADD.CHECKBOX](#gw-add-checkbox)
+* [GW.ADD.COLORPICKER](#gw-add-colorpicker)
+* [GW.ADD.DIALOG.CHECKBOX](#gw-add-dialog-checkbox)
+* [GW.ADD.DIALOG.INPUT](#gw-add-dialog-input)
+* [GW.ADD.DIALOG.MESSAGE](#gw-add-dialog-message)
+* [GW.ADD.FLIPSWITCH](#gw-add-flipswitch)
+* [GW.ADD.FONT$](#gw-add-font)
+* [GW.ADD.FOOTBAR](#gw-add-footbar)
+* [GW.ADD.GALLERY](#gw-add-gallery)
+* [GW.ADD.ICON](#gw-add-icon)
+* [GW.ADD.IMAGE](#gw-add-image)
+* [GW.ADD.INPUTBOX](#gw-add-inputbox)
+* [GW.ADD.INPUTCOLOR](#gw-add-inputcolor)
+* [GW.ADD.INPUTDATETIME](#gw-add-inputdatetime)
+* [GW.ADD.INPUTDATE](#gw-add-inputdate)
+* [GW.ADD.INPUTEMAIL](#gw-add-inputemail)
+* [GW.ADD.INPUTLINE](#gw-add-inputline)
+* [GW.ADD.INPUTLIST](#gw-add-inputlist)
+* [GW.ADD.INPUTMONTH](#gw-add-inputmonth)
+* [GW.ADD.INPUTNUMBER](#gw-add-inputnumber)
+* [GW.ADD.INPUTPASSWORD](#gw-add-inputpassword)
+* [GW.ADD.INPUTTEL](#gw-add-inputtel)
+* [GW.ADD.INPUTTIME](#gw-add-inputtime)
+* [GW.ADD.INPUTURL](#gw-add-inputurl)
+* [GW.ADD.INPUTWEEK](#gw-add-inputweek)
+* [GW.ADD.LINK](#gw-add-link)
+* [GW.ADD.LISTENER](#gw-add-listener)
+* [GW.ADD.LISTVIEW](#gw-add-listview)
+* [GW.ADD.LOADING.IMG](#gw-add-loading-img)
+* [GW.ADD.LOCK.PATTERN](#gw-add-lock-pattern)
+* [GW.ADD.PANEL](#gw-add-panel)
+* [GW.ADD.PROGRESSBAR](#gw-add-progressbar)
+* [GW.ADD.RADIO](#gw-add-radio)
+* [GW.ADD.SELECTBOX](#gw-add-selectbox)
+* [GW.ADD.SLIDER](#gw-add-slider)
+* [GW.ADD.SPINNER](#gw-add-spinner)
+* [GW.ADD.SUBMIT](#gw-add-submit)
+* [GW.ADD.TABLE](#gw-add-table)
+* [GW.ADD.TEXTBOX](#gw-add-textbox)
+* [GW.ADD.TEXT](#gw-add-text)
+* [GW.ADD.TITLEBAR](#gw-add-titlebar)
+* [GW.ADD.TITLE](#gw-add-title)
+* [GW.ADD.VIDEO](#gw-add-video)
+* [GW.ALLOW.SELECT](#gw-allow-select)
+* [GW.AMODIFY)](#gw-amodify)
+* [GW.AMODIFY](#gw-amodify)
+* [GW.CENTER.PAGE.VER](#gw-center-page-ver)
+* [GW.CHECKBOX.CHECKED](#gw-checkbox-checked)
+* [GW.CLEAR.LOCK.PATTERN](#gw-clear-lock-pattern)
+* [GW.CLOSE.COLLAPSIBLE](#gw-close-collapsible)
+* [GW.CLOSE.DIALOG](#gw-close-dialog)
+* [GW.CLOSE.GALLERY](#gw-close-gallery)
+* [GW.CLOSE.GROUP](#gw-close-group)
+* [GW.CLOSE.INPUTLIST](#gw-close-inputlist)
+* [GW.CLOSE.PAGE](#gw-close-page)
+* [GW.CLOSE.PANEL](#gw-close-panel)
+* [GW.CODE.HIGHLIGHT$](#gw-code-highlight)
+* [GW.CUSTO.DLGBTN](#gw-custo-dlgbtn)
+* [GW.DEFAULT.TRANSITIONS](#gw-default-transitions)
+* [GW.DISABLE](#gw-disable)
+* [GW.DOWNLOAD.THEME](#gw-download-theme)
+* [GW.DUMP.TO.FILE](#gw-dump-to-file)
+* [GW.DUMP](#gw-dump)
+* [GW.ENABLE](#gw-enable)
+* [GW.FLIPSWITCH.CHANGED](#gw-flipswitch-changed)
+* [GW.FOCUS](#gw-focus)
+* [GW.GALLERY.IS.OPEN](#gw-gallery-is-open)
+* [GW.GET.IMAGE.DIM$](#gw-get-image-dim)
+* [GW.GET.VALUE$](#gw-get-value)
+* [GW.GET.VALUE](#gw-get-value)
+* [GW.HIDE.SPINNER](#gw-hide-spinner)
+* [GW.HIDE](#gw-hide)
+* [GW.ICON$](#gw-icon)
+* [GW.ID$](#gw-id)
+* [GW.ID](#gw-id)
+* [GW.INJECT.HTML](#gw-inject-html)
+* [GW.LAST.ID](#gw-last-id)
+* [GW.LINK$](#gw-link)
+* [GW.LOAD.THEME](#gw-load-theme)
+* [GW.MODIFY)](#gw-modify)
+* [GW.MODIFY](#gw-modify)
+* [GW.NEW.CLASS](#gw-new-class)
+* [GW.NEW.PAGE](#gw-new-page)
+* [GW.NEW.CUSTO](#gw-new-custo)
+* [GW.OPEN](#gw-open)
+* [GW.OPEN.COLLAPSIBLE](#gw-open-collapsible)
+* [GW.OPEN.GROUP](#gw-open-group)
+* [GW.PICK.FILE$](#gw-pick-file)
+* [GW.PICK.FOLDER$](#gw-pick-folder)
+* [GW.PREVENT.SELECT](#gw-prevent-select)
+* [GW.QUICK.CUSTO](#gw-quick-custo)
+* [GW.RADIO.SELECTED](#gw-radio-selected)
+* [GW.RENDER](#gw-render)
+* [GW.RESET.CUSTO](#gw-reset-custo)
+* [GW.SET.PROGRESSBAR](#gw-set-progressbar)
+* [GW.SET.TRANSITION](#gw-set-transition)
+* [GW.SHELF.CLOSE](#gw-shelf-close)
+* [GW.SHELF.NEWCELL](#gw-shelf-newcell)
+* [GW.SHELF.NEWROW](#gw-shelf-newrow)
+* [GW.SHELF.OPEN](#gw-shelf-open)
+* [GW.SHOW.DIALOG$](#gw-show-dialog)
+* [GW.SHOW.DIALOG](#gw-show-dialog)
+* [GW.SHOW.PANEL$](#gw-show-panel)
+* [GW.SHOW.PANEL](#gw-show-panel)
+* [GW.SHOW.SPINNER](#gw-show-spinner)
+* [GW.SHOW.WRONG.PATTERN](#gw-show-wrong-pattern)
+* [GW.SHOW](#gw-show)
+* [GW.START.CENTER](#gw-start-center)
+* [GW.STOP.CENTER](#gw-stop-center)
+* [GW.THEME$](#gw-theme)
+* [GW.THEME.EXISTS](#gw-theme-exists)
+* [GW.UNLOAD.THEME](#gw-unload-theme)
+* [GW.USE.FONT](#gw-use-font)
+* [GW.USE.CUSTO](#gw-use-custo)
+* [GW.WAIT.ACTION$](#gw-wait-action)
+* [GW.ZOOM.INPUT](#gw-zoom-input)
+
+**See also:**
+* [GW&trade; (GUI) Library](#gw-gui-library)
+* [Console Commands](#console-commands)
+* [Graphic Commands](#graphic-commands)
+* [HTML Commands](#html-commands)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# Bitmaps
+In Android OS, and in basica [graphic mode](#graphic-commands), an image is called a "**bitmap**", although any kind of picture can be loaded as a "bitmap" (not only .bmp files). For example: .jpg, .png (with transparency), .gif, etc. can be loaded as a bitmap (note that animated gifs are not supported, only the first frame will be loaded).
+
+Some bitmaps are said **immutable** (a simpler word is "read-only"). This is typically the case when you load a bitmap from a file with the [GR.BITMAP.LOAD](#gr-bitmap-load) command: the pointer points to an immutable bitmap, i.e. you cannot draw on the resulting bitmap.
+
+On the other hand, basica allows you to create blank "bitmaps" (via [GR.BITMAP.CREATE](#gr-bitmap-create)) to be used as a **canvas** and draw into them (via [GR.BITMAP.DRAWINTO.START](#gr-bitmap-drawinto-start) / [GR.BITMAP.DRAWINTO.END](#gr-bitmap-drawinto-end)). Drawing objects into a canvas bitmap is very fast, especially if you draw a big number of objects. This technique can be used if you want to achieve performance, but note that the objects drawn in the canvas bitmap will become immutable themselves, as they will become part of the bitmap - you won't be able to change their individual properties with [GR.MODIFY](#gr-modify) anymore.
+
+Let's take an example:
+```vb
+GR.OPEN ' open graphic mode
+GR.SCREEN w, h ' get screen width and height
+
+PRINT "Drawing 200 colored rectangles directly on screen"
+t = TIMER()
+FOR i=1 TO 200
+  GR.COLOR 255, 256*RND(), 256*RND(), 256*RND() ' alpha=255 (opaque); random RGB
+  GR.RECT objId, w*RND(), h*RND(), w*RND(), h*RND() ' draw rectangle at random coordinates on screen
+  GR.RENDER ' render graphic screen to show new rectangle
+NEXT
+t = (TIMER() - t) / 1000 ' TIMER() is in milliseconds -> round it to seconds
+PRINT "Done in " + INT$(t) + " seconds"
+
+GR.CLS ' clear graphic screen
+PRINT "Drawing 200 colored rectangles in a canvas bitmap the size of the screen"
+GR.BITMAP.CREATE bmpPtr, w, h ' create canvas bitmap
+GR.BITMAP.DRAW objId, bmpPtr, 0, 0 ' put it on the screen
+GR.BITMAP.DRAWINTO.START bmpPtr ' start drawing in it
+t = TIMER()
+FOR i=1 TO 200
+  GR.COLOR 255, 256*RND(), 256*RND(), 256*RND() ' exact same code as above
+  GR.RECT objId, w*RND(), h*RND(), w*RND(), h*RND()
+  GR.RENDER
+NEXT
+t = (TIMER() - t) / 1000
+GR.BITMAP.DRAWINTO.END
+PRINT "Done in " + INT$(t) + " seconds"
+```
+
+Typical result on the above snippet are 22 seconds to draw 200 colored rectangles directly on screen, and only half (11 seconds) if they are drawn in a canvas bitmap, itself drawn on the screen. The more objects you draw, the bigger difference there will be in the results, since each new object on screen slows down the rendering ; while with the [GR.BITMAP.DRAWINTO](#gr-bitmap-drawinto-start) technique there is only one bitmap object on the screen at all time.
+
+If you want to alter (draw on) an image loaded from disk, you need to first load it as a bitmap (immutable), create a canvas bitmap of the same size, draw your first bitmap into it (you can then recycle the first bitmap to free memory), and continue to draw into your canvas bitmap.
+
+The following snippet illustrates this case:
+
+```vb
+GR.OPEN ' open graphic mode
+myPic$ = "image.png" ' replace with path to an image present on your device
+GR.BITMAP.LOAD immutablePtr, myPic$
+IF NOT immutablePtr THEN END "Error loading " + myPic$
+GR.BITMAP.SIZE immutablePtr, w, h ' get myPic$ dimensions (WxH pixels)
+GR.BITMAP.CREATE canvasPtr, w, h ' create a canvas bitmap of the same size
+GR.BITMAP.DRAWINTO.START canvasPtr
+GR.BITMAP.DRAW objId, immutablePtr, 0, 0 ' draw myPic$ in this canvas
+GR.BITMAP.DELETE immutablePtr ' now that we used myPic$ we can recycle it
+GR.WIDTH 5 ' set line width to 5 pixels
+GR.LINE objId, 0, 0, w, h ' this command and the next one draw a black "X" on top of myPic$
+GR.LINE objId, 0, h, w, 0
+GR.BITMAP.DRAWINTO.END
+GR.BITMAP.DRAW objId, canvasPtr, 0, 0 ' draw the canvas bitmap on screen
+GR.RENDER ' render!
+DO : SLEEP 1 : UNTIL 0 ' pause until Back key is hit
+```
+
+Bitmaps take a lot of internal memory. Loading several bitmaps is usually a bottleneck when developping small games. You need to be very careful to load only the bitmaps needed on screen at a given time, and recycle them as soon as you are done with them, via [GR.BITMAP.DELETE](#gr-bitmap-delete).
+
+The following commands also create internal bitmaps, and should be carefully monitored for the same memory concerns: [GR.BITMAP.CREATE](#gr-bitmap-create) of course, but also [GR.BITMAP.CROP](#gr-bitmap-crop) and [GR.BITMAP.SCALE](#gr-bitmap-scale).
+
+**See also:**
+* [Graphic Commands](#graphic-commands)
+
+<!------------------------------------------------------------------------------->
+# Graphic Commands
+The graphic (GR) mode is one of basica's four display modes, along with the [console](#console-commands), [GW&trade; (GUI)](#gw-gui-commands) and [HTML](#html-commands) modes.
+
+basica's graphic mode is similar to a black board. You can draw anything on it: text, images (aka "[bitmaps](#bitmaps)"), and forms (circles, rectangles etc.)
+This mode allows you to detect finger-touch on the screen (up to 2 fingers), making it the prefered mode for creating small Android games. The graphic mode also allows you to operate the device camera.
+
+The following functions can be used to operate the graphic mode:
+* [FONT.CLEAR](#font-clear)
+* [FONT.DELETE](#font-delete)
+* [FONT.LOAD](#font-load)
+* [GR.ARC](#gr-arc)
+* [GR.BITMAP.CREATE](#gr-bitmap-create)
+* [GR.BITMAP.CROP](#gr-bitmap-crop)
+* [GR.BITMAP.DELETE](#gr-bitmap-delete)
+* [GR.BITMAP.DRAW](#gr-bitmap-draw)
+* [GR.BITMAP.DRAWINTO.END](#gr-bitmap-drawinto-end)
+* [GR.BITMAP.DRAWINTO.START](#gr-bitmap-drawinto-start)
+* [GR.BITMAP.FILL](#gr-bitmap-fill)
+* [GR.BITMAP.LOAD](#gr-bitmap-load)
+* [GR.BITMAP.SAVE](#gr-bitmap-save)
+* [GR.BITMAP.SCALE](#gr-bitmap-scale)
+* [GR.BITMAP.SIZE](#gr-bitmap-size)
+* [GR.BOUNDED.TOUCH](#gr-bounded-touch)
+* [GR.BOUNDED.TOUCH2](#gr-bounded-touch2)
+* [GR.BRIGHTNESS](#gr-brightness)
+* [GR.CAMERA.AUTOSHOOT](#gr-camera-autoshoot)
+* [GR.CAMERA.MANUALSHOOT](#gr-camera-manualshoot)
+* [GR.CAMERA.SELECT](#gr-camera-select)
+* [GR.CAMERA.SHOOT](#gr-camera-shoot)
+* [GR.CIRCLE](#gr-circle)
+* [GR.CLIP](#gr-clip)
+* [GR.CLOSE](#gr-close)
+* [GR.CLS](#gr-cls)
+* [GR.COLLISION](#gr-collision)
+* [GR.COLOR](#gr-color)
+* [GR.FRONT](#gr-front)
+* [GR.GET.BMPIXEL](#gr-get-bmpixel)
+* [GR.GET.PARAMS](#gr-get-params)
+* [GR.GET.PIXEL](#gr-get-pixel)
+* [GR.GET.POSITION](#gr-get-position)
+* [GR.GET.TEXTBOUNDS](#gr-get-textbounds)
+* [GR.GET.TYPE](#gr-get-type)
+* [GR.GET.VALUE](#gr-get-value)
+* [GR.GETDL](#gr-getdl)
+* [GR.GROUP](#gr-group)
+* [GR.GROUP.GETDL](#gr-group-getdl)
+* [GR.GROUP.LIST](#gr-group-list)
+* [GR.GROUP.NEWDL](#gr-group-newdl)
+* [GR.HIDE](#gr-hide)
+* [GR.LINE](#gr-line)
+* [GR.MODIFY](#gr-modify)
+* [GR.MOVE](#gr-move)
+* [GR.NEWDL](#gr-newdl)
+* [GR.OPEN](#gr-open)
+* [GR.ORIENTATION](#gr-orientation)
+* [GR.OVAL](#gr-oval)
+* [GR.PAINT.COPY](#gr-paint-copy)
+* [GR.PAINT.GET](#gr-paint-get)
+* [GR.PAINT.RESET](#gr-paint-reset)
+* [GR.POINT](#gr-point)
+* [GR.POLY](#gr-poly)
+* [GR.RECT](#gr-rect)
+* [GR.RENDER](#gr-render)
+* [GR.ROTATE.END](#gr-rotate-end)
+* [GR.ROTATE.START](#gr-rotate-start)
+* [GR.SAVE](#gr-save)
+* [GR.SCALE](#gr-scale)
+* [GR.SCREEN](#gr-screen)
+* [GR.SCREEN.TOBITMAP](#gr-screen-tobitmap)
+* [GR.SET.ANTIALIAS](#gr-set-antialias)
+* [GR.SET.PIXELS](#gr-set-pixels)
+* [GR.SHOW](#gr-show)
+* [GR.SHOW.TOGGLE](#gr-show-toggle)
+* [GR.STATUSBAR](#gr-statusbar)
+* [GR.STATUSBAR.SHOW](#gr-statusbar-show)
+* [GR.TEXT.ALIGN](#gr-text-align)
+* [GR.TEXT.BOLD](#gr-text-bold)
+* [GR.TEXT.DRAW](#gr-text-draw)
+* [GR.TEXT.HEIGHT](#gr-text-height)
+* [GR.TEXT.ITALIC](#gr-text-italic)
+* [GR.TEXT.SETFONT](#gr-text-setfont)
+* [GR.TEXT.SIZE](#gr-text-size)
+* [GR.TEXT.STRIKE](#gr-text-strike)
+* [GR.TEXT.TYPEFACE](#gr-text-typeface)
+* [GR.TEXT.UNDERLINE](#gr-text-underline)
+* [GR.TEXT.WIDTH](#gr-text-width)
+* [GR.TOUCH](#gr-touch)
+* [GR.TOUCH2](#gr-touch2)
+* [GR.WIDTH](#gr-width)
+* [GRTOUCH.RESUME](#grtouch-resume)
+* [ON.GRTOUCH](#on-grtouch)
+
+**See also:**
+* [Console Commands](#console-commands)
+* [GW&trade; (GUI) Commands](#gw-gui-commands)
+* [HTML Commands](#html-commands)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
+# Console Commands
+The console is the simplest display mode among the four modes offered in basica (the three others being [graphic](#graphic-commands), [GW&trade; (GUI)](#gw-gui-commands) and [HTML](#html-commands)).
+
+Like Linux or Windows consoles, basica's console allows to print and input simple text.
+basica's console is also highly customizable: font, size, colors, lines, orientation...
+
+The following functions can be used to operate on the console:
+* [CLS](#cls)
+* [CON.COLORS](#con-colors)
+* [CON.FONT.SIZE](#con-font-size)
+* [CON.FONT.TYPE](#con-font-type)
+* [CON.FRONT](#con-front)
+* [CON.LINE.COUNT](#con-line-count)
+* [CON.LINE.TEXT](#con-line-text)
+* [CON.LINE.TOUCHED](#con-line-touched)
+* [CON.ORIENTATION](#con-orientation)
+* [CON.SAVE](#con-save)
+* [CON.SELECT](#con-select)
+* [CON.SHOW.EMPTY](#con-show-empty)
+* [CON.SHOW.LINES](#con-show-lines)
+* [CON.TITLE](#con-title)
+* [CONTOUCH.RESUME](#contouch-resume)
+* [INPUT](#input)
+* [ON.CONTOUCH](#on-contouch)
+* [PRINT](#print)
+
+**See also:**
+* [Graphic Commands](#graphic-commands)
+* [GW&trade; (GUI) Commands](#gw-gui-commands)
+* [HTML Commands](#html-commands)
+
+Back to [Command summary](#command-summary)
+
+<!------------------------------------------------------------------------------->
 # Flow Control
 The following functions can be used to manage program execution/flow:
 * [CALL](#call)
@@ -86,11 +670,12 @@ The following functions can be used to manage program execution/flow:
 * [GOTO](#goto)
 * [IF](#if)
 * [IF/END IF](#if-end-if-block)
+* [INCLUDE](#include)
 * [ITERATE](#iterate-disambiguation)
 * [ON.BACKGROUND](#on-background) and [BACKGROUND.RESUME](#background-resume)
 * [ON.BACKKEY](#on-backkey) and [BACKKEY.RESUME](#backkey-resume)
 * [ON.BTREADREADY](#on-btreadready) and [BTREADREADY.RESUME](#btreadready-resume)
-* [ON.CONSOLETOUCH](#on-consoletouch) and [CONSOLETOUCH.RESUME](#consoletouch-resume)
+* [ON.CONTOUCH](#on-contouch) and [CONTOUCH.RESUME](#contouch-resume)
 * [ON.ERROR](#on-error)
 * [ON.GRTOUCH](#on-grtouch) and [GRTOUCH.RESUME](#grtouch-resume)
 * [ON.KBTOGGLE](#on-kbtoggle) and [KBTOGGLE.RESUME](#kbtoggle-resume)
@@ -98,7 +683,9 @@ The following functions can be used to manage program execution/flow:
 * [ON.LOWMEMORY](#on-lowmemory) and [LOWMEMORY.RESUME](#lowmemory-resume)
 * [ON.MENUKEY](#on-menukey) and [MENUKEY.RESUME](#menukey-resume)
 * [ON.TIMER](#on-timer) and [TIMER.RESUME](#timer-resume)
+* [PROGRAM.INFO](#program-info)
 * [RETURN](#gosub)
+* [RUN](#run)
 * [SELECT CASE](#select-case)
 * [SLEEP](#sleep)
 * [SUB/END SUB](#sub)
@@ -131,39 +718,6 @@ The following functions can be used to trap and manage error conditions:
 * [ERROR$](#error)
 * [ON.ERROR](#on-error)
 * [ON.LOWMEMORY](#on-lowmemory)
-
-Back to [Command summary](#command-summary)
-
-<!------------------------------------------------------------------------------->
-# Console Commands
-The console is the simplest display mode among the four modes offered in basica.
-Like Linux or Windows consoles, basica's console allows to print and input simple text.
-basica console is also highly customizable: font, size, colors, lines, orientation...
-
-The following functions can be used to operate on the console:
-* [CLS](#cls)
-* [CON.COLORS](#con-colors)
-* [CON.FONT.SIZE](#con-font-size)
-* [CON.FONT.TYPE](#con-font-type)
-* [CON.FRONT](#con-front)
-* [CON.LINE.COUNT](#con-line-count)
-* [CON.LINE.TEXT](#con-line-text)
-* [CON.LINE.TOUCHED](#con-line-touched)
-* [CON.ORIENTATION](#con-orientation)
-* [CON.SAVE](#con-save)
-* [CON.SELECT](#con-select)
-* [CON.SHOW.EMPTY](#con-show-empty)
-* [CON.SHOW.LINES](#con-show-lines)
-* [CON.TITLE](#con-title)
-* [CONSOLETOUCH.RESUME](#consoletouch-resume)
-* [INPUT](#input)
-* [ON.CONSOLETOUCH](#on-consoletouch)
-* [PRINT](#print)
-
-**See also:**
-* [Graphic Commands](#graphic-commands)
-* [GW (GUI) Commands](#gw-gui-commands)
-* [HTML Commands](#html-commands)
 
 Back to [Command summary](#command-summary)
 
@@ -243,7 +797,7 @@ Count = 100
 * [ARRAY.SEARCH](#array-search)
 * [ARRAY.SHUFFLE](#array-shuffle)
 * [ARRAY.SORT](#array-sort)
-* [ARRAY.STD_DEV](#array-std-dev)
+* [ARRAY.STDDEV](#array-stddev)
 * [ARRAY.SUM](#array-sum)
 * [ARRAY.VARIANCE](#array-variance)
 * [ASCII](#ascii)
@@ -269,6 +823,7 @@ Count = 100
 * [BACKGROUND](#background)
 * [BACKGROUND.RESUME](#background-resume)
 * [BAND](#band)
+* [BEEP](#beep)
 * [BIN](#bin-function)
 * [BIN$](#bin-function-1)
 * [BINARY](#open-statement)
@@ -305,9 +860,9 @@ Count = 100
 * [CHR$](#chr)
 * [CLIPBOARD.GET](#clipboard-get)
 * [CLIPBOARD.PUT](#clipboard-put)
-* [CLOCK](#clock)
 * [CLOSE](#close)
 * [CLS](#cls)
+* [COMMAND$](#command)
 * [CON.COLORS](#con-colors)
 * [CON.FONT.SIZE](#con-font-size)
 * [CON.FONT.TYPE](#con-font-type)
@@ -321,7 +876,7 @@ Count = 100
 * [CON.SHOW.EMPTY](#con-show-empty)
 * [CON.SHOW.LINES](#con-show-lines)
 * [CON.TITLE](#con-title)
-* [CONSOLETOUCH.RESUME](#consoletouch-resume)
+* [CONTOUCH.RESUME](#contouch-resume)
 * [COS](#cos)
 * [COSH](#cosh)
 
@@ -376,7 +931,6 @@ Count = 100
 * [FILE.RENAME](#file-rename)
 * [FILE.ROOT](#file-root)
 * [FILE.SIZE](#file-size)
-* [FILE.TOSD](#file-tosd)
 * [FILE.TYPE](#file-type)
 * [FLOOR](#floor)
 * [FONT.CLEAR](#font-clear)
@@ -440,6 +994,7 @@ Count = 100
 * [GR.CLIP](#gr-clip)
 * [GR.CLOSE](#gr-close)
 * [GR.CLS](#gr-cls)
+* [GR.COLLISION](#gr-collision)
 * [GR.COLOR](#gr-color)
 * [GR.FRONT](#gr-front)
 * [GR.GET.BMPIXEL](#gr-get-bmpixel)
@@ -459,7 +1014,6 @@ Count = 100
 * [GR.MODIFY](#gr-modify)
 * [GR.MOVE](#gr-move)
 * [GR.NEWDL](#gr-newdl)
-* [GRTOUCH.RESUME](#grtouch-resume)
 * [GR.OPEN](#gr-open)
 * [GR.ORIENTATION](#gr-orientation)
 * [GR.OVAL](#gr-oval)
@@ -475,10 +1029,9 @@ Count = 100
 * [GR.SAVE](#gr-save)
 * [GR.SCALE](#gr-scale)
 * [GR.SCREEN](#gr-screen)
-* [GR.SCREEN.TO_BITMAP](#gr-screen-to-bitmap)
+* [GR.SCREEN.TOBITMAP](#gr-screen-tobitmap)
 * [GR.SET.ANTIALIAS](#gr-set-antialias)
 * [GR.SET.PIXELS](#gr-set-pixels)
-* [GR.SET.STROKE](#gr-set-stroke)
 * [GR.SHOW](#gr-show)
 * [GR.SHOW.TOGGLE](#gr-show-toggle)
 * [GR.STATUSBAR](#gr-statusbar)
@@ -487,16 +1040,17 @@ Count = 100
 * [GR.TEXT.BOLD](#gr-text-bold)
 * [GR.TEXT.DRAW](#gr-text-draw)
 * [GR.TEXT.HEIGHT](#gr-text-height)
+* [GR.TEXT.ITALIC](#gr-text-italic)
 * [GR.TEXT.SETFONT](#gr-text-setfont)
 * [GR.TEXT.SIZE](#gr-text-size)
-* [GR.TEXT.SKEW](#gr-text-skew)
 * [GR.TEXT.STRIKE](#gr-text-strike)
 * [GR.TEXT.TYPEFACE](#gr-text-typeface)
 * [GR.TEXT.UNDERLINE](#gr-text-underline)
 * [GR.TEXT.WIDTH](#gr-text-width)
 * [GR.TOUCH](#gr-touch)
 * [GR.TOUCH2](#gr-touch2)
-* [GR_COLLISION](#gr-collision)
+* [GR.WIDTH](#gr-width)
+* [GRTOUCH.RESUME](#grtouch-resume)
 * [GRABFILE](#grabfile)
 * [GRABURL](#graburl)
 
@@ -524,8 +1078,8 @@ Count = 100
 * [INCLUDE](#include)
 * [INKEY$](#inkey)
 * [INPUT](#input-disambiguation)
+* [INPUT.BOX](#input-box)
 * [INPUT.LINE](#input-line)
-* [INPUT.TEXT](#input-text)
 * [INSTR](#instr-function)
 * [INT](#int)
 * [INT$](#int-1)
@@ -539,10 +1093,10 @@ Count = 100
 
 ## K
 * [KB.HIDE](#kb-hide)
-* [KBTOGGLE.RESUME](#kbtoggle-resume)
 * [KB.SHOW](#kb-show)
 * [KB.SHOWING](#kb-showing)
 * [KB.TOGGLE](#kb-toggle)
+* [KBTOGGLE.RESUME](#kbtoggle-resume)
 * [KEYPRESS.RESUME](#keypress-resume)
 * [KILL](#kill)
 
@@ -590,7 +1144,7 @@ Count = 100
 * [ON.BACKGROUND](#on-background)
 * [ON.BACKKEY](#on-backkey)
 * [ON.BTREADREADY](#on-btreadready)
-* [ON.CONSOLETOUCH](#on-consoletouch)
+* [ON.CONTOUCH](#on-contouch)
 * [ON.ERROR](#on-error)
 * [ON.GRTOUCH](#on-grtouch)
 * [ON.KBTOGGLE](#on-kbtoggle)
@@ -627,6 +1181,7 @@ Count = 100
 * [READ.NEXT](#read-next)
 * [REDIM](#redim)
 * [REM](#rem)
+* [REMOVE$](#remove)
 * [REPLACE$](#replace)
 * [RETURN](#return-disambiguation)
 * [RIGHT$](#right)
@@ -640,7 +1195,7 @@ Count = 100
 * [RUN](#run)
 
 ## S
-* [SCREEN](#screen)
+* [SCREEN.INFO](#screen-info)
 * [SCREEN.ROTATION](#screen-rotation)
 * [SCREEN.SIZE](#screen-size)
 * [SEEK](seek-disambiguation)
@@ -741,6 +1296,7 @@ Count = 100
 * [TEXT](#open-statement)
 * [THEN](#if)
 * [TIME](#time)
+* [TIMER](#timer)
 * [TIMER.CLEAR](#timer-clear)
 * [TIMER.RESUME](#timer-resume)
 * [TIMER.SET](#timer-set)
@@ -748,7 +1304,6 @@ Count = 100
 * [TIMEZONE.LIST](#timezone-list)
 * [TIMEZONE.SET](#timezone-set)
 * [TODEGREES](#todegrees)
-* [TONE](#tone)
 * [TORADIANS](#toradians)
 * [TRIM$](#trim)
 * [TTS.INIT](#tts-init)
@@ -766,7 +1321,8 @@ Count = 100
 
 ## V
 * [VAL](#val)
-* [VERSION$](#version)
+* [VERSION](#version)
+* [VERSION$](#version-1)
 * [VIBRATE](#vibrate)
 * [VOLKEYS.OFF](#volkeys-off)
 * [VOLKEYS.ON](#volkeys-on)
@@ -801,7 +1357,7 @@ RFO BASIC! | basica
 ONBACKGROUND/BACKGROUND.RESUME | ON.BACKGROUND/BACKGROUND.RESUME
 ONBACKKEY/BACK.RESUME | ON.BACKKEY/BACKKEY.RESUME
 ONBTREADREADY/BT.ONREADREADY.RESUME | ON.BTREADREADY/BTREADREADY.RESUME
-ONCONSOLETOUCH/CONSOLETOUCH.RESUME | ON.CONSOLETOUCH/CONSOLETOUCH.RESUME
+ONCONSOLETOUCH/CONSOLETOUCH.RESUME | ON.CONTOUCH/CONTOUCH.RESUME
 ONERROR | ON.ERROR
 ONGRTOUCH/GR.ONGRTOUCH.RESUME | ON.GRTOUCH/GRTOUCH.RESUME
 ONKBCHANGE/KB.RESUME | ON.KBTOGGLE/KBTOGGLE.RESUME
@@ -873,7 +1429,7 @@ ARRAY.AVERAGE | ARRAY.AVERAGE *array[]*, *average*
 ARRAY.LENGTH | ARRAY.LEN *array[]*, *length*
 ARRAY.MAX | ARRAY.MAX *array[]*, *max*
 ARRAY.MIN | ARRAY.MIN *array[]*, *min*
-ARRAY.STD_DEV | ARRAY.STD_DEV *array[]*, *std_dev*
+ARRAY.STD_DEV | ARRAY.STDDEV *array[]*, *standardDeviation*
 ARRAY.SUM | ARRAY.SUM *array[]*, *sum*
 ARRAY.VARIANCE | ARRAY.MAX *array[]*, *variance*
 LIST.SIZE | LIST.LEN *listId*, *length*
@@ -896,21 +1452,26 @@ RFO BASIC! | basica
 CONSOLE.* commands | renamed as CON.* commands
 SELECT | CON.SELECT
 PAUSE | SLEEP
+CLOCK | TIMER
 FN.DEF | SUB&#124;FUNCTION funcName{$} ( {param1{$}} {,param2{$}} ... )
 FN.END | END SUB&#124;FUNCTION
 FN.RTN result{$} | RETURN result{$}, EXIT SUB&#124;FUNCTION
 GETERROR$ | ERROR$
-GR_COLISION | GR.COLISION grObjId1, grObjId2, collision
+GR_COLLISION | GR.COLLISION grObjId1, grObjId2, collision
+GR.SET.STROKE | GR.WIDTH
+GR.TEXT.SKEW | GR.TEXT.ITALIC
 LOWER$ | LCASE$
 UPPER$ | UCASE$
+TONE | BEEP
 TGET | INPUT prompt$, result{$}
 INPUT | INPUT.LINE
-TEXT.INPUT | INPUT.TEXT
+SCREEN | SCREEN.INFO
+TEXT.INPUT | INPUT.BOX
 WIFILOCK | WIFI.LOCK
 
 # Additions
 * [Arithmetic operator](#arithmetic-operators) `\` for integral division
-* [CHDIR](#chdir), [FILE.COPY](#file-copy), [FILE.TOSD](#file-tosd), [KILL](#kill)
+* [CHDIR](#chdir), [FILE.COPY](#file-copy), [KILL](#kill)
 * [CON.COLORS](#con-colors), [CON.FONT.SIZE](#con-font-size), [CON.FONT.TYPE](#con-font-type), [CON.ORIENTATION](#con-orientation), [CON.SHOW.EMPTY](#con-show-empty), [CON.SHOW.LINES](#con-show-lines)
 * [GLOBAL](#global)
 * [INSTR](#instr-function)
@@ -918,8 +1479,61 @@ WIFILOCK | WIFI.LOCK
 * [PARSECOUNT](#parsecount), [PARSE$](#parse) and [TALLY](#tally)
 * [PERMISSION](#permission-statement) and [PERMISSION$](#permission-function)
 * [REDIM](#redim) and [REDIM PRESERVE](#redim)
+* [REMOVE$](#remove)
 * [SPACE$](#space)
 * [UBOUND](#ubound)
+
+**See also:**
+* [Differences with VB6, PB, FB](#differences-with-vb6-pb-fb)
+
+Back to [basica](#basica)
+
+<!------------------------------------------------------------------------------->
+# Differences with VB6, PB, FB
+Herebelow you will find an equivalence-table for programmers who are fluent in Visual Basic 6 and/or PowerBasic and/or FreeBasic in order to find the matching function(s) in basica:
+
+VB6, PB, FB | basica
+------------|-------
+#DEBUG | See [DEBUG.*](#debug-on) commands
+#INCLUDE | See [INCLUDE](#include)
+ARRAY ASSIGN | See [ARRAY.LOAD](#array-load)
+ARRAY SCAN | See [ARRAY.SEARCH](#array-search)
+DATA | See [READ.DATA](#read-data)
+DIR$ | See [FILE.DIR](#file-dir)
+ERASE | See [UNDIM](#undim) or [ARRAY.DELETE](#array-delete)
+EXE.* | See [PROGRAM.INFO](#program-info)
+FILEATTR | See [FILE.TYPE](#file-type)
+FILECOPY | See [FILE.COPY](#file-copy)
+FONT NEW | See [FONT.LOAD](#font-load)
+FREEFILE | **Removed**, see [OPEN](#open-statement)
+GRAPHIC * | See [GR.*](#gr-open) commands
+IIF and IIF$ | **Not available**, you can write your own [user functions](#function)
+INPUTBOX$ | See [INPUT.BOX](#input-box) or [INPUT.LINE](#input-line)
+INSTR | See [IS_IN](#is_in-function)
+ISFALSE | See [NOT](#not) e.g. `IF NOT cond`, triggered if `cond` is zero
+ISTRUE | **No need**, in basica `IF cond` is evaluated TRUE if `cond` is not zero
+LBOUND | **Removed**, in basica all arrays have a lower bound of `1`
+LOCAL | **No need**, all variables not [GLOBAL](#global) are local by default
+MID$ statement e.g. `MID$(s$,5,2) = "ab"` | **Not available**, see the [MID$](#mid) example
+MKDIR | See [FILE.MKDIR](#file-mkdir)
+a MOD b | MOD(a, b)
+MSGBOX | See [POPUP](#popup) or [DIALOG.MESSAGE](#dialog-message)
+NAME | See [FILE.RENAME](#file-rename)
+ON n GOSUB and ON n GOTO | See [GOSUB n, ..](#gosub) and [GOTO n, ..](#goto)
+ON ERROR | See [ON.ERROR](#on-error)
+READ$ | See [READ.FROM](#read-from) and [READ.NEXT](#read-next)
+REPLACE a$ WITH b$ IN main$ | `main$ = REPLACE$(main$, a$, b$)`
+RESUME | See [Interrupts](#changes-in-interrupts)
+RMDIR | See [FILE.DELETE](#file-delete)
+SGN | **Not available**, you can write your own [user function](#function)
+SHELL | See [SYSTEM.*](#system-open) or [SU.*](#su-open) commands
+STATIC | **Not available**, if you need a STATIC make it [GLOBAL](#global)
+TCP * | See [SOCKET.*](#socket-tcp-ip-commands) commands
+THREAD | **Not available**
+TRACE, TRON, TROFF ... | See [DEBUG.*](#debugging-and-error-control) commands
+
+**See also:**
+* [Differences with RFO BASIC!](#differences-with-rfo-basic)
 
 Back to [basica](#basica)
 
@@ -1309,7 +1923,7 @@ The following functions can be used to manipulate and manage arrays:
 * [ARRAY.SEARCH](#array-search)
 * [ARRAY.SHUFFLE](#array-shuffle)
 * [ARRAY.SORT](#array-sort)
-* [ARRAY.STD_DEV](#array-std-dev)
+* [ARRAY.STDDEV](#array-stddev)
 * [ARRAY.SUM](#array-sum)
 * [ARRAY.VARIANCE](#array-variance)
 * [DEBUG.DUMP.ARRAY](#debug-dump-array)
@@ -1431,7 +2045,6 @@ The following functions can be used to manipulate files:
 * [FILE.RENAME](#file-rename)
 * [FILE.ROOT](#file-root)
 * [FILE.SIZE](#file-size)
-* [FILE.TOSD](#file-tosd)
 * [FILE.TYPE](#file-type)
 * [GET](#get)
 * [GET$](#get-1)
@@ -1456,6 +2069,11 @@ Back to [Command summary](#command-summary)
 
 <!------------------------------------------------------------------------------->
 # Memory Management
+The following functions manipulate memory and its allocation/deallocation:
+* [ARRAY.COPY](#array-copy)
+* [ARRAY.DELETE](#array-delete)
+* [ARRAY.DIMS](#array-dims)
+* [ARRAY.LOAD](#array-load)
 * [AUDIO.LOAD](#audio-load)
 * [AUDIO.RELEASE](#audio-release)
 * [BUNDLE.CLEAR](#bundle-clear)
@@ -1464,11 +2082,13 @@ Back to [Command summary](#command-summary)
 * [FONT.CLEAR](#font-clear)
 * [FONT.DELETE](#font-delete)
 * [FONT.LOAD](#font-load)
+* [GLOBAL](#global)
 * [GR.BITMAP.CREATE](#gr-bitmap-create)
 * [GR.BITMAP.CROP](#gr-bitmap-crop)
 * [GR.BITMAP.DELETE](#gr-bitmap-delete)
 * [GR.BITMAP.LOAD](#gr-bitmap-load)
 * [GR.BITMAP.SCALE](#gr-bitmap-scale)
+* [LET](#let)
 * [LIST.CLEAR](#list-clear)
 * [LIST.CREATE](#list-create)
 * [LOWMEMORY.RESUME](#lowmemory-resume)
@@ -1479,6 +2099,7 @@ Back to [Command summary](#command-summary)
 * [SOUNDPOOL.UNLOAD](#soundpool-unload)
 * [STACK.CLEAR](#stack-clear)
 * [STACK.CREATE](#stack-create)
+* [SWAP](#swap)
 * [UNDIM](#undim)
 
 Back to [Command summary](#command-summary)
@@ -1845,8 +2466,8 @@ See:
 # INPUT (disambiguation)
 See:
 * [INPUT](#input) to input text from the console
+* [INPUT.BOX](#input-box) to show a box-input (notepad) dialog
 * [INPUT.LINE](#input-line) to show a line-input dialog
-* [INPUT.TEXT](#input-text) to show a text-input (notepad) dialog
 * [LINE INPUT](#line-input) to read a line from a TEXT file
 
 <!------------------------------------------------------------------------------->
@@ -1989,7 +2610,7 @@ Search a [string](#variable-types) for the existence of a second string.
 **Remarks:**
 `IS_IN` returns the position of *sub$* within *main$*. The return value is indexed to `1`, while `0` means "not found". `IS_IN` is a more easy-to-read refactor of [INSTR](#instr-function) because it complies with basica's second [dogma](#dogmata):
 
-> the command names should indicate as much as possible the order of the parameters
+> the command names should always indicate the order of the parameters
 
 `IS_IN(sub$, main$)` must be read "IS `sub$` IN `main$` ?".
 The answer is either "no" (`IS_IN` returns `0`) or "yes" (`IS_IN` returns the index of the match.)
