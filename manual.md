@@ -27,7 +27,7 @@ It is based on RFO BASIC! with many improvements.
 5. the power (and the responsibility) of basica should be given to the user at all time (when pressing Run or Compile):
   * sensitive commands need a `PERMISSION` statement in order to work
   * resources must be placed in a specific folder, see [Working with resources](#working-with-resources)
-  * resources must be called with their exact filename case ("myPic.JPG" <> "Mypic.jpg")
+  * resources must be called with their exact filename case ("myPic.JPG" <> "Mypic.jpg") <!-- http://stackoverflow.com/a/5407535 -->
 6. graphical components (GUI) should be easily accessible via a dedicated API:
  * basica should natively support the [GW&trade; library](http://mougino.free.fr/gw.html) (an enhanced version)
  * the GUI composer should allow to build application screens in a WYSIWYG manner
@@ -1354,17 +1354,17 @@ basica is based on the excellent RFO BASIC! for Android, with the goal to remove
 ## Changes in interrupts
 RFO BASIC! | basica
 -----------|-------
-ONBACKGROUND/BACKGROUND.RESUME | ON.BACKGROUND/BACKGROUND.RESUME
-ONBACKKEY/BACK.RESUME | ON.BACKKEY/BACKKEY.RESUME
-ONBTREADREADY/BT.ONREADREADY.RESUME | ON.BTREADREADY/BTREADREADY.RESUME
-ONCONSOLETOUCH/CONSOLETOUCH.RESUME | ON.CONTOUCH/CONTOUCH.RESUME
-ONERROR | ON.ERROR
-ONGRTOUCH/GR.ONGRTOUCH.RESUME | ON.GRTOUCH/GRTOUCH.RESUME
-ONKBCHANGE/KB.RESUME | ON.KBTOGGLE/KBTOGGLE.RESUME
-ONKEYPRESS/KEY.RESUME | ON.KEYPRESS/KEYPRESS.RESUME
-ONLOWMEMORY/LOWMEMORY.RESUME | ON.LOWMEMORY/LOWMEMORY.RESUME
-ONMENUKEY/MENUKEY.RESUME | ON.MENUKEY/MENUKEY.RESUME
-ONTIMER/TIMER.RESUME | ON.TIMER/TIMER.RESUME
+ONBACKGROUND/BACKGROUND.RESUME | ON.BACKGROUND/BACKGROUND.RESUME <!--OK-->
+ONBACKKEY/BACK.RESUME | ON.BACKKEY/BACKKEY.RESUME <!--OK-->
+ONBTREADREADY/BT.ONREADREADY.RESUME | ON.BTREADREADY/BTREADREADY.RESUME <!--OK-->
+ONCONSOLETOUCH/CONSOLETOUCH.RESUME | ON.CONTOUCH/CONTOUCH.RESUME <!--OK-->
+ONERROR | ON.ERROR <!--OK-->
+ONGRTOUCH/GR.ONGRTOUCH.RESUME | ON.GRTOUCH/GRTOUCH.RESUME <!--OK-->
+ONKBCHANGE/KB.RESUME | ON.KBTOGGLE/KBTOGGLE.RESUME <!--OK-->
+ONKEYPRESS/KEY.RESUME | ON.KEYPRESS/KEYPRESS.RESUME <!--OK-->
+ONLOWMEMORY/LOWMEMORY.RESUME | ON.LOWMEMORY/LOWMEMORY.RESUME <!--OK-->
+ONMENUKEY/MENUKEY.RESUME | ON.MENUKEY/MENUKEY.RESUME <!--OK-->
+ONTIMER/TIMER.RESUME | ON.TIMER/TIMER.RESUME <!--OK-->
 
 ## Changes in flow control
 RFO BASIC! | basica
@@ -1380,7 +1380,7 @@ SW.DEFAULT | CASE ELSE
 SW.END | END SELECT
 W_R.BREAK | EXIT WHILE
 W_R.CONTINUE | ITERATE WHILE
-WHILE/REPEAT | WHILE/WEND
+WHILE/REPEAT | WHILE/WEND <!--OK-->
 
 ## Changes in BYTE.* commands
 RFO BASIC! | basica
@@ -1425,53 +1425,54 @@ ZIP.WRITE *fileNum*, *buffer$*, *entry$* | ZWRITE *buffer$* TO {#}*fileNum*, *en
 ## Changes in order of parameters
 RFO BASIC! | basica
 -----------|-------
-ARRAY.AVERAGE | ARRAY.AVERAGE *array[]*, *average*
-ARRAY.LENGTH | ARRAY.LEN *array[]*, *length*
-ARRAY.MAX | ARRAY.MAX *array[]*, *max*
-ARRAY.MIN | ARRAY.MIN *array[]*, *min*
-ARRAY.STD_DEV | ARRAY.STDDEV *array[]*, *standardDeviation*
-ARRAY.SUM | ARRAY.SUM *array[]*, *sum*
-ARRAY.VARIANCE | ARRAY.MAX *array[]*, *variance*
-LIST.SIZE | LIST.LEN *listId*, *length*
-FILE.DELETE | FILE.DELETE *file$*, *delOK*
-FILE.EXISTS | FILE.EXISTS *file$*, *exists*
-FILE.SIZE | FILE.SIZE *file$*, *size*
-FILE.TYPE | FILE.TYPE *file$*, *type*
+ARRAY.AVERAGE | ARRAY.AVERAGE *array[]*, *average* <!--OK-->
+ARRAY.LENGTH | ARRAY.LEN *array[]*, *length* <!--OK-->
+ARRAY.MAX | ARRAY.MAX *array[]*, *max* <!--OK-->
+ARRAY.MIN | ARRAY.MIN *array[]*, *min* <!--OK-->
+ARRAY.STD_DEV | ARRAY.STDDEV *array[]*, *standardDeviation* <!--OK-->
+ARRAY.SUM | ARRAY.SUM *array[]*, *sum* <!--OK-->
+ARRAY.VARIANCE | ARRAY.VARIANCE *array[]*, *variance* <!--OK-->
+LIST.SIZE | LIST.LEN *listId*, *length* <!--OK-->
+FILE.DELETE | FILE.DELETE *file$*, *delOK* <!--OK-->
+FILE.EXISTS | FILE.EXISTS *file$*, *exists* <!--OK-->
+FILE.SIZE | FILE.SIZE *file$*, *size* <!--OK-->
+FILE.TYPE | FILE.TYPE *file$*, *type* <!--OK-->
 GR.TEXT.DRAW | GR.TEXT.DRAW *grObjId*, *text$*, *drawX*, *drawY*
 
 ## Other changes
 RFO BASIC! | basica
 -----------|-------
-&#126; (line continuation) | underscore &#95;
-&#33; (comment) | single quote &#39;
-&#37; (inline comment) | single quote &#39;
-&#33;&#33; (block comment) | **removed**, use &#39; in front of each line instead
+&#126; (line continuation) | underscore &#95; <!--OK-->
+&#33; (comment) | single quote &#39; <!--OK-->
+&#37; (inline comment) | single quote &#39; <!--OK-->
+&#33;&#33; (block comment) | **removed**, use &#39; in front of each line instead <!--OK-->
 &#33; (operator) | NOT
 &#38; | AND
 &#124; | OR
-CONSOLE.* commands | renamed as CON.* commands
+CONSOLE.* commands | renamed as CON.* commands <!--OK-->
 SELECT | CON.SELECT
-PAUSE | SLEEP
-CLOCK | TIMER
+PAUSE | SLEEP <!--OK-->
+CLOCK | TIMER <!--OK-->
 FN.DEF | SUB&#124;FUNCTION funcName{$} ( {param1{$}} {,param2{$}} ... )
 FN.END | END SUB&#124;FUNCTION
 FN.RTN result{$} | RETURN result{$}, EXIT SUB&#124;FUNCTION
-GETERROR$ | ERROR$
+GETERROR$ | ERROR$ <!--OK-->
 GR_COLLISION | GR.COLLISION grObjId1, grObjId2, collision
-GR.SET.STROKE | GR.WIDTH
-GR.TEXT.SKEW | GR.TEXT.ITALIC
-LOWER$ | LCASE$
-UPPER$ | UCASE$
-TONE | BEEP
+GR.SET.STROKE | GR.WIDTH <!--OK-->
+GR.TEXT.SKEW | GR.TEXT.ITALIC <!--OK-->
+LOWER$ | LCASE$ <!--OK-->
+UPPER$ | UCASE$ <!--OK-->
+TONE | BEEP <!--OK-->
 TGET | INPUT prompt$, result{$}
 INPUT | INPUT.LINE
-SCREEN | SCREEN.INFO
+SCREEN | SCREEN.INFO <!--OK-->
 TEXT.INPUT | INPUT.BOX
-WIFILOCK | WIFI.LOCK
+WIFILOCK | WIFI.LOCK <!--OK-->
 
 # Additions
 * [Arithmetic operator](#arithmetic-operators) `\` for integral division
 * [CHDIR](#chdir), [FILE.COPY](#file-copy), [KILL](#kill)
+* Support of wildcards (`*`, `?`) in [FILE.*](#file-commands) commands <!-- http://stackoverflow.com/a/805504 -->
 * [CON.COLORS](#con-colors), [CON.FONT.SIZE](#con-font-size), [CON.FONT.TYPE](#con-font-type), [CON.ORIENTATION](#con-orientation), [CON.SHOW.EMPTY](#con-show-empty), [CON.SHOW.LINES](#con-show-lines)
 * [GLOBAL](#global)
 * [INSTR](#instr-function)
@@ -2623,7 +2624,7 @@ The answer is either "no" (`IS_IN` returns `0`) or "yes" (`IS_IN` returns the in
 x = IS_IN("y", "xyz")  ' returns 2.0
 x = IS_IN("a", "xyz")  ' returns 0.0
 a$ = "My Dog" : b$ = " "
-x = INSTR(b$, a$)      ' returns 3.0
+x = IS_IN(b$, a$)      ' returns 3.0
 ```
 
 **It is important to note that in all cases, even when *Position* is negative, the return value of `IS_IN` is the absolute position of the match, from left to right, starting with the first character.**
