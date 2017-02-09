@@ -1526,7 +1526,6 @@ READ$ | See [READ.FROM](#read-from) and [READ.NEXT](#read-next)
 REPLACE a$ WITH b$ IN main$ | `main$ = REPLACE$(main$, a$, b$)`
 RESUME | See [Interrupts](#changes-in-interrupts)
 RMDIR | See [FILE.DELETE](#file-delete)
-SGN | **Not available**, you can write your own [user function](#function)
 SHELL | See [SYSTEM.*](#system-open) or [SU.*](#su-open) commands
 STATIC | **Not available**, if you need a STATIC make it [GLOBAL](#global)
 TCP * | See [SOCKET.*](#socket-tcp-ip-commands) commands
@@ -2231,7 +2230,7 @@ Reading or writing very large text files can cause Out of Memory errors. The rea
 
 Text files lend themselves to database situations in which the length of individual records is variable. For example, suppose an alumni list had a comments field. Some people may have 100 bytes or more of comments. Others, perhaps most, will have none. Text files handle this problem without wasting disk space.
 
-The `OPEN` statement also provides an optional charset parameter `CHR = charSet$`. This specifies the encoding charset for this file: "UTF-8", "UTF-16" (basica's default), "UTF-16BE", "UTF-16LE", "US-ASCII" or "ISO-8859-1". Since text files consist of text alone, the selected charset is enforced by basica. All data read or written to the file is automatically forced to the selected charset, regardless of the type of variables or expressions used. With binary or random files, this specification has no effect.
+The `OPEN` statement also provides an optional charset parameter `CHR = charSet$`. This specifies the encoding charset for this file: "UTF-8", "UTF-16" (basica's default), "UTF-16BE", "UTF-16LE", "US-ASCII" or "ISO-8859-1". Since text files consist of text alone, the selected charset is enforced by basica. All data read or written to the file is automatically forced to the selected charset, regardless of the type of variables or expressions used. With binary or zip files, this specification has no effect.
 
 **See also:**
 * [OPEN](#open-statement)
