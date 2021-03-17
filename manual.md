@@ -1421,6 +1421,8 @@ ZIP.DIR *zip$*, *entries$[]* | ZDIR *zip$*, *entries$[]*
 ZIP.OPEN r&#124;w, *fileNum*, *file$* | OPEN *file$* FOR ZIP READ&#124;WRITE AS {#}*fileNum*
 ZIP.READ *fileNum*, *buffer$*, *entry$* | ZREAD {#}*fileNum*, *entry$* TO *buffer$*
 ZIP.WRITE *fileNum*, *buffer$*, *entry$* | ZWRITE *buffer$* TO {#}*fileNum*, *entry$*
+Non existent | ZIP *folder$* TO *zipFile$*
+Non existent | UNZIP *zipFile$* TO *folder$*
 
 ## Changes in order of parameters
 RFO BASIC! | basica
