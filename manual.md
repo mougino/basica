@@ -2164,12 +2164,19 @@ basica offers three distinct ways to store and retrieve information from the fil
 A basica variable is a container for some number or string value. The value of a variable can change during program execution.
 
 ## Variable Names
-Like a label or a user-defined `SUB` or `FUNCTION`, a variable name must start with the characters "a" through "z". The remaining characters may also include the digits "0" through "9" and the special characters "#", "@", and "_". A variable name may be as long as needed.
+A variable name in basica must start with the characters "a" through "z", or one of the characters "#" and "@". The remaining characters must be composed of alphabetic characters "a" to "z", the digits "0" through "9", and the special characters "_" (underscore) and "." (period). A variable name may be as long as needed.
 
 There is no case in basica variable names: to basica, the variable `gLoP` is the same as the variable `glop` or as the variable `GLOP`.
 
 ## Variable Types
 basica has only two types of variables: variables that hold numbers and variables that hold strings. Variables that hold strings end with the character "$". Variables that hold numbers do not end in "$".
+
+A numeric variable can contain either an integer (1, 2, -3...) or a decimal (0.1, -4.20). When writing a decimal lower than 1 in basica, the programmer can ommit the leading "0":
+```vb
+dec = .2
+' is the same as:
+dec = 0.2
+```
 
 These are all numeric variable names:
 ```vb
