@@ -661,7 +661,7 @@ Back to [Command summary](#command-summary)
 # Flow Control
 The following functions can be used to manage program execution/flow:
 * [CALL](#call)
-* [DO/UNTIL](#do)
+* [DO/{LOOP} UNTIL](#do)
 * [END](#end-disambiguation)
 * [EXIT](#exit-disambiguation)
 * [FOR/NEXT](#for)
@@ -2460,7 +2460,7 @@ See:
 <!------------------------------------------------------------------------------->
 # ITERATE (disambiguation)
 See:
-* [ITERATE DO](#do) to iterate a DO/UNTIL loop
+* [ITERATE DO](#do) to iterate a DO/{LOOP} UNTIL loop
 * [ITERATE FOR](#for) to iterate a FOR/NEXT loop
 * [ITERATE WHILE](#while) to iterate a WHILE/WEND loop
 
